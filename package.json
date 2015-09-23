@@ -1,0 +1,35 @@
+{
+  "name": "wat-forms",
+  "version": "1.0.0",
+  "description": "WAT React Froms",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willowtreeapps/wat-forms.git"
+  },
+  "keywords": [
+    "React",
+    "Forms"
+  ],
+  "author": "",
+  "contributors": [
+    {
+        "name": "Matt O'Connell"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/willowtreeapps/wat-forms/issues"
+  },
+  "homepage": "https://github.com/willowtreeapps/wat-forms#readme",
+  "dependencies": {
+    "react": "0.14.0-rc1"
+  },
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3"
+  }
+}
