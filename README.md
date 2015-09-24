@@ -34,6 +34,8 @@ or
 
 Talking through this more, if we have a `showErrors` and the state is stored internally within the Form, we need a `clearErrors` function or some similar mechanism to wipe that internal state. Looking goofy already.
 
+Another use case is validating individual inputs `onBlur`
+
 <a name="nested-forms"></a>
 ### Nested Forms
 - Normal forms don't let you do it
