@@ -1,3 +1,13 @@
+(just to get something working)
+https://github.com/alicoding/react-webpack-babel
+
+    npm run build
+
+    # or
+
+    npm run dev
+
+
 # Brainstorming on how to improve forms...
 
 - [ ] [Live updating](#live-updating)

@@ -1,0 +1,80 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "classes": true,
+    "defaultParams": true,
+    "destructuring": true,
+    "forOf": true,
+    "generators": true,
+    "modules": true,
+    "objectLiteralComputedProperties": true,
+    "objectLiteralShorthandMethods": true,
+    "objectLiteralShorthandProperties": true,
+    "regexUFlag": true,
+    "restParams": true,
+    "spread": true,
+    "templateStrings": true,
+    "jsx": true
+  },
+  "rules": {
+    "comma-dangle": [2, "never"],
+    // Allow for double quotes only to avoid escaping single quotes
+    "quotes": [2, "single", "avoid-escape"],
+    "new-cap": [2],
+    "no-multi-spaces": [2],
+    "no-shadow": [1],
+    "no-shadow-restricted-names": [1],
+    "no-unused-vars": [1],
+    "no-use-before-define": [2, "nofunc"],
+    // Allow for `__dirname` / dangling underscores
+    "no-underscore-dangle": [0],
+    // don't allow `if ( foo === bar )`
+    "space-in-parens": [2],
+    "new-cap": [2, { "capIsNewExceptions": ["StoreWatchComponent"] }],
+    // Don't bother checking for object key spacing
+    "key-spacing": [0],
+    // Allow for `return;` and `return true;` in the same fn
+    "consistent-return": [0],
+    // Allow for placeholder arguments, e.g. `.then(data => ...`
+    // Helps clarify that there *is* data available even if we
+    // don't use it at the moment
+    "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+    // require yield in generators
+    "require-yield": [2],
+    // enforce `() => {}` vs. `()=>{}`
+    "arrow-spacing": [2],
+    // Don't allow reassigning of const (babel handles this already, but this
+    // catches it with eslint as well)
+    "no-const-assign": [2],
+
+    "react/display-name": [0],
+    "react/jsx-boolean-value": [1, "always"],
+    "react/jsx-no-undef": [1],
+    "react/jsx-quotes": [1, "double"],
+    "react/jsx-sort-prop-types": [0],
+    "react/jsx-sort-props": [0],
+    "react/jsx-uses-react": [1],
+    "react/jsx-uses-vars": [1],
+    "react/no-did-mount-set-state": [1],
+    "react/no-did-update-set-state": [1],
+    "react/no-multi-comp": [1],
+    "react/no-unknown-property": [1],
+    "react/prop-types": [1],
+    "react/react-in-jsx-scope": [1],
+    "react/require-extension": [1],
+    "react/self-closing-comp": [1],
+    "react/sort-comp": [1],
+    "react/wrap-multilines": [0],
+    "react/jsx-no-duplicate-props": [1]
+  }
+}
