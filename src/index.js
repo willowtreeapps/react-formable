@@ -7,7 +7,7 @@ import Input from './inputs/input';
 export class App extends React.Component {
 	render() {
         return <Form>
-			<Input type="text" ref="name" format={x => x.toUpperCase()}/>
+			<Input type="text" name="test" format={x => x.toUpperCase()}/>
         </Form>;
 	}
 }

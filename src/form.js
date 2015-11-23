@@ -98,18 +98,20 @@ export default React.createClass({
     propTypes: {
         onSubmit: PropTypes.func,
         onChange: PropTypes.func,
-        children: PropTypes.oneOfType([
-            PropTypes.object,
-            PropTypes.array
-        ])
+        children: PropTypes.node
+
+    getDefaultProps() {
+        return {
+            onChange: function() {},
+            onSubmit: function() {}
+        };
+    },
     },
 
     onChange() {
-        console.log('onChange');
     },
 
     onSubmit() {
-        console.log('onSubmit');
     },
 
     cloneChildren(children) {
@@ -122,20 +124,29 @@ export default React.createClass({
                 return child;
             }
 
-            if (child.props && child.ref) {
+            if (child.props && child.props.name) {
                 return React.cloneElement(child, {
+                    ref: child.props.name,
                     onChange: this.onChange,
                     onSubmit: this.onSubmit
                 }, child.props && child.props.children);
             } else {
-                return React.cloneElement(child, {}, this.cloneChildren(child.props && child.props.children));
+                return React.cloneElement(
+                    child,
+                    {},
+                    this.cloneChildren(child.props && child.props.children)
+                );
             }
-
         }, this);
     },
 
     render() {
-        return <div {...this.props} onChange={this.onChange} onSubmit={this.onSubmit} ref="form" noValidate={true} onKeyDown={this.onKeyDown}>
+        return <div {...this.props}
+                    ref="form"
+                    onChange={this.onChange}
+                    onSubmit={this.onSubmit}
+                    onKeyDown={this.onKeyDown}
+                    noValidate={true}>
             {this.cloneChildren(this.props.children)}
         </div>;
     }
