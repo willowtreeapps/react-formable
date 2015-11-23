@@ -5,9 +5,13 @@ import Form from './form';
 import Input from './inputs/input';
 
 export class App extends React.Component {
+	onChange() {
+		console.log('parent');
+	}
+
 	render() {
-        return <Form>
-			<Input type="text" ref="name" format={x => x.toUpperCase()}/>
+        return <Form onChange={this.onChange.bind(this)}>
+			<Input type="text" name="test" format={x => x.toUpperCase()}/>
         </Form>;
 	}
 }

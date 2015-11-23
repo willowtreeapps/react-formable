@@ -105,7 +105,8 @@ export default React.createClass({
     },
 
     onChange() {
-        console.log('onChange');
+        console.log('onChange', this.refs);
+        this.props.onChange();
     },
 
     onSubmit() {
@@ -122,15 +123,19 @@ export default React.createClass({
                 return child;
             }
 
-            if (child.props && child.ref) {
+            if (child.props && child.props.name) {
                 return React.cloneElement(child, {
+                    ref: child.props.name,
                     onChange: this.onChange,
                     onSubmit: this.onSubmit
                 }, child.props && child.props.children);
             } else {
-                return React.cloneElement(child, {}, this.cloneChildren(child.props && child.props.children));
+                return React.cloneElement(
+                    child,
+                    {},
+                    this.cloneChildren(child.props && child.props.children)
+                );
             }
-
         }, this);
     },
 
