@@ -1,7 +1,4 @@
 import React, { PropTypes } from 'react';
-import map from 'lodash.map';
-import values from 'lodash.values';
-import isEqual from 'lodash.isequal';
 import keys from './helpers/keys';
 import mapObj from './helpers/mapObj';
 import uniq from './helpers/uniq';
