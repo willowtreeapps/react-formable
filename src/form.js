@@ -9,13 +9,13 @@ export default React.createClass({
         onSubmit: PropTypes.func,
         onChange: PropTypes.func,
         children: PropTypes.node
+    },
 
     getDefaultProps() {
         return {
             onChange: function() {},
             onSubmit: function() {}
         };
-    },
     },
 
     serialize() {
