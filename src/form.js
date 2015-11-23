@@ -140,7 +140,12 @@ export default React.createClass({
     },
 
     render() {
-        return <div {...this.props} onChange={this.onChange} onSubmit={this.onSubmit} ref="form" noValidate={true} onKeyDown={this.onKeyDown}>
+        return <div {...this.props}
+                    ref="form"
+                    onChange={this.onChange}
+                    onSubmit={this.onSubmit}
+                    onKeyDown={this.onKeyDown}
+                    noValidate={true}>
             {this.cloneChildren(this.props.children)}
         </div>;
     }
