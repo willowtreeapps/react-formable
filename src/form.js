@@ -98,10 +98,7 @@ export default React.createClass({
     propTypes: {
         onSubmit: PropTypes.func,
         onChange: PropTypes.func,
-        children: PropTypes.oneOfType([
-            PropTypes.object,
-            PropTypes.array
-        ])
+        children: PropTypes.node
     },
 
     onChange() {
