@@ -13,7 +13,7 @@ export default React.createClass({
     },
 
     serialize() {
-        return this.refs.input;
+        return this.refs.input.value;
     },
 
     render() {
