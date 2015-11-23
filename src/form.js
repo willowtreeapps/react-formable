@@ -102,12 +102,9 @@ export default React.createClass({
     },
 
     onChange() {
-        console.log('onChange', this.refs);
-        this.props.onChange();
     },
 
     onSubmit() {
-        console.log('onSubmit');
     },
 
     cloneChildren(children) {

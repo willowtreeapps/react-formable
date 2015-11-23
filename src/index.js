@@ -5,12 +5,8 @@ import Form from './form';
 import Input from './inputs/input';
 
 export class App extends React.Component {
-	onChange() {
-		console.log('parent');
-	}
-
 	render() {
-        return <Form onChange={this.onChange.bind(this)}>
+        return <Form>
 			<Input type="text" name="test" format={x => x.toUpperCase()}/>
         </Form>;
 	}
