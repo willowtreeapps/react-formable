@@ -35,6 +35,7 @@
     "react-dom": "^0.14.3"
   },
   "devDependencies": {
+    "babel-plugin-transform-es2015-modules-umd": "^6.1.18",
     "babel-preset-es2015": "^6.1.18",
     "babel-preset-react": "^6.1.18"
   }
