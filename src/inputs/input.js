@@ -5,6 +5,10 @@ const identity = function(x) { return x; };
 export default React.createClass({
     propTypes: {},
 
+    validators: [
+        function(val) { console.log(val); }
+    ],
+
     getDefaultProps() {
         return {
             onChange: identity,

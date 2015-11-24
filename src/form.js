@@ -5,11 +5,16 @@ import uniq from './helpers/uniq';
 import isNil from './helpers/isNil';
 import values from './helpers/values';
 import flatten from './helpers/flatten';
+import identity from './helpers/identity';
 
 export default React.createClass({
     propTypes: {
+        // Handlers for your form callbacks. These will be called with the
+        // current serialization of the form
         onSubmit: PropTypes.func,
         onChange: PropTypes.func,
+
+        // Default React children prop
         children: PropTypes.node
     },
 
@@ -56,29 +61,20 @@ export default React.createClass({
 
             // Get all the errors for the fields
             form.fieldErrors = mapObj((ref, name) => {
-                const hasIsDisabled = ref.hasOwnProperty('isDisabled');
-
-                let hasIsDisabledResult = hasIsDisabled && ref.isDisabled(
-                    form.fieldValues[name],
-                    form.fieldValues,
-                    form.fieldErrors
-                );
-
-                if (hasIsDisabled && hasIsDisabledResult) { return []; }
-                if (!hasIsDisabled && ref.props.disabled) { return []; }
-
                 // We want to make validators as flexible as possible. We
                 // will let the component add its own validators and set them
                 // to state and allow the parent to supply them w/o the child
                 // caring via props
+                console.log(ref.validators);
                 const stateValidators = (ref.state && ref.state.validators) || [];
+                const refValidators = [];
                 const propValidators = ref.props.validators || [];
                 const validators = [].concat(stateValidators, propValidators);
 
                 // Get all the error messages and remove nulls
                 return validators
                         .map(validator => validator(form.fieldValues[name], form.fieldValues, form.fieldErrors))
-                        .filter(x => x);
+                        .filter(identity);
             }, refs);
 
             // Provide a flattened list of uniq errors for easy UI display
@@ -98,9 +94,11 @@ export default React.createClass({
     },
 
     onChange() {
+        this.props.onChange(this.serialize());
     },
 
     onSubmit() {
+        this.props.onSubmit(this.serialize());
     },
 
     cloneChildren(children) {
