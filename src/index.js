@@ -1,13 +1,14 @@
 // Form
-import From from './form';
+import FForm from './form';
 
 // Inputs
-import input from './inputs/input';
-import test from './inputs/test';
+import Input from './inputs/input';
+import Test from './inputs/test';
 
-export From;
+
+export const Form = FForm;
 
 export const Inputs = {
-	input: input,
-	test: test
-}
+	Input,
+	Test
+};

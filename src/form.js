@@ -57,7 +57,7 @@ export default React.createClass({
             oldForm = Object.assign({}, form);
 
             // Get all the values of the form in no particular order
-            form.fieldValues = mapObj(ref => ref.serialize(form.fieldValues), refs);
+            form.fieldValues = mapObj(ref => ref.serialize(), refs);
 
             // Get all the errors for the fields
             form.fieldErrors = mapObj((ref, name) => {
@@ -65,7 +65,6 @@ export default React.createClass({
                 // will let the component add its own validators and set them
                 // to state and allow the parent to supply them w/o the child
                 // caring via props
-                console.log(ref.validators);
                 const stateValidators = (ref.state && ref.state.validators) || [];
                 const refValidators = [];
                 const propValidators = ref.props.validators || [];
@@ -84,9 +83,10 @@ export default React.createClass({
             // Have a helper property to detect if the form is overall valid
             form.valid = !form.errors.length;
 
-            // Set ourselves up for the next iteration
-            // TODO: Evenatually we will need to check equality
-            stable = false;
+            // Our forms are sufficiently small that converting them to strings
+            // should be a quick operation. If we are storing files, this could
+            // get wierd tho...
+            stable = JSON.stringify(form) === JSON.stringify(oldForm);
             iteration++;
         }
 
