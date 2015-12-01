@@ -1,107 +1,22 @@
 import React, { PropTypes } from 'react';
-import map from 'lodash.map';
-import values from 'lodash.values';
-import isEqual from 'lodash.isequal';
-
-// const serializeRefs = function(_refs) {
-//     // Clean out the supplied refs. We only care about things that can
-//     // be serilized and are not themselves forms.
-//     var refs = _.compose(
-//         _.pickBy(_.prop('serialize')),
-//         _.pickBy(ref => !ref.isForm)
-//     )(_refs);
-//
-//     var nestedFormsRefs = _.compose(
-//         _.pickBy(_.prop('serialize')),
-//         _.pickBy(ref => ref.isForm)
-//     )(_refs);
-//
-//     // We want an object with all our refnames with undefined as values.
-//     // This way our validators have placeholders for data
-//     var refNameHash = _.mapObj(() => undefined, refs);
-//     var refNameHashErrors = _.mapObj(() => [], refNameHash);
-//
-//     // Set the initial form value
-//     var form = {
-//         valid: true,
-//         fieldValues: refNameHash,
-//         fieldErrors: refNameHashErrors,
-//         errors: []
-//     };
-//     var oldForm = form;
-//
-//     var stable = false;
-//     var iteration = 0;
-//     var refLength = _.keys(refs).length + _.keys(nestedFormsRefs).length;
-//
-//     var mergeForm = function(formData, formRef) {
-//         var serializedForm = formRef.serialize();
-//
-//         var fieldValues = _.merge(formData.fieldValues, serializedForm.fieldValues);
-//         var fieldErrors = _.merge(formData.fieldErrors, serializedForm.fieldErrors);
-//         var errors = _.compose(_.uniq, _.reject(_.isNil), _.flatten, _.values)(fieldErrors);
-//         var valid = !errors.length;
-//
-//         return { fieldValues, fieldErrors, errors, valid };
-//     };
-//
-//     while (iteration < refLength && !stable) {
-//         // Keep a copy of the previous iteration of the form so we can
-//         // detect if the form is stable to exit early
-//         oldForm = _.clone(form);
-//
-//         // Get all the values of the form in no particular order
-//         form.fieldValues = _.mapObj(ref => ref.serialize(form.fieldValues), refs);
-//
-//         // Get all the errors for the fields
-//         form.fieldErrors = _.mapObjIndexed((ref, name) => {
-//             var hasIsDisabled = _.has('isDisabled', ref);
-//             var hasIsDisabledResult = hasIsDisabled && ref.isDisabled(form.fieldValues[name], form.fieldValues, form.fieldErrors);
-//
-//             if (hasIsDisabled && hasIsDisabledResult) { return []; }
-//             if (!hasIsDisabled && ref.props.disabled) { return []; }
-//
-//             // We want to make validators as flexible as possible. We
-//             // will let the component add its own validators and set them
-//             // to state and allow the parent to supply them w/o the child
-//             // caring via props
-//             var stateValidators = (ref.state && ref.state.validators) || [];
-//             var propValidators = ref.props.validators || [];
-//             var validators = [].concat(stateValidators, propValidators);
-//
-//             // Get all the error messages and remove nulls
-//             return _.compose(
-//                 _.reject(_.isNil),
-//                 _.map(validator => validator(form.fieldValues[name], form.fieldValues, form.fieldErrors))
-//             )(validators);
-//         }, refs);
-//
-//         // Provide a flattened list of uniq errors for easy UI display
-//         form.errors = _.compose(
-//             _.uniq,
-//             _.reject(_.isNil),
-//             _.flatten,
-//             _.values
-//         )(form.fieldErrors);
-//
-//         // Have a helper property to detect if the form is overall valid
-//         form.valid = !form.errors.length;
-//
-//         form = _.reduce(mergeForm, form, _.values(nestedFormsRefs));
-//
-//         // Set ourselves up for the next iteration
-//         stable = _.equals(form, oldForm);
-//         iteration++;
-//     }
-//
-//     return form;
-// };
+import keys from './helpers/keys';
+import mapObj from './helpers/mapObj';
+import uniq from './helpers/uniq';
+import isNil from './helpers/isNil';
+import values from './helpers/values';
+import flatten from './helpers/flatten';
+import identity from './helpers/identity';
 
 export default React.createClass({
     propTypes: {
+        // Handlers for your form callbacks. These will be called with the
+        // current serialization of the form
         onSubmit: PropTypes.func,
         onChange: PropTypes.func,
+
+        // Default React children prop
         children: PropTypes.node
+    },
 
     getDefaultProps() {
         return {
@@ -109,57 +24,32 @@ export default React.createClass({
             onSubmit: function() {}
         };
     },
-    },
 
     serialize() {
-        console.log('===============');
-        const _refs = this.refs;
+        // We only care about things that can be serilized
+        let refs = [];
+        let refNameHash = {};
+        let refNameHashErrors = {};
+        for(let key in this.refs) {
+            if (!this.refs[key].serialize) continue;
 
-        // Clean out the supplied refs. We only care about things that can
-        // be serilized and are not themselves forms.
-        let refs = {};
-        let nestedFormsRefs = {};
-        for(let key in _refs) {
-            if (!_refs[key].serialize) continue;
-
-            if (_refs[key].isForm) {
-                nestedFormsRefs[key] = _refs[key];
-            } else {
-                refs[key] = _refs[key];
-            }
+            refs[key] = this.refs[key];
+            refNameHash[key] = undefined;
+            refNameHashErrors = [];
         }
 
-        // We want an object with all our refnames with undefined as values.
-        // This way our validators have placeholders for data
-        var refNameHash = map(() => undefined, refs);
-        var refNameHashErrors = map(() => [], refNameHash);
-
         // Set the initial form value
-        var form = {
+        let form = {
             valid: true,
             fieldValues: refNameHash,
             fieldErrors: refNameHashErrors,
             errors: []
         };
-        var oldForm = form;
 
-        var stable = false;
-        var iteration = 0;
-        var refLength = Object.keys(refs).length + Object.keys(nestedFormsRefs).length;
-
-        var mergeForm = function(formData, formRef) {
-            var serializedForm = formRef.serialize();
-
-            var fieldValues = Object.assign({}, formData.fieldValues, serializedForm.fieldValues);
-            var fieldErrors = Object.assign({}, formData.fieldErrors, serializedForm.fieldErrors);
-            var errors = [].concat.apply([], Object.values(fieldErrors))
-                            .filter(x => x)
-                            .reduce((items, item) => ~items.indexOf(item) ? items.concat(item) :items, []);
-
-            var valid = !errors.length;
-
-            return { fieldValues, fieldErrors, errors, valid };
-        };
+        let oldForm = form;
+        let stable = false;
+        let iteration = 0;
+        const refLength = keys(refs).length;
 
         while (iteration < refLength && !stable) {
             // Keep a copy of the previous iteration of the form so we can
@@ -167,40 +57,36 @@ export default React.createClass({
             oldForm = Object.assign({}, form);
 
             // Get all the values of the form in no particular order
-            form.fieldValues = map(ref => ref.serialize(form.fieldValues), refs);
+            form.fieldValues = mapObj(ref => ref.serialize(form.fieldValues), refs);
 
             // Get all the errors for the fields
-            form.fieldErrors = map((ref, name) => {
-                var hasIsDisabled = ref.hasOwnProperty('isDisabled');
-                var hasIsDisabledResult = hasIsDisabled && ref.isDisabled(form.fieldValues[name], form.fieldValues, form.fieldErrors);
-
-                if (hasIsDisabled && hasIsDisabledResult) { return []; }
-                if (!hasIsDisabled && ref.props.disabled) { return []; }
-
+            form.fieldErrors = mapObj((ref, name) => {
                 // We want to make validators as flexible as possible. We
                 // will let the component add its own validators and set them
                 // to state and allow the parent to supply them w/o the child
                 // caring via props
-                var stateValidators = (ref.state && ref.state.validators) || [];
-                var propValidators = ref.props.validators || [];
-                var validators = [].concat(stateValidators, propValidators);
+                console.log(ref.validators);
+                const stateValidators = (ref.state && ref.state.validators) || [];
+                const refValidators = [];
+                const propValidators = ref.props.validators || [];
+                const validators = [].concat(stateValidators, propValidators);
 
                 // Get all the error messages and remove nulls
                 return validators
                         .map(validator => validator(form.fieldValues[name], form.fieldValues, form.fieldErrors))
-                        .filter(val => val);
+                        .filter(identity);
             }, refs);
 
             // Provide a flattened list of uniq errors for easy UI display
-            form.errors = [];
+            form.errors = uniq(flatten(values(form.fieldErrors)))
+                            .filter(x => !isNil(x));
 
             // Have a helper property to detect if the form is overall valid
             form.valid = !form.errors.length;
 
-            form = values(nestedFormRefs).reduce(mergeForm, form);
-
             // Set ourselves up for the next iteration
-            stable = isEqual(form, oldForm);
+            // TODO: Evenatually we will need to check equality
+            stable = false;
             iteration++;
         }
 
@@ -208,9 +94,11 @@ export default React.createClass({
     },
 
     onChange() {
+        this.props.onChange(this.serialize());
     },
 
     onSubmit() {
+        this.props.onSubmit(this.serialize());
     },
 
     cloneChildren(children) {

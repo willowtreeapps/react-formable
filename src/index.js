@@ -1,15 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+// Form
+import FForm from './form';
 
-import Form from './form';
-import Input from './inputs/input';
+// Inputs
+import input from './inputs/input';
+import test from './inputs/test';
 
-export class App extends React.Component {
-	render() {
-        return <Form>
-			<Input type="text" name="test" format={x => x.toUpperCase()}/>
-        </Form>;
-	}
+module.exports = {
+    Form: FForm,
+    Input: input,
+    Test: test
 }
-
-ReactDOM.render(<App/>, document.querySelector("#app-container"));

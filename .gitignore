@@ -12,11 +12,11 @@ Session.vim
 *~
 
 # Build files
-dist/*
+lib
 
 # JS
 npm-debug.log
 node_modules/*
 
 # MISC
-docs/*
+docs/
