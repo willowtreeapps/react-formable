@@ -1,12 +1,14 @@
 // Form
 import FForm from './form';
+import Fieldset from './fieldset';
+import Fieldlist from './fieldlist';
 
 // Inputs
-import input from './inputs/input';
-import test from './inputs/test';
+import Input from './inputs/input';
 
 module.exports = {
     Form: FForm,
-    Input: input,
-    Test: test
-}
+    Input: Input,
+    Fieldset: Fieldset,
+    Fieldlist: Fieldlist
+};

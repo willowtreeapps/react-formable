@@ -5,10 +5,6 @@ const identity = function(x) { return x; };
 export default React.createClass({
     propTypes: {},
 
-    validators: [
-        function(val) { console.log(val); }
-    ],
-
     getDefaultProps() {
         return {
             onChange: identity,
@@ -16,13 +12,19 @@ export default React.createClass({
         };
     },
 
-    serialize() {
+    getValue() {
         return this.refs.input.value;
     },
 
     render() {
-        return <input ref="input"
-                      {...this.props}
-                      onChange={this.onChange} />
+        const hasError = this.props.errors && this.props.errors.length;
+
+        const style = {
+            border: `1px solid ${hasError ? 'red' : 'black'}`
+        };
+
+        return <input {...this.props}
+                      ref="input"
+                      style={style} />
     }
 });
