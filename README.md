@@ -302,18 +302,18 @@ Several things are happening here. First, we attach a `ref` to our form componen
 
 The top level form component is what serializes your data.
 
-Property|Type|Default|Description
-:-|:-|:-|:-
-onChange|function(form)|undefined|A callback which will be called whenever any child input changes. Receives the serialized form object
-onSubmit|function(form)|undefined|A callback which will be called whenever the form is submitted. Receives the serialized form object
+| Property | Type | Default | Description |
+| :- | :- | :- | :- |
+| onChange| function(form) | undefined | A callback which will be called whenever any child input changes. Receives the serialized form object |
+| onSubmit | function(form) | undefined | A callback which will be called whenever the form is submitted. Receives the serialized form object |
 
 There are a handful of methods on the `Form` component which are useful. To access these, attach a `ref` to the `Form` and call them via `this.refs.refName.methodName();`.
 
-Method|Params|Description
-:-|:-|:-
-serialize||Returns the serialized form object
-showFieldErrors||Passes down errors to inputs within the form
-clearFieldErrors||Clears errors passed down to inputs within the form
+| Method | Params | Description |
+| :- | :- | :- |
+| serialize | | Returns the serialized form object |
+| showFieldErrors | | Passes down errors to inputs within the form |
+| clearFieldErrors | | Clears errors passed down to inputs within the form |
 
 
 ### `Fieldset`
@@ -322,19 +322,19 @@ clearFieldErrors||Clears errors passed down to inputs within the form
 
 One last thing to keep in mind. You can attach validators to `Fieldset`s. Instead of a primitive passed down as the first param, it is the subtree that the `Fieldset` represents. Any errors returned from a `Fieldset`s validators will skip `fieldErrors` and go directly to `errors`.
 
-Property|Type|Default|Description
-:-|:-|:-|:-
-validators|array[function(value, fieldValues, fieldErrors, subtreeErrors)]|[]|An array of validators to run over the input
-name|string|undefined|The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions.
+| Property | Type | Default | Description |
+| :- | :- | :- | :- |
+| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |
+| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |
 
 ### `Fieldlist`
 
 `Fieldlist` uses `Fieldset` under the hood to render each *direct* child it owns. This means if you nest `Fieldset`s within a `Fieldlist`, you will get some extra objects floating around. Similarly to `Fieldset`, validators return the subtree that the `Fieldlist` represents.
 
-Property|Type|Default|Description
-:-|:-|:-|:-
-validators|array[function(value, fieldValues, fieldErrors, subtreeErrors)]|[]|An array of validators to run over the input
-name|string|undefined|The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions.
+| Property | Type | Default| Description |
+| :- | :- | :- | :- |
+| validators | array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |
+| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |
 
 ### `Input`
 
@@ -343,11 +343,11 @@ To integrate inputs with `Form`s, you need to ensure two things.
 1. The input has a `getValue` method. This method returns the current value of the input.
 2. The input has to be able to work with `refs`. This unfortunately means no stateless components.
 
-Property|Type|Default|Description
-:-|:-|:-|:-
-value|string|undefined|The value of the field
-validators|array[function(value, fieldValues, fieldErrors, subtreeErrors)]|[]|An array of validators to run over the input
-name|string|undefined|The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions.
+| Property | Type | Default | Description |
+| :- | :- | :- | :- |
+| value | string | undefined | The value of the field |
+| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |
+| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |
 
 
 ## TODO
