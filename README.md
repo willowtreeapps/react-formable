@@ -17,14 +17,14 @@
 import { Form, Input } from 'wat-forms';
 export default class App extends React.Component {
     onChange(form) {
-        // The following are teh same
+        // The following are the same:
         console.log(form);
         console.log(this.refs.form.serialize());
     }
 
 	render() {
         // You don't need to attach a ref to the form unless you want to
-        // call its methods directly
+        // call its methods directly.
         return <Form ref="form" onChange={this.onChange}>
 			<Input name="username" type="text" />
         </Form>;
@@ -48,7 +48,7 @@ The form above would output the following JSON:
 
 ### Nested data
 
-What if we are modeling a `person` in our form. We want to have a `person` with a single `pet` object. We can achieve this with `Fieldset`.
+What if we are modeling a `person` in our form? Maybe we want to have a `person` with a single `pet` object. (Start with the best intentions, right?) We can achieve this with `Fieldset`.
 
 ```js
 <Form>
@@ -85,7 +85,7 @@ Notice here how the information is nested. The `name` on our `Fieldset` componen
 
 ### Repetitive data
 
-Realistically, you can't just have one pet. How do we get arrays of pet belonging to our person? Using `Fieldlist`
+Realistically, you can't just have one pet. How do we get arrays of pets belonging to our person? Using `Fieldlist`:
 
 ```js
 <Form>
@@ -124,7 +124,7 @@ The form above would output the following JSON:
 }
 ```
 
-Without `Fieldlist` we would have received an error saying we had conflicting names. `Fieldlist` takes care of this for us by wrapping each one of its `children` in a `Fieldset` component. What if we want our list of pets to be more complex?
+Without `Fieldlist`, we would have received an error saying we had conflicting names. `Fieldlist` takes care of this for us by wrapping each one of its `children` in a `Fieldset` component. What if we want our list of pets to be more complex?
 
 ```js
 <Form>
@@ -183,7 +183,7 @@ Again, any direct child of `Fieldlist` becomes wrapped in a `Fieldset`. This mak
 
 ### Putting it all together
 
-Lets get all inception up in here. We want a list of `people` all who own `pets`. Each `pet` has some `metadata`. Sound hard? Nope.
+Let's get all inception up in here. We want a list of `people` all who own `pets`. Each `pet` has some `metadata`. Sound hard? Nope.
 
 ```js
 <Form>
@@ -254,11 +254,11 @@ Lets get all inception up in here. We want a list of `people` all who own `pets`
 
 ### Showing errors
 
-Ok, this is all good and well. Holy cow tho, those forms can get nested! How are we expected to get and display these error messages?
+Ok, this is all well and good. Holy cow tho, those forms can get nested! How are we expected to get and display these error messages?
 
-Forms have you covered. Your first resource (if you ever need it), is `fieldErrors`. This object mirrors your `fieldValues` object, however instead of values, you have arrays of strings representing errors. With that said, it would be a huge pain to have to go through that entire tree to get a simple list of errors in your forms. To aid with that, there is a flattened down uniq list of errors called... `errors`.
+Forms have you covered. Your first resource (if you ever need it), is `fieldErrors`. This object mirrors your `fieldValues` object; however, instead of values, you have arrays of strings representing errors. With that said, it would be a huge pain to have to go through that entire tree to get a simple list of errors in your forms. To aid with that, there is a flattened down unique list of errors cleverly named... `errors`.
 
-How could we go displaying these errors? `onChange` we would save our form's serialized value to some internal state. With each render we would manually pass down the error messages to the corresponding inputs. Sound tedious? It really is, thats why we made helper functions to do this for you, `showFieldErrors` and `clearFieldErrors`. This will automatically save your form to state and pass down the appropriate errors to the appropriate fields. Here is an example usage.
+How could we go displaying these errors? With `onChange` we would save our form's serialized values to some internal state. With each render we would manually pass down the error messages to their corresponding inputs. Sound tedious? It really is; that's why we made some helper functions to do this for you: `showFieldErrors` and `clearFieldErrors`. This will automatically save your form to state and pass down the appropriate errors to the appropriate fields. Here is an example usage:
 
 ```js
 class App extends React.Component {
@@ -270,7 +270,7 @@ class App extends React.Component {
         return <Form ref="form" onSubmit={this.onSubmit.bind(this)}>
 			<Input name="username"
                    validators={[
-                       function(value) { if(!value) return 'Required field!'; }
+                       function(value) { if(!value) return 'Required field! D:'; }
                    ]} />
         </Form>
 	}
@@ -294,13 +294,13 @@ class App extends React.Component {
 }
 ```
 
-Several things are happening here. First, we attach a `ref` to our form component. This lets us have access to the form instance. Next we bind our `onSubmit` handler to our `onSubmit` function. Now when the form submits itself, our callback executes. Within our callback, we access our form's ref and call `showFieldErrors`, this will automatically propagate our errors to our inputs. Lastly, we save the return value of calling `showFieldErrors` which is a flattened down version of all errors that are currently being shown. We can do anything we want with this, for example saving it to state to render as a list at the bottom of our form.
+Several things are happening here. First, we attach a `ref` to our form component. This lets us have access to the form instance. Next, we bind our `onSubmit` handler to our `onSubmit` function. Now when the form submits itself, our callback executes. Within our callback, we access our form's `ref` and call `showFieldErrors`; this will automatically propagate our errors to our inputs. Lastly, we save the return value of calling `showFieldErrors`, which is a flattened down version of all errors that are currently being shown. We can do anything we want with this; for a common example, we can save it to state to render as a list at the bottom of our form.
 
 ## Docs
 
 ### `Form`
 
-The top level form component is what serializes your data.
+The top level `Form` component is what serializes your data.
 
 | Property | Type | Default | Description |
 | :------- | :--- | :------ | :---------- |
@@ -318,9 +318,11 @@ There are a handful of methods on the `Form` component which are useful. To acce
 
 ### `Fieldset`
 
-`Fieldset`'s are where most of the magic happen. They let us group together similar fields into smaller bite sized objects. We can use this within individual forms or make reusable form components and use them all over the place. One important thing to understand. `Fieldset`s will always make an object with the `name` provided. If you use a `Fieldset` within a `Fieldlist`, you will have a nested object with the name of the `Fieldset`.
+`Fieldset`s are where most of the magic happens. They let us group together similar fields into smaller bite-sized objects. We can use these within individual forms, or make reusable form components and use them all over the place.
 
-One last thing to keep in mind. You can attach validators to `Fieldset`s. Instead of a primitive passed down as the first param, it is the subtree that the `Fieldset` represents. Any errors returned from a `Fieldset`s validators will skip `fieldErrors` and go directly to `errors`.
+One important thing to understand: `Fieldset`s will always make an object with the `name` provided. If you use a `Fieldset` within a `Fieldlist`, you will have a nested object with the name of the `Fieldset`.
+
+One last thing to keep in mind: you can attach validators to `Fieldset`s. Instead of a primitive passed down as the first param, it will be the subtree that the `Fieldset` represents. Any errors returned from a `Fieldset`s validators will skip `fieldErrors` and go directly to `errors`.
 
 | Property | Type | Default | Description |
 | :------- | :--- | :------ | :---------- |
@@ -341,7 +343,7 @@ One last thing to keep in mind. You can attach validators to `Fieldset`s. Instea
 To integrate inputs with `Form`s, you need to ensure two things.
 
 1. The input has a `getValue` method. This method returns the current value of the input.
-2. The input has to be able to work with `refs`. This unfortunately means no stateless components.
+2. The input has to be able to work with your `refs`. This unfortunately means no stateless components.
 
 | Property | Type | Default | Description |
 | :------- | :--- | :------ | :---------- |
