@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.reform = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -61,7 +61,6 @@ if ("production" !== 'production') {
 module.exports = warning;
 
 },{}],2:[function(require,module,exports){
-(function (global){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -72,7 +71,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -122,9 +121,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./fieldset":3,"./helpers/values":12}],3:[function(require,module,exports){
-(function (global){
+},{"./fieldset":3,"./helpers/values":12,"react":undefined}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -133,7 +130,7 @@ Object.defineProperty(exports, '__esModule', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -206,9 +203,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./helpers/cloneChildren":5,"./helpers/identity":7,"./helpers/values":12,"warning":1}],4:[function(require,module,exports){
-(function (global){
+},{"./helpers/cloneChildren":5,"./helpers/identity":7,"./helpers/values":12,"react":undefined,"warning":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -219,7 +214,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -562,9 +557,7 @@ exports['default'] = _react2['default'].createClass({
     }
 });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./helpers/cloneChildren":5,"./helpers/compose":6,"./helpers/identity":7,"./helpers/keys":8,"./helpers/omit":9,"./helpers/pick":10,"./helpers/uniq":11,"./helpers/values":12,"warning":1}],5:[function(require,module,exports){
-(function (global){
+},{"./helpers/cloneChildren":5,"./helpers/compose":6,"./helpers/identity":7,"./helpers/keys":8,"./helpers/omit":9,"./helpers/pick":10,"./helpers/uniq":11,"./helpers/values":12,"react":undefined,"warning":1}],5:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -575,7 +568,7 @@ exports['default'] = cloneChildren;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -610,8 +603,7 @@ function cloneChildren(predicate, getProps, children) {
 
 module.exports = exports['default'];
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{"react":undefined}],6:[function(require,module,exports){
 /*eslint func-style:0*/
 
 "use strict";
@@ -745,7 +737,6 @@ function values(obj) {
 module.exports = exports["default"];
 
 },{}],13:[function(require,module,exports){
-(function (global){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -756,7 +747,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -796,8 +787,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{"react":undefined}],"react-reform":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -829,5 +819,4 @@ exports.Fieldlist = _fieldlist2['default'];
 exports.Input = _inputsInput2['default'];
 exports['default'] = _form2['default'];
 
-},{"./fieldlist":2,"./fieldset":3,"./form":4,"./inputs/input":13}]},{},[14])(14)
-});
+},{"./fieldlist":2,"./fieldset":3,"./form":4,"./inputs/input":13}]},{},[]);
