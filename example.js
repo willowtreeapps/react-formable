@@ -56,11 +56,9 @@ var _reactDom = require('react-dom');
 
 var _reactRouter = require('react-router');
 
-console.log(_routes2['default']);
-
 var history = (0, _historyLibCreateBrowserHistory2['default'])();
-console.log(history);
-console.log(_historyLibCreateBrowserHistory2['default']);
+
+console.log(_reactDom.render);
 
 (0, _reactDom.render)(_react2['default'].createElement(
     _reactRouter.Router,
