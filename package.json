@@ -1,0 +1,88 @@
+{
+  "name": "react-reform",
+  "version": "0.1.0",
+  "description": "A simple form library for react",
+  "main": "lib/reform.js",
+  "author": "Willowtree",
+  "contributors": [
+    {
+      "name": "Matt O'Connell"
+    },
+    {
+      "name": "Kevin Welcher"
+    },
+    {
+      "name": "Christine Bryant-Ryback"
+    }
+  ],
+  "homepage": "https://github.com/willowtreeapps/react-reform",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/willowtreeapps/react-reform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/willowtreeapps/react-reform/issues"
+  },
+  "dependencies": {
+    "warning": "^2.1.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.17",
+    "babel-eslint": "^4.1.6",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "eslint": "^1.10.3",
+    "eslint-plugin-react": "^3.11.3",
+    "gulp": "^3.9.0",
+    "jest-cli": "^0.8.1",
+    "react": "^0.14.0",
+    "react-addons-test-utils": "^0.14.3",
+    "react-component-gulp-tasks": "^0.7.6",
+    "react-dom": "^0.14.0"
+  },
+  "peerDependencies": {
+    "react": "^0.14.0"
+  },
+  "browserify-shim": {
+    "react": "global:React"
+  },
+  "scripts": {
+    "build": "gulp clean && NODE_ENV=production gulp build",
+    "examples": "gulp dev:server",
+    "lint": "eslint ./; true",
+    "publish:site": "NODE_ENV=production gulp publish:examples",
+    "release": "NODE_ENV=production gulp release",
+    "start": "gulp dev",
+    "test": "jest",
+    "watch": "gulp watch:lib"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>preprocessor",
+    "testFileExtensions": [
+      "es6",
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "es6"
+    ],
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react",
+      "<rootDir>/node_modules/react-dom",
+      "<rootDir>/node_modules/react-addons-test-utils",
+      "<rootDir>/node_modules/fbjs"
+    ]
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "react-forms",
+    "react-form",
+    "forms",
+    "form",
+    "inputs",
+    "react-inputs"
+  ],
+  "license": "MIT"
+}
