@@ -6,8 +6,6 @@ const App = React.createClass({
     render() {
         return <Form>
             <Input name="name" type="text" />
-            <Input name="ne" type="text" />
-            <Input name="nes" type="text" />
         </Form>;
     }
 });
