@@ -15,10 +15,13 @@ var _reactReform = require('react-reform');
 
 var _reactReform2 = _interopRequireDefault(_reactReform);
 
+console.log('called');
+
 exports['default'] = _react2['default'].createClass({
     displayName: 'app',
 
     render: function render() {
+        console.log('rendered');
         return _react2['default'].createElement(
             _reactReform2['default'],
             null,
@@ -58,6 +61,7 @@ var _reactRouter = require('react-router');
 
 var history = (0, _historyLibCreateBrowserHistory2['default'])();
 
+console.log('exmple');
 (0, _reactDom.render)(_react2['default'].createElement(
     _reactRouter.Router,
     { history: history },
