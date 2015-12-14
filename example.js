@@ -56,6 +56,11 @@ var _reactRouter = require('react-router');
 
 var history = (0, _history.createHistory)();
 
+console.log('===================');
+console.log(history);
+console.log(_reactRouter.Router);
+console.log(_reactDom.render);
+
 (0, _reactDom.render)(_react2['default'].createElement(
     _reactRouter.Router,
     { history: history },
