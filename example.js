@@ -64,7 +64,10 @@ console.log(_reactDom.render);
     _reactRouter.Router,
     { history: history },
     _routes2['default']
-), document.getElementById('app'));
+), document.getElementById('app'), function () {
+    console.log('lolololol');
+    console.log(arguments);
+});
 
 },{"./routes":3,"history/lib/createBrowserHistory":12,"react":undefined,"react-dom":undefined,"react-router":undefined}],3:[function(require,module,exports){
 'use strict';
