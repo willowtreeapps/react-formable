@@ -58,16 +58,11 @@ var _reactRouter = require('react-router');
 
 var history = (0, _historyLibCreateBrowserHistory2['default'])();
 
-console.log(_reactDom.render);
-
 (0, _reactDom.render)(_react2['default'].createElement(
     _reactRouter.Router,
     { history: history },
     _routes2['default']
-), document.getElementById('app'), function () {
-    console.log('lolololol');
-    console.log(arguments);
-});
+), document.getElementById('app'));
 
 },{"./routes":3,"history/lib/createBrowserHistory":12,"react":undefined,"react-dom":undefined,"react-router":undefined}],3:[function(require,module,exports){
 'use strict';
