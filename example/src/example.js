@@ -1,15 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Form, { Input } from 'react-reform';
+import routes from './routes';
+import createBrowserHistory from 'history/lib/createBrowserHistory';
+import { render } from 'react-dom';
+import { Router } from 'react-router';
 
-const App = React.createClass({
-    render() {
-        return <Form>
-            <Input name="name" type="text" />
-            <Input name="ne" type="text" />
-            <Input name="nes" type="text" />
-        </Form>;
-    }
-});
+const history = createBrowserHistory();
 
-ReactDOM.render(<App />, document.getElementById('app'));
+render(
+    <Router history={history}>
+        {routes}
+    </Router>,
+    document.getElementById('app')
+);
