@@ -14,7 +14,7 @@
 
 ### Basic usage
 ```js
-import { Form, Input } from 'wat-forms';
+import { Form, Input, Fieldset, Fieldlist } from 'react-formable';
 export default class App extends React.Component {
     onChange(form) {
         // The following are the same:
