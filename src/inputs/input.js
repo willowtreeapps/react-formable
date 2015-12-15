@@ -4,7 +4,10 @@ const identity = (x) => x;
 
 export default React.createClass({
     propTypes: {
-        errors: PropTypes.arrayOf(PropTypes.string)
+        errors: PropTypes.arrayOf(PropTypes.string),
+        validateOnBlur: PropTypes.bool,
+        onChange: PropTypes.func,
+        onSubmit: PropTypes.func
     },
 
     getDefaultProps() {
@@ -18,6 +21,18 @@ export default React.createClass({
         return this.refs.input.value;
     },
 
+    onChange(e) {
+        if(!this.props.validateOnBlur) {
+            this.props.onChange(e);
+        }
+    },
+
+    onBlur() {
+        if (this.props.validateOnBlur) {
+            this.props.onChange();
+        }
+    },
+
     render() {
         const hasError = this.props.errors && this.props.errors.length;
 
@@ -26,6 +41,8 @@ export default React.createClass({
         };
 
         return <input {...this.props}
+                      onChange={this.onChange}
+                      onBlur={this.onBlur}
                       ref="input"
                       style={style} />
     }
