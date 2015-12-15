@@ -8,7 +8,7 @@
 
 ### Dev
 
-`npm run dev`
+`npm start`
 
 ## Examples
 
