@@ -56,10 +56,13 @@ var _reactRouter = require('react-router');
 
 var history = (0, _history.createHistory)();
 
-console.log('===================');
-console.log(history);
-console.log(_reactRouter.Router);
-console.log(_reactDom.render);
+console.log(_react2['default'].createElement(
+    _reactRouter.Router,
+    { history: history },
+    _routes2['default']
+));
+
+console.log(_routes2['default']);
 
 (0, _reactDom.render)(_react2['default'].createElement(
     _reactRouter.Router,
@@ -85,6 +88,9 @@ var _reactRouter = require('react-router');
 var _componentsApp = require('./components/app');
 
 var _componentsApp2 = _interopRequireDefault(_componentsApp);
+
+console.log('-----------------');
+console.log(_componentsApp2['default']);
 
 exports['default'] = _react2['default'].createElement(_reactRouter.Route, { path: '/', component: _componentsApp2['default'] });
 module.exports = exports['default'];
