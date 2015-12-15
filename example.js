@@ -55,7 +55,7 @@ var _reactDom = require('react-dom');
 var _reactRouter = require('react-router');
 
 var history = (0, _history.useBasename)(_history.createHistory)({
-    basename: 'react-reform'
+    basename: '/react-reform'
 });
 
 (0, _reactDom.render)(_react2['default'].createElement(
