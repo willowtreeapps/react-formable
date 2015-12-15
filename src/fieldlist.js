@@ -1,14 +1,15 @@
 import React, { PropTypes } from 'react';
 import values from './helpers/values';
 import Fieldset from './fieldset';
+import warning from 'warning';
 
 export default React.createClass({
     displayName: 'Fieldlist',
 
     propTypes: {
         errors: PropTypes.arrayOf(PropTypes.string),
-        children: PropTypes.node,
-        name: PropTypes.string.isRequired
+        name: PropTypes.string.isRequired,
+        children: PropTypes.node
     },
 
     getInputs() {
@@ -20,6 +21,11 @@ export default React.createClass({
     },
 
     render() {
+        warning(
+            this.props.name,
+            `Fieldlist found without a name prop. The children of this component will behave eratically`
+        );
+
         const errors = this.props.errors || [];
 
         return <Fieldset {...this.props} ref="fieldset">

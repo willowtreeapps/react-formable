@@ -9,6 +9,7 @@ export default React.createClass({
 
     propTypes: {
         errors: PropTypes.arrayOf(PropTypes.string),
+        name: PropTypes.string.isRequired,
         children: PropTypes.node
     },
 
@@ -26,6 +27,11 @@ export default React.createClass({
     },
 
     render() {
+        warning(
+            this.props.name,
+            `Fieldset found without a name prop. The children of this component will behave eratically`
+        );
+
         let childNames = [];
         const clonePred = child => child.props && child.props.name;
         const cloneProps = child => {
