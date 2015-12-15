@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.reform = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.formable = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -84,13 +84,17 @@ var _fieldset = require('./fieldset');
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
 
+var _warning = require('warning');
+
+var _warning2 = _interopRequireDefault(_warning);
+
 exports['default'] = _react2['default'].createClass({
     displayName: 'Fieldlist',
 
     propTypes: {
         errors: _react.PropTypes.arrayOf(_react.PropTypes.string),
-        children: _react.PropTypes.node,
-        name: _react.PropTypes.string.isRequired
+        name: _react.PropTypes.string.isRequired,
+        children: _react.PropTypes.node
     },
 
     getInputs: function getInputs() {
@@ -104,6 +108,8 @@ exports['default'] = _react2['default'].createClass({
 
     render: function render() {
         var _this = this;
+
+        (0, _warning2['default'])(this.props.name, 'Fieldlist found without a name prop. The children of this component will behave eratically');
 
         var errors = this.props.errors || [];
 
@@ -123,7 +129,7 @@ exports['default'] = _react2['default'].createClass({
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./fieldset":3,"./helpers/values":12}],3:[function(require,module,exports){
+},{"./fieldset":3,"./helpers/values":13,"warning":1}],3:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -158,6 +164,7 @@ exports['default'] = _react2['default'].createClass({
 
     propTypes: {
         errors: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        name: _react.PropTypes.string.isRequired,
         children: _react.PropTypes.node
     },
 
@@ -177,6 +184,8 @@ exports['default'] = _react2['default'].createClass({
 
     render: function render() {
         var _this = this;
+
+        (0, _warning2['default'])(this.props.name, 'Fieldset found without a name prop. The children of this component will behave eratically');
 
         var childNames = [];
         var clonePred = function clonePred(child) {
@@ -207,7 +216,7 @@ exports['default'] = _react2['default'].createClass({
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./helpers/cloneChildren":5,"./helpers/identity":7,"./helpers/values":12,"warning":1}],4:[function(require,module,exports){
+},{"./helpers/cloneChildren":6,"./helpers/identity":8,"./helpers/values":13,"warning":1}],4:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -563,7 +572,39 @@ exports['default'] = _react2['default'].createClass({
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./helpers/cloneChildren":5,"./helpers/compose":6,"./helpers/identity":7,"./helpers/keys":8,"./helpers/omit":9,"./helpers/pick":10,"./helpers/uniq":11,"./helpers/values":12,"warning":1}],5:[function(require,module,exports){
+},{"./helpers/cloneChildren":6,"./helpers/compose":7,"./helpers/identity":8,"./helpers/keys":9,"./helpers/omit":10,"./helpers/pick":11,"./helpers/uniq":12,"./helpers/values":13,"warning":1}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _form = require('./form');
+
+var _form2 = _interopRequireDefault(_form);
+
+var _fieldset = require('./fieldset');
+
+var _fieldset2 = _interopRequireDefault(_fieldset);
+
+var _fieldlist = require('./fieldlist');
+
+var _fieldlist2 = _interopRequireDefault(_fieldlist);
+
+var _inputsInput = require('./inputs/input');
+
+var _inputsInput2 = _interopRequireDefault(_inputsInput);
+
+exports.Form = _form2['default'];
+exports.getBlankForm = _form.getBlankForm;
+exports.Fieldset = _fieldset2['default'];
+exports.Fieldlist = _fieldlist2['default'];
+exports.Input = _inputsInput2['default'];
+exports['default'] = _form2['default'];
+
+},{"./fieldlist":2,"./fieldset":3,"./form":4,"./inputs/input":14}],6:[function(require,module,exports){
 (function (global){
 /*eslint func-style:0*/
 'use strict';
@@ -611,7 +652,7 @@ function cloneChildren(predicate, getProps, children) {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*eslint func-style:0*/
 
 "use strict";
@@ -629,7 +670,7 @@ function compose(f2, f1) {
 
 module.exports = exports["default"];
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -644,7 +685,7 @@ function identity(x) {
 
 module.exports = exports["default"];
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -659,7 +700,7 @@ function keys(obj) {
 
 module.exports = exports["default"];
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -682,7 +723,7 @@ function omit(names, obj) {
 
 module.exports = exports["default"];
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -707,7 +748,7 @@ function pick(names, obj) {
 
 module.exports = exports["default"];
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -724,7 +765,7 @@ function uniq(arr) {
 
 module.exports = exports["default"];
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -744,7 +785,7 @@ function values(obj) {
 
 module.exports = exports["default"];
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -797,37 +838,5 @@ exports['default'] = _react2['default'].createClass({
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _form = require('./form');
-
-var _form2 = _interopRequireDefault(_form);
-
-var _fieldset = require('./fieldset');
-
-var _fieldset2 = _interopRequireDefault(_fieldset);
-
-var _fieldlist = require('./fieldlist');
-
-var _fieldlist2 = _interopRequireDefault(_fieldlist);
-
-var _inputsInput = require('./inputs/input');
-
-var _inputsInput2 = _interopRequireDefault(_inputsInput);
-
-exports.Form = _form2['default'];
-exports.getBlankForm = _form.getBlankForm;
-exports.Fieldset = _fieldset2['default'];
-exports.Fieldlist = _fieldlist2['default'];
-exports.Input = _inputsInput2['default'];
-exports['default'] = _form2['default'];
-
-},{"./fieldlist":2,"./fieldset":3,"./form":4,"./inputs/input":13}]},{},[14])(14)
+},{}]},{},[5])(5)
 });

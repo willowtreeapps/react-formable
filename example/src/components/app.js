@@ -1,5 +1,5 @@
 import React from 'react';
-import Form, { Input } from 'react-reform';
+import Form, { Input } from 'react-formable';
 
 export default React.createClass({
     render() {

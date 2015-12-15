@@ -1,8 +1,8 @@
 {
-  "name": "react-reform",
+  "name": "react-formable",
   "version": "0.0.1",
   "description": "A simple form library for react",
-  "main": "lib/reform.js",
+  "main": "lib/formable.js",
   "author": "Willowtree",
   "contributors": [
     {
@@ -15,13 +15,13 @@
       "name": "Christine Bryant-Ryback"
     }
   ],
-  "homepage": "https://github.com/willowtreeapps/react-reform",
+  "homepage": "https://github.com/willowtreeapps/react-formable",
   "repository": {
     "type": "git",
-    "url": "https://github.com/willowtreeapps/react-reform.git"
+    "url": "https://github.com/willowtreeapps/react-formable.git"
   },
   "bugs": {
-    "url": "https://github.com/willowtreeapps/react-reform/issues"
+    "url": "https://github.com/willowtreeapps/react-formable/issues"
   },
   "dependencies": {
     "warning": "^2.1.0"

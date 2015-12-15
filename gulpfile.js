@@ -3,7 +3,7 @@ const initGulpTasks = require('react-component-gulp-tasks');
 
 initGulpTasks(gulp, {
     component: {
-        name: 'reform',
+        name: 'formable',
         dependencies: [
             'react',
             'react-dom',

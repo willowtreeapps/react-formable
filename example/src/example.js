@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import { Router } from 'react-router';
 
 const history = useBasename(createHistory)({
-    basename: '/react-reform'
+    basename: '/react-formable'
 });
 
 render(

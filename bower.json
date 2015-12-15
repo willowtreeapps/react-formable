@@ -1,9 +1,9 @@
 {
-  "name": "react-reform",
+  "name": "react-formable",
   "version": "0.0.1",
-  "description": "reform",
-  "main": "dist/react-reform.min.js",
-  "homepage": "https://github.com/kaw2k/react-reform",
+  "description": "formable",
+  "main": "dist/react-formable.min.js",
+  "homepage": "https://github.com/kaw2k/react-formable",
   "authors": [
     "Willowtree"
   ],
