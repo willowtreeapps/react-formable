@@ -46,10 +46,16 @@
     "react": "^0.14.0"
   },
   "browserify-shim": {
-    "react": "global:React"
+    "react": "global:React",
+    "react-dom": "global:ReactDOM",
+    "history": "global:History",
+    "react-router": "global:ReactRouter"
   },
   "scripts": {
     "build": "gulp clean && NODE_ENV=production gulp build",
+    "bump": "gulp bump",
+    "bump:major": "gulp bump:major",
+    "bump:minor": "gulp bump:minor",
     "examples": "gulp dev:server",
     "lint": "eslint ./; true",
     "publish:site": "NODE_ENV=production gulp publish:examples",

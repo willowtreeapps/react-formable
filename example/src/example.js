@@ -1,10 +1,12 @@
 import React from 'react';
 import routes from './routes';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import { createHistory, useBasename } from 'history';
 import { render } from 'react-dom';
 import { Router } from 'react-router';
 
-const history = createBrowserHistory();
+const history = useBasename(createHistory)({
+    basename: '/react-reform'
+});
 
 render(
     <Router history={history}>
