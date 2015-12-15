@@ -54,12 +54,14 @@ var _reactDom = require('react-dom');
 
 var _reactRouter = require('react-router');
 
-var history = (0, _history.createHistory)();
+var history = (0, _history.useBasename)(_history.createHistory)({
+    basename: 'react-reform'
+});
 
 (0, _reactDom.render)(_react2['default'].createElement(
-    'h1',
-    null,
-    'TESTING'
+    _reactRouter.Router,
+    { history: history },
+    _routes2['default']
 ), document.getElementById('app'));
 
 },{"./routes":3,"history":undefined,"react":undefined,"react-dom":undefined,"react-router":undefined}],3:[function(require,module,exports){
