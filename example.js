@@ -57,9 +57,9 @@ var _reactRouter = require('react-router');
 var history = (0, _history.createHistory)();
 
 (0, _reactDom.render)(_react2['default'].createElement(
-    _reactRouter.Router,
-    { history: history },
-    _routes2['default']
+    'h1',
+    null,
+    'TESTING'
 ), document.getElementById('app'));
 
 },{"./routes":3,"history":undefined,"react":undefined,"react-dom":undefined,"react-router":undefined}],3:[function(require,module,exports){
