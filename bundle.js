@@ -83,13 +83,17 @@ var _fieldset = require('./fieldset');
 
 var _fieldset2 = _interopRequireDefault(_fieldset);
 
+var _warning = require('warning');
+
+var _warning2 = _interopRequireDefault(_warning);
+
 exports['default'] = _react2['default'].createClass({
     displayName: 'Fieldlist',
 
     propTypes: {
         errors: _react.PropTypes.arrayOf(_react.PropTypes.string),
-        children: _react.PropTypes.node,
-        name: _react.PropTypes.string.isRequired
+        name: _react.PropTypes.string.isRequired,
+        children: _react.PropTypes.node
     },
 
     getInputs: function getInputs() {
@@ -103,6 +107,8 @@ exports['default'] = _react2['default'].createClass({
 
     render: function render() {
         var _this = this;
+
+        (0, _warning2['default'])(this.props.name, 'Fieldlist found without a name prop. The children of this component will behave eratically');
 
         var errors = this.props.errors || [];
 
@@ -121,7 +127,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./fieldset":3,"./helpers/values":12,"react":undefined}],3:[function(require,module,exports){
+},{"./fieldset":3,"./helpers/values":12,"react":undefined,"warning":1}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -155,6 +161,7 @@ exports['default'] = _react2['default'].createClass({
 
     propTypes: {
         errors: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        name: _react.PropTypes.string.isRequired,
         children: _react.PropTypes.node
     },
 
@@ -174,6 +181,8 @@ exports['default'] = _react2['default'].createClass({
 
     render: function render() {
         var _this = this;
+
+        (0, _warning2['default'])(this.props.name, 'Fieldset found without a name prop. The children of this component will behave eratically');
 
         var childNames = [];
         var clonePred = function clonePred(child) {
@@ -787,7 +796,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"react":undefined}],"react-reform":[function(require,module,exports){
+},{"react":undefined}],"react-formable":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {

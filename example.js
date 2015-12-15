@@ -11,31 +11,31 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactReform = require('react-reform');
+var _reactFormable = require('react-formable');
 
-var _reactReform2 = _interopRequireDefault(_reactReform);
+var _reactFormable2 = _interopRequireDefault(_reactFormable);
 
 exports['default'] = _react2['default'].createClass({
     displayName: 'app',
 
     render: function render() {
         return _react2['default'].createElement(
-            _reactReform2['default'],
+            _reactFormable2['default'],
             null,
             _react2['default'].createElement(
                 'h1',
                 null,
                 'Look Ma, Forms!'
             ),
-            _react2['default'].createElement(_reactReform.Input, { name: 'name', type: 'text' }),
-            _react2['default'].createElement(_reactReform.Input, { name: 'ne', type: 'text' }),
-            _react2['default'].createElement(_reactReform.Input, { name: 'nes', type: 'text' })
+            _react2['default'].createElement(_reactFormable.Input, { name: 'name', type: 'text' }),
+            _react2['default'].createElement(_reactFormable.Input, { name: 'ne', type: 'text' }),
+            _react2['default'].createElement(_reactFormable.Input, { name: 'nes', type: 'text' })
         );
     }
 });
 module.exports = exports['default'];
 
-},{"react":undefined,"react-reform":undefined}],2:[function(require,module,exports){
+},{"react":undefined,"react-formable":undefined}],2:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -55,7 +55,7 @@ var _reactDom = require('react-dom');
 var _reactRouter = require('react-router');
 
 var history = (0, _history.useBasename)(_history.createHistory)({
-    basename: '/react-reform'
+    basename: '/react-formable'
 });
 
 (0, _reactDom.render)(_react2['default'].createElement(
