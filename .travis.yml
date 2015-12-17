@@ -1,9 +1,11 @@
 language: node_js
 node_js:
-  - '5'
+- '5'
 before_install:
-  - npm install
+- npm install
 script: npm run test; npm run lint
 notifications:
   email:
     on_success: never
+  slack:
+    secure: w7DE7lUAanXku0AEdD0wxmBIHasIlLVYLX+kE5ho4EUOT09FXqOmv0l7XVekZjGG6bM7Bc6y35i+LNtt9kTSUd0gZBoDlYCAuw8r0iYWlEjGNKLGbucsq/GXL5sR0fxbtPTSCDo5MVjziFHy4YPzEB4L0iAVEqiM0kdYm0IsE+xsP7h9WDDhnaDkYwqeJNW5FAay0rWvf9QbQyWhlUngToQdgSz7gVWhuDorJYoLOlcUzESkvmYQryZFc507dxyuLNkXkWMpanh/1uJQQbNY3/mjcBTs+nG+CPhEcf918LICc6pyUo6DBI/peOh10Et82b49YjTkWRP1UwgDw0xNx5vHmDrVH6za7Odp9rkpSKkgwB2GjkhyU9IF7XZjztyVnYu135+fibt6siMQDCYVN4G+fpGwLlyMnlf9Bn/ZG3S/CCQHIcx2j3IT4+XeBkw3OeOSI+Qc7agNHIkIHiVzVykc0R2RpTvwbiJMleaxBho0IXMX7ajwQep2yzPUJZ0AnDONCHW6hNbUS7SqbTt0sG6vYjYkpZWZTdKtyO8bbjcnq+JBmBCXFF5xTh9c52a5SMvj4AG3BaHw9I3W6imPIMfMquL3kTuHBSkmQlJTW0W/LPGojsjIUKy6f+A1sINqPmdBft/E/wPZdkzi1nikhaFM5qZzflgEYfC4F8A/BUQ=
