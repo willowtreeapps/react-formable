@@ -14,7 +14,7 @@
 
 ### Basic usage
 ```js
-import { Form, Input, Fieldset, Fieldlist } from 'react-formable';
+import { Form, Input, Fieldset, Fieldlist, Errors } from 'react-formable';
 export default class App extends React.Component {
     onChange(form) {
         // The following are the same:
@@ -258,20 +258,20 @@ Ok, this is all well and good. Holy cow tho, those forms can get nested! How are
 
 Forms have you covered. Your first resource (if you ever need it), is `fieldErrors`. This object mirrors your `fieldValues` object; however, instead of values, you have arrays of strings representing errors. With that said, it would be a huge pain to have to go through that entire tree to get a simple list of errors in your forms. To aid with that, there is a flattened down unique list of errors cleverly named... `errors`.
 
-How could we go displaying these errors? With `onChange` we would save our form's serialized values to some internal state. With each render we would manually pass down the error messages to their corresponding inputs. Sound tedious? It really is; that's why we made some helper functions to do this for you: `showFieldErrors` and `clearFieldErrors`. This will automatically save your form to state and pass down the appropriate errors to the appropriate fields. Here is an example usage:
+How could we go displaying these errors? With `onChange` we would save our form's serialized values to some internal state. With each render we would manually pass down the error messages to their corresponding inputs. Sound tedious? It really is; that's why we made some helper functions to do this for you: `showFieldErrors` and `clearFieldErrors`. This will automatically save your form to state and pass down the appropriate errors to the appropriate fields.
+
+Lastly, how do we actually render those errors to the screen? The handy `Errors` component. Think of `Errors` like a placeholder for where you want it to render your errors. You can place it anywhere in the `Form` markup and it will render out your errors there.  
 
 ```js
 class App extends React.Component {
-    onSubmit() {
-        const errors = this.refs.form.showFieldErrors();
-    }
-
 	render() {
-        return <Form ref="form" onSubmit={this.onSubmit.bind(this)}>
+        return <Form>
 			<Input name="username"
                    validators={[
                        function(value) { if(!value) return 'Required field! D:'; }
                    ]} />
+
+            <Errors />
         </Form>
 	}
 }
@@ -306,6 +306,8 @@ The top level `Form` component is what serializes your data.
 | :------- | :--- | :------ | :---------- |
 | onChange| function(form) | undefined | A callback which will be called whenever any child input changes. Receives the serialized form object |
 | onSubmit | function(form) | undefined | A callback which will be called whenever the form is submitted. Receives the serialized form object |
+| showErrorsOnSubmit | boolean | true | A boolean to decide if errors should be shown on submit |
+| showErrorsOnChange | boolean(form) | false | A boolean to decide if errors should be shown on change |
 
 There are a handful of methods on the `Form` component which are useful. To access these, attach a `ref` to the `Form` and call them via `this.refs.refName.methodName();`.
 
@@ -350,6 +352,18 @@ To integrate inputs with `Form`s, you need to ensure two things.
 | value | string | undefined | The value of the field |
 | validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |
 | name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |
+| fieldErrors | array[string] | [] | An array of string errors to pass down to the input. This is automatically filled via the form. You can overwrite this field if you want to manually show an error on an input |
+| validateOnBlur | boolean | false | A boolean which forces the field to wait until it fires a blur event to trigger form validation |
+
+### `Errors`
+
+A component which soaks up and displays form errors (when placed within a form).
+
+| Property | Type | Default | Description |
+| :------- | :--- | :------ | :---------- |
+| scoped | boolean | false | **EXPERIMENTAL:** Only displays form errors in relation to the elements nearest parent |
+| additionalErrors | array[string] | [] | Any additional errors you would want to render to the screen can be passed down as an array of strings. |
+| renderError | function(error) => node | identity | If you want to overwrite how errors are rendered, you can do so by providing a callback to errors. This function will receive each error and will return what you want to be rendered as your error. |
 
 
 ## TODO
