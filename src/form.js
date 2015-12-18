@@ -37,7 +37,7 @@ export const deNestErrors = function deNestErrors(errors) {
     return errors;
 }
 
-const nodeToValues =function nodeToValues(node) {
+const nodeToValues = function nodeToValues(node) {
     // Whoops, bad things happening
     if (!node) return node;
 
@@ -64,7 +64,6 @@ const nodeToValues =function nodeToValues(node) {
     // We are at a leaf, give our value back
     return node.ref.getValue();
 }
-
 
 // node: The current node we are looking at { ref: Object, refs?: Object|Array }
 // treeValues: The current value / object in the tree
@@ -170,7 +169,6 @@ export default React.createClass({
         // Default React children prop
         children: PropTypes.node
     },
-
 
     getDefaultProps() {
         return {
