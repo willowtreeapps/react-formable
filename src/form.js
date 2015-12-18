@@ -183,7 +183,8 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            fieldErrors: {}
+            fieldErrors: {},
+            errors: []
         };
     },
 
@@ -256,7 +257,8 @@ export default React.createClass({
 
     clearFieldErrors() {
         this.setState({
-            fieldErrors: []
+            fieldErrors: {},
+            errors: []
         });
     },
 
@@ -281,7 +283,8 @@ export default React.createClass({
                 ref: child.ref || child.props.name,
                 onChange: compose(child.props.onChange || identity, this.onChange),
                 onSubmit: compose(child.props.onSubmit || identity, this.onSubmit),
-                errors: child.props.errors || this.state.fieldErrors[child.props.name] || []
+                errors: this.state.errors,
+                fieldErrors: child.props.fieldErrors || this.state.fieldErrors[child.props.name]
             };
         };
 

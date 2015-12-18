@@ -8,6 +8,7 @@ export default React.createClass({
 
     propTypes: {
         errors: PropTypes.arrayOf(PropTypes.string),
+        fieldErrors: PropTypes.arrayOf(PropTypes.object),
         name: PropTypes.string.isRequired,
         children: PropTypes.node
     },
@@ -27,10 +28,18 @@ export default React.createClass({
         );
 
         const errors = this.props.errors || [];
+        const fieldErrors = this.props.fieldErrors || [];
 
-        return <Fieldset {...this.props} ref="fieldset">
+        // Overwrite errors and fieldErrors passed in here as fieldset expects
+        // different errors than fieldlist. There is no need to pass them down
+        return <Fieldset {...this.props}
+                         ref="fieldset"
+                         errors={[]}
+                         fieldErrors={{}}>
             {React.Children.map(this.props.children, (child, i) =>
-                <Fieldset name={this.props.name+i} errors={errors[i]}>
+                <Fieldset name={this.props.name+i}
+                          errors={errors}
+                          fieldErrors={fieldErrors[i]}>
                     {child}
                 </Fieldset>
             )}

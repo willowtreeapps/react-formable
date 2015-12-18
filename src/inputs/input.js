@@ -4,7 +4,7 @@ const identity = (x) => x;
 
 export default React.createClass({
     propTypes: {
-        errors: PropTypes.arrayOf(PropTypes.string),
+        fieldErrors: PropTypes.arrayOf(PropTypes.string),
         validateOnBlur: PropTypes.bool,
         onChange: PropTypes.func,
         onSubmit: PropTypes.func
@@ -34,7 +34,7 @@ export default React.createClass({
     },
 
     render() {
-        const hasError = this.props.errors && this.props.errors.length;
+        const hasError = this.props.fieldErrors && this.props.fieldErrors.length;
 
         const style = {
             border: `1px solid ${hasError ? 'red' : 'black'}`
