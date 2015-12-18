@@ -22,10 +22,7 @@ export default React.createClass({
     },
 
     render() {
-        warning(
-            this.props.name,
-            `Fieldlist found without a name prop. The children of this component will behave eratically`
-        );
+        warning(this.props.name, `Fieldlist found without a name prop. The children of this component will behave eratically`);
 
         const errors = this.props.errors || [];
         const fieldErrors = this.props.fieldErrors || [];

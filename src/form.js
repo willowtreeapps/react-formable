@@ -265,18 +265,17 @@ export default React.createClass({
     render() {
         // Define our helpers for cloneing our children
         let childNames = [];
-        const clonePred = child => child.props && child.props.name;
+        const clonePred = child => child.props && child.props.name || child.type.displayName === 'Errors';
         const cloneProps = child => {
-            warning(
-                !child.ref,
-                `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`
-            );
+            if (child.type.displayName === 'Errors') {
+                return {
+                    errors: this.state.errors,
+                    fieldErrors: this.state.fieldErrors
+                };
+            }
 
-            warning(
-                childNames.indexOf(child.props.name) === -1,
-                `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`
-            );
-
+            warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
+            warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
             childNames = childNames.concat(child.props.name);
 
             return {
