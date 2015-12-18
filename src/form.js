@@ -287,7 +287,6 @@ export default React.createClass({
 
         return <form {...this.props}
                     ref="form"
-                    className="testingggg"
                     onSubmit={this.onSubmit}
                     onChange={function () {}}
                     onKeyDown={this.onKeyDown}>
