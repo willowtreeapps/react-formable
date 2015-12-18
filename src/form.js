@@ -247,31 +247,11 @@ export default React.createClass({
         }
     },
 
-    showFieldErrors(props={}) {
-        if (typeof props !== 'object')
-            throw 'Bad props passed to showErrors';
+    showFieldErrors() {
+        const { fieldErrors, errors } = this.serialize();
 
-        const { fieldErrors } = this.serialize();
-
-        // Validate our props object
-        const vals = values(props);
-        const hasIncludes = vals.indexOf(1) !== -1;
-        const hasExcludes = vals.indexOf(0) !== -1;
-
-        if (hasIncludes && hasExcludes)
-            throw 'You can not include and exclude in showErrors';
-
-        const propKeys = keys(props);
-
-        // Set our internal state to house all our errors. This will pass down
-        // errors to each component
-        const shownErrors = hasIncludes ?
-                                pick(propKeys, fieldErrors) :
-                                omit(propKeys, fieldErrors)
-
-        this.setState({ fieldErrors: shownErrors });
-
-        return uniq(deNestErrors(shownErrors));
+        this.setState({ errors, fieldErrors });
+        return errors;
     },
 
     clearFieldErrors() {
