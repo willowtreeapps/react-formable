@@ -1,11 +1,8 @@
 import React, { PropTypes } from 'react';
-import keys from './helpers/keys';
 import uniq from './helpers/uniq';
 import values from './helpers/values';
 import identity from './helpers/identity';
 import cloneChildren from './helpers/cloneChildren';
-import pick from './helpers/pick';
-import omit from './helpers/omit';
 import compose from './helpers/compose';
 import warning from 'warning';
 

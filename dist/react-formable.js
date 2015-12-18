@@ -141,7 +141,7 @@ exports['default'] = _react2['default'].createClass({
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./helpers/flatten":9,"./helpers/identity":10,"./helpers/values":15}],3:[function(require,module,exports){
+},{"./helpers/flatten":9,"./helpers/identity":10,"./helpers/values":12}],3:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -219,7 +219,7 @@ exports['default'] = _react2['default'].createClass({
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./fieldset":4,"./helpers/values":15,"warning":1}],4:[function(require,module,exports){
+},{"./fieldset":4,"./helpers/values":12,"warning":1}],4:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -315,7 +315,7 @@ exports['default'] = _react2['default'].createClass({
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./helpers/cloneChildren":7,"./helpers/identity":10,"./helpers/values":15,"warning":1}],5:[function(require,module,exports){
+},{"./helpers/cloneChildren":7,"./helpers/identity":10,"./helpers/values":12,"warning":1}],5:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -330,10 +330,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 
 var _react2 = _interopRequireDefault(_react);
-
-var _helpersKeys = require('./helpers/keys');
-
-var _helpersKeys2 = _interopRequireDefault(_helpersKeys);
 
 var _helpersUniq = require('./helpers/uniq');
 
@@ -350,14 +346,6 @@ var _helpersIdentity2 = _interopRequireDefault(_helpersIdentity);
 var _helpersCloneChildren = require('./helpers/cloneChildren');
 
 var _helpersCloneChildren2 = _interopRequireDefault(_helpersCloneChildren);
-
-var _helpersPick = require('./helpers/pick');
-
-var _helpersPick2 = _interopRequireDefault(_helpersPick);
-
-var _helpersOmit = require('./helpers/omit');
-
-var _helpersOmit2 = _interopRequireDefault(_helpersOmit);
 
 var _helpersCompose = require('./helpers/compose');
 
@@ -672,7 +660,7 @@ exports['default'] = _react2['default'].createClass({
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./helpers/cloneChildren":7,"./helpers/compose":8,"./helpers/identity":10,"./helpers/keys":11,"./helpers/omit":12,"./helpers/pick":13,"./helpers/uniq":14,"./helpers/values":15,"warning":1}],6:[function(require,module,exports){
+},{"./helpers/cloneChildren":7,"./helpers/compose":8,"./helpers/identity":10,"./helpers/uniq":11,"./helpers/values":12,"warning":1}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -709,7 +697,7 @@ exports.Input = _inputsInput2['default'];
 exports.Errors = _errors2['default'];
 exports['default'] = _form2['default'];
 
-},{"./errors":2,"./fieldlist":3,"./fieldset":4,"./form":5,"./inputs/input":16}],7:[function(require,module,exports){
+},{"./errors":2,"./fieldlist":3,"./fieldset":4,"./form":5,"./inputs/input":13}],7:[function(require,module,exports){
 (function (global){
 /*eslint func-style:0*/
 'use strict';
@@ -812,69 +800,6 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports["default"] = keys;
-
-function keys(obj) {
-    return Object.keys(obj);
-}
-
-module.exports = exports["default"];
-
-},{}],12:[function(require,module,exports){
-/*eslint func-style:0*/
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = omit;
-
-function omit(names, obj) {
-    var result = {};
-
-    for (var prop in obj) {
-        if (names.indexOf(prop) === -1) {
-            result[prop] = obj[prop];
-        }
-    }
-
-    return result;
-}
-
-module.exports = exports["default"];
-
-},{}],13:[function(require,module,exports){
-/*eslint func-style:0*/
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = pick;
-
-function pick(names, obj) {
-    var result = {};
-    var idx = 0;
-
-    while (idx < names.length) {
-        if (names[idx] in obj) {
-            result[names[idx]] = obj[names[idx]];
-        }
-        idx += 1;
-    }
-
-    return result;
-}
-
-module.exports = exports["default"];
-
-},{}],14:[function(require,module,exports){
-/*eslint func-style:0*/
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 exports["default"] = uniq;
 
 function uniq(arr) {
@@ -885,7 +810,7 @@ function uniq(arr) {
 
 module.exports = exports["default"];
 
-},{}],15:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -905,7 +830,7 @@ function values(obj) {
 
 module.exports = exports["default"];
 
-},{}],16:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (global){
 'use strict';
 
