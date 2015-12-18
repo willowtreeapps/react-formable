@@ -7,13 +7,15 @@ export default React.createClass({
         fieldErrors: PropTypes.arrayOf(PropTypes.string),
         validateOnBlur: PropTypes.bool,
         onChange: PropTypes.func,
-        onSubmit: PropTypes.func
+        onSubmit: PropTypes.func,
+        className: PropTypes.string
     },
 
     getDefaultProps() {
         return {
             onChange: identity,
-            onSubmit: identity
+            onSubmit: identity,
+            className: ''
         };
     },
 
@@ -35,15 +37,12 @@ export default React.createClass({
 
     render() {
         const hasError = this.props.fieldErrors && this.props.fieldErrors.length;
-
-        const style = {
-            border: `1px solid ${hasError ? 'red' : 'black'}`
-        };
+        const className = `${this.props.className} ${hasError ? 'error' : ''}`;
 
         return <input {...this.props}
+                      className={className}
                       onChange={this.onChange}
                       onBlur={this.onBlur}
-                      ref="input"
-                      style={style} />
+                      ref="input" />
     }
 });
