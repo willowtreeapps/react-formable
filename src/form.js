@@ -165,6 +165,7 @@ export default React.createClass({
         onChange: PropTypes.func,
 
         showErrorsOnSubmit: PropTypes.bool,
+        showErrorsOnChange: PropTypes.bool,
 
         // Default React children prop
         children: PropTypes.node
@@ -174,7 +175,9 @@ export default React.createClass({
     getDefaultProps() {
         return {
             onChange: function () {},
-            onSubmit: function () {}
+            onSubmit: function () {},
+            showErrorsOnSubmit: true,
+            showErrorsOnChange: false
         };
     },
 
@@ -225,6 +228,9 @@ export default React.createClass({
 
     onChange() {
         this.props.onChange(this.serialize());
+        if (this.props.showErrorsOnChange) {
+            this.showFieldErrors();
+        }
     },
 
     onSubmit(event) {
