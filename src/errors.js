@@ -12,7 +12,7 @@ export default React.createClass({
             PropTypes.array,
             PropTypes.object
         ]),
-        serverErrors: PropTypes.arrayOf(PropTypes.string),
+        additionalErrors: PropTypes.arrayOf(PropTypes.string),
         scoped: PropTypes.bool,
         renderError: PropTypes.func
     },
@@ -20,7 +20,7 @@ export default React.createClass({
     getDefaultProps() {
         return {
             errors: [],
-            serverErrors: [],
+            additionalErrors: [],
             fieldErrors: [],
             scoped: false,
             renderError: identity
@@ -28,13 +28,13 @@ export default React.createClass({
     },
 
     render() {
-        const { errors, serverErrors, scoped } = this.props;
+        const { errors, additionalErrors, scoped } = this.props;
 
         const fieldErrors = flatten(values(this.props.fieldErrors))
                                 .filter(s => typeof s === 'string');
 
         const allErrors = [].concat(scoped ? fieldErrors : errors)
-                            .concat(serverErrors);
+                            .concat(additionalErrors);
 
         return <ul className="errors" {...this.props}>
             {allErrors.map((error, i) =>
