@@ -187,7 +187,8 @@ export default React.createClass({
 
     serialize() {
         let iteration = 0;
-        // TODO: Lolololol
+        // TODO: Lolololol, we need to count how many nodes there are
+        // and use that as our upper bound
         const refLength = 20;
 
         // Build the object of inputs
