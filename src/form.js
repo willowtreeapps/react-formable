@@ -163,6 +163,8 @@ export default React.createClass({
         showErrorsOnSubmit: PropTypes.bool,
         showErrorsOnChange: PropTypes.bool,
 
+        validators: PropTypes.arrayOf(PropTypes.func),
+
         // Default React children prop
         children: PropTypes.node
     },
@@ -209,7 +211,7 @@ export default React.createClass({
             );
 
             form.fieldErrors = fieldErrors;
-            form.errors = uniq(errors);
+            form.errors = errors;
             iteration++;
         } while(
             this.props.circular &&
@@ -217,6 +219,16 @@ export default React.createClass({
             JSON.stringify(form) !== JSON.stringify(oldForm)
         );
 
+        // Update valid here so our formValidators can make use of it
+        form.valid = !form.errors.length;
+
+        const formValidators = [].concat(
+            (this.props.validators || []),
+            (this.validators || [])
+        );
+        const formErrors = formValidators.map(fn => fn(form));
+
+        form.errors = uniq(form.errors.concat(formErrors));
         form.valid = !form.errors.length;
 
         return form;
