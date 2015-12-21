@@ -1,5 +1,8 @@
 import React, { PropTypes } from 'react';
 import Form, { Input, Errors } from 'react-formable';
+import { description } from '../examples/basic';
+
+import MD from '../components/md';
 
 export default React.createClass({
     propTypes: {
@@ -21,6 +24,11 @@ export default React.createClass({
     render() {
         return <div className="examples">
             Examples
+
+            <MD text={description} />
+
+            Cool!
+
             <Form ref="form"
                   showErrorsOnChange
                   validators={this.validators}>

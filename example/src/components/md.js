@@ -1,14 +1,9 @@
 /*eslint func-style:0*/
 import React, { PropTypes } from 'react';
 import marked from 'marked';
-import pygmentize from 'pygmentize-bundled';
 
 marked.setOptions({
-    highlight: function (code, lang, callback) {
-        pygmentize({ lang: lang, format: 'html' }, code,  (err, result) => {
-            callback(err, result.toString());
-        });
-    }
+    highlight: code => window.hljs.highlightAuto(code).value
 });
 
 export default function MarkdownViewer(props) {
