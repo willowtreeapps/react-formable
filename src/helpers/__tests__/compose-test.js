@@ -4,15 +4,16 @@ describe('compose', () => {
     const compose = require('../compose').default;
 
     it('returns a function', () => {
-        const i = function() {};
+        const i = function () {};
+
         expect(typeof compose(i, i)).toBe('function');
     });
 
     it('calls the functions in right to left order', () => {
         let x = 0;
 
-        const first = function() { x++ };
-        const second = function() { x = x*2; };
+        const first = function () {x++;};
+        const second = function () {x = x*2;};
 
         compose(second, first)();
 

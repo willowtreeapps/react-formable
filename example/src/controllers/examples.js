@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Form, { Input, Fieldset, Errors, Fieldlist } from 'react-formable';
+import Form, { Input, Errors } from 'react-formable';
 
 export default React.createClass({
     propTypes: {

@@ -19,10 +19,10 @@ export default React.createClass({
 
     render() {
         return <div className="app">
-			<Header />
+            <Header />
 
             <div className="app-inner">
-    			<Sidebar subLinks={this.state.subLinks} />
+                <Sidebar subLinks={this.state.subLinks} />
 
                 <div className="app-content">
                     {React.cloneElement(this.props.children, {
