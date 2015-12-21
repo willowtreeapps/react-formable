@@ -61,6 +61,7 @@
     "bump:minor": "gulp bump:minor",
     "examples": "gulp dev:server",
     "lint": "eslint ./; true",
+    "lintRaw": "eslint ./ --max-warnings 0",
     "publish:site": "NODE_ENV=production gulp publish:examples",
     "release": "NODE_ENV=production gulp release",
     "start": "gulp dev",
