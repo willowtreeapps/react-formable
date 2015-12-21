@@ -21,10 +21,10 @@ initGulpTasks(gulp, {
             '.gitignore'
         ],
         scripts: [
-            'example.js'
+            'app.js'
         ],
         less: [
-            'example.less'
+            'app.less'
         ]
     }
 });

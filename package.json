@@ -36,6 +36,8 @@
     "gulp": "^3.9.0",
     "history": "^1.13.1",
     "jest-cli": "^0.8.1",
+    "marked": "^0.3.5",
+    "pygmentize-bundled": "^2.3.0",
     "react": "^0.14.0",
     "react-addons-test-utils": "^0.14.3",
     "react-component-gulp-tasks": "^0.7.6",
@@ -49,6 +51,7 @@
     "react": "global:React",
     "react-dom": "global:ReactDOM",
     "history": "global:History",
+    "marked": "global:marked",
     "react-router": "global:ReactRouter"
   },
   "scripts": {

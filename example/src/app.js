@@ -5,7 +5,9 @@ import { render } from 'react-dom';
 import { Router } from 'react-router';
 
 const history = useBasename(createHistory)({
-    basename: '/react-formable'
+    basename: window.location.pathname.indexOf('react') !== -1 ?
+                '/react-formable' :
+                '/'
 });
 
 render(

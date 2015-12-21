@@ -1,0 +1,95 @@
+@import "./less/reset.less";
+// @import "./less/rhythm.less";
+// @rhythmic-unit: 20px;
+@import "./less/typography.less";
+
+// ====================================
+// Components
+// ====================================
+a {
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+
+// ====================================
+// Includes
+// ====================================
+#padded-container { }
+
+// Colors
+@color-teal: #2A7885;
+@color-teal-light: #EDF8F7;
+@color-off-white: #F7F7F7;
+@color-text: #4A4A4A;
+@color-border: #DBDBDB;
+@color-white: white;
+
+
+// ====================================
+// Remove
+// ====================================
+textarea:focus, input:focus { outline: 0; }
+a.active { font-weight: bold; }
+// ====================================
+
+
+html {
+    font-family: 'Lato', sans-serif;
+    color: @color-text;
+    box-sizing: border-box;
+}
+*, *:before, *:after { box-sizing: inherit; }
+
+// Make sure everything is always full height
+html, body, .container, #app, .app, .app-inner, .sidebar {
+    height: 100%;
+}
+
+// ====================================
+// Layouts
+// ====================================
+// layout
+.app {
+    .header {
+        &:extend(#padded-container);
+        width: 100%;
+        background: @color-teal;
+        color: @color-white;
+
+        h1 { margin-top: 0; }
+        ul { margin: 0; }
+    }
+
+    .app-inner {
+        display: flex;
+        flex-flow: row;
+        flex-wrap: nowrap;
+
+        .sidebar {
+            flex-shrink: 0;
+            // background: @color-off-white;
+            &:extend(#padded-container);
+            border-right: 1px solid @color-border;
+            width: 200px;
+
+            a { color: @color-text; }
+        }
+
+        .app-content {
+            flex-shrink: 1;
+            &:extend(#padded-container);
+        }
+    }
+}
+
+.app {
+    // pages
+    .home {}
+    .examples {}
+    .getting-started {}
+    .demos {}
+    .docs {}
+}
