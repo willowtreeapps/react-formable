@@ -37,7 +37,6 @@
     "history": "^1.13.1",
     "jest-cli": "^0.8.1",
     "marked": "^0.3.5",
-    "pygmentize-bundled": "^2.3.0",
     "react": "^0.14.0",
     "react-addons-test-utils": "^0.14.3",
     "react-component-gulp-tasks": "^0.7.6",
@@ -52,7 +51,8 @@
     "react-dom": "global:ReactDOM",
     "history": "global:History",
     "marked": "global:marked",
-    "react-router": "global:ReactRouter"
+    "react-router": "global:ReactRouter",
+    "hljs": "global:hljs"
   },
   "scripts": {
     "build": "gulp clean && NODE_ENV=production gulp build",
@@ -61,6 +61,7 @@
     "bump:minor": "gulp bump:minor",
     "examples": "gulp dev:server",
     "lint": "eslint ./; true",
+    "lintRaw": "eslint ./ --max-warnings 0",
     "publish:site": "NODE_ENV=production gulp publish:examples",
     "release": "NODE_ENV=production gulp release",
     "start": "gulp dev",
@@ -82,7 +83,8 @@
       "<rootDir>/node_modules/react",
       "<rootDir>/node_modules/react-dom",
       "<rootDir>/node_modules/react-addons-test-utils",
-      "<rootDir>/node_modules/fbjs"
+      "<rootDir>/node_modules/fbjs",
+      "<rootDir>/src/helpers"
     ]
   },
   "keywords": [

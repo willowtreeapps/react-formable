@@ -1,22 +1,19 @@
 /*eslint func-style:0*/
 import React, { PropTypes } from 'react';
 import marked from 'marked';
-import pygmentize from 'pygmentize-bundled';
 
 marked.setOptions({
-    highlight: function (code, lang, callback) {
-        pygmentize({ lang: lang, format: 'html' }, code,  (err, result) => {
-            callback(err, result.toString());
-        });
-    }
+    highlight: code => window.hljs.highlightAuto(code).value
 });
 
 export default function MarkdownViewer(props) {
-    const html = marked(props.text || '', { sanitize: true });
+    const html = marked(props.text || props.children || '', { sanitize: true });
+    const { children, ...divProps } = props;
 
-    return <div {...props} dangerouslySetInnerHTML={{ __html: html }} />
+    return <div {...divProps} dangerouslySetInnerHTML={{ __html: html }} />
 }
 
 MarkdownViewer.propTypes = {
-    text: PropTypes.string
+    text: PropTypes.string,
+    children: PropTypes.node
 };
