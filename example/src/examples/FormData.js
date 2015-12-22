@@ -6,9 +6,12 @@ import React, { PropTypes } from 'react';
 export default class FormData extends React.Component {
 
     render() {
-        const jsonPayload = JSON.stringify(this.props.data, null, 2);
-
-        return <div>
+        const jsonPayload = this.props.data ? JSON.stringify(this.props.data, null, 2) : "Start filling out the form";
+        const styles = {
+            fontFamily: "courier",
+            width: 600
+        }
+        return <div style={styles}>
             <pre>{jsonPayload}</pre>
         </div>;
     }
