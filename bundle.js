@@ -75,6 +75,85 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _helpersIdentity = require('./helpers/identity');
+
+var _helpersIdentity2 = _interopRequireDefault(_helpersIdentity);
+
+var _helpersFlatten = require('./helpers/flatten');
+
+var _helpersFlatten2 = _interopRequireDefault(_helpersFlatten);
+
+var _helpersValues = require('./helpers/values');
+
+var _helpersValues2 = _interopRequireDefault(_helpersValues);
+
+exports['default'] = _react2['default'].createClass({
+    displayName: 'Errors',
+
+    propTypes: {
+        errors: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        fieldErrors: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.object]),
+        additionalErrors: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        scoped: _react.PropTypes.bool,
+        renderError: _react.PropTypes.func
+    },
+
+    getDefaultProps: function getDefaultProps() {
+        return {
+            errors: [],
+            additionalErrors: [],
+            fieldErrors: [],
+            scoped: false,
+            renderError: _helpersIdentity2['default']
+        };
+    },
+
+    render: function render() {
+        var _this = this;
+
+        var _props = this.props;
+        var errors = _props.errors;
+        var additionalErrors = _props.additionalErrors;
+        var scoped = _props.scoped;
+
+        var fieldErrors = (0, _helpersFlatten2['default'])((0, _helpersValues2['default'])(this.props.fieldErrors)).filter(function (s) {
+            return typeof s === 'string';
+        });
+
+        var allErrors = [].concat(scoped ? fieldErrors : errors).concat(additionalErrors);
+
+        return _react2['default'].createElement(
+            'ul',
+            _extends({ className: 'errors' }, this.props),
+            allErrors.map(function (error, i) {
+                return _react2['default'].createElement(
+                    'li',
+                    { key: i },
+                    ' ',
+                    _this.props.renderError(error),
+                    ' '
+                );
+            })
+        );
+    }
+});
+module.exports = exports['default'];
+
+},{"./helpers/flatten":8,"./helpers/identity":9,"./helpers/values":11,"react":undefined}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
 var _helpersValues = require('./helpers/values');
 
 var _helpersValues2 = _interopRequireDefault(_helpersValues);
@@ -92,6 +171,7 @@ exports['default'] = _react2['default'].createClass({
 
     propTypes: {
         errors: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        fieldErrors: _react.PropTypes.arrayOf(_react.PropTypes.object),
         name: _react.PropTypes.string.isRequired,
         children: _react.PropTypes.node
     },
@@ -111,14 +191,22 @@ exports['default'] = _react2['default'].createClass({
         (0, _warning2['default'])(this.props.name, 'Fieldlist found without a name prop. The children of this component will behave eratically');
 
         var errors = this.props.errors || [];
+        var fieldErrors = this.props.fieldErrors || [];
 
+        // Overwrite errors and fieldErrors passed in here as fieldset expects
+        // different errors than fieldlist. There is no need to pass them down
         return _react2['default'].createElement(
             _fieldset2['default'],
-            _extends({}, this.props, { ref: 'fieldset' }),
+            _extends({}, this.props, {
+                ref: 'fieldset',
+                errors: [],
+                fieldErrors: {} }),
             _react2['default'].Children.map(this.props.children, function (child, i) {
                 return _react2['default'].createElement(
                     _fieldset2['default'],
-                    { name: _this.props.name + i, errors: errors[i] },
+                    { name: _this.props.name + i,
+                        errors: errors,
+                        fieldErrors: fieldErrors[i] },
                     child
                 );
             })
@@ -127,7 +215,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./fieldset":3,"./helpers/values":12,"react":undefined,"warning":1}],3:[function(require,module,exports){
+},{"./fieldset":4,"./helpers/values":11,"react":undefined,"warning":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -161,6 +249,7 @@ exports['default'] = _react2['default'].createClass({
 
     propTypes: {
         errors: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        fieldErrors: _react.PropTypes.object,
         name: _react.PropTypes.string.isRequired,
         children: _react.PropTypes.node
     },
@@ -184,20 +273,28 @@ exports['default'] = _react2['default'].createClass({
 
         (0, _warning2['default'])(this.props.name, 'Fieldset found without a name prop. The children of this component will behave eratically');
 
+        var fieldErrors = this.props.fieldErrors || {};
         var childNames = [];
+
         var clonePred = function clonePred(child) {
-            return child.props && child.props.name;
+            return child.props && child.props.name || child.type.displayName === 'Errors';
         };
         var cloneProps = function cloneProps(child) {
+            if (child.type.displayName === 'Errors') {
+                return {
+                    errors: _this.props.errors,
+                    fieldErrors: _this.props.fieldErrors || {}
+                };
+            }
+
             (0, _warning2['default'])(!child.ref, 'Attempting to attach ref "' + child.ref + '" to "' + child.props.name + '" will be bad for your health');
-
             (0, _warning2['default'])(childNames.indexOf(child.props.name) === -1, 'Duplicate name "' + child.props.name + '" found. Duplicate fields will be ignored');
-
             childNames = childNames.concat(child.props.name);
 
             return {
                 ref: child.ref || child.props.name,
-                errors: child.props.errors || _this.props.errors[child.props.name] || [],
+                errors: _this.props.errors,
+                fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name],
                 onChange: child.props.onChange || _helpersIdentity2['default'],
                 onSubmit: child.props.onSubmit || _helpersIdentity2['default']
             };
@@ -212,7 +309,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./helpers/cloneChildren":5,"./helpers/identity":7,"./helpers/values":12,"react":undefined,"warning":1}],4:[function(require,module,exports){
+},{"./helpers/cloneChildren":6,"./helpers/identity":9,"./helpers/values":11,"react":undefined,"warning":1}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -226,10 +323,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
-
-var _helpersKeys = require('./helpers/keys');
-
-var _helpersKeys2 = _interopRequireDefault(_helpersKeys);
 
 var _helpersUniq = require('./helpers/uniq');
 
@@ -246,14 +339,6 @@ var _helpersIdentity2 = _interopRequireDefault(_helpersIdentity);
 var _helpersCloneChildren = require('./helpers/cloneChildren');
 
 var _helpersCloneChildren2 = _interopRequireDefault(_helpersCloneChildren);
-
-var _helpersPick = require('./helpers/pick');
-
-var _helpersPick2 = _interopRequireDefault(_helpersPick);
-
-var _helpersOmit = require('./helpers/omit');
-
-var _helpersOmit2 = _interopRequireDefault(_helpersOmit);
 
 var _helpersCompose = require('./helpers/compose');
 
@@ -273,12 +358,12 @@ var getBlankForm = function getBlankForm() {
 };
 
 exports.getBlankForm = getBlankForm;
-var deNestErrors = function deNestErrors(_x2) {
+var deNestErrors = function deNestErrors(_x) {
     var _arguments = arguments;
     var _again = true;
 
     _function: while (_again) {
-        var errors = _x2;
+        var errors = _x;
         _again = false;
 
         // Our base case, strings or nulls
@@ -293,7 +378,7 @@ var deNestErrors = function deNestErrors(_x2) {
 
         // Iterate over each value within our object and denest them
         if (typeof errors === 'object') {
-            _arguments = [_x2 = (0, _helpersValues2['default'])(errors)];
+            _arguments = [_x = (0, _helpersValues2['default'])(errors)];
             _again = true;
             continue _function;
         }
@@ -429,6 +514,11 @@ exports['default'] = _react2['default'].createClass({
         onSubmit: _react.PropTypes.func,
         onChange: _react.PropTypes.func,
 
+        showErrorsOnSubmit: _react.PropTypes.bool,
+        showErrorsOnChange: _react.PropTypes.bool,
+
+        validators: _react.PropTypes.arrayOf(_react.PropTypes.func),
+
         // Default React children prop
         children: _react.PropTypes.node
     },
@@ -436,19 +526,23 @@ exports['default'] = _react2['default'].createClass({
     getDefaultProps: function getDefaultProps() {
         return {
             onChange: function onChange() {},
-            onSubmit: function onSubmit() {}
+            onSubmit: function onSubmit() {},
+            showErrorsOnSubmit: true,
+            showErrorsOnChange: false
         };
     },
 
     getInitialState: function getInitialState() {
         return {
-            fieldErrors: {}
+            fieldErrors: {},
+            errors: []
         };
     },
 
     serialize: function serialize() {
         var iteration = 0;
-        // TODO: Lolololol
+        // TODO: Lolololol, we need to count how many nodes there are
+        // and use that as our upper bound
         var refLength = 20;
 
         // Build the object of inputs
@@ -473,10 +567,19 @@ exports['default'] = _react2['default'].createClass({
             var errors = _toErrors.errors;
 
             form.fieldErrors = fieldErrors;
-            form.errors = (0, _helpersUniq2['default'])(errors);
+            form.errors = errors;
             iteration++;
         } while (this.props.circular && iteration < refLength && JSON.stringify(form) !== JSON.stringify(oldForm));
 
+        // Update valid here so our formValidators can make use of it
+        form.valid = !form.errors.length;
+
+        var formValidators = [].concat(this.props.validators || [], this.validators || []);
+        var formErrors = formValidators.map(function (fn) {
+            return fn(form);
+        });
+
+        form.errors = (0, _helpersUniq2['default'])(form.errors.concat(formErrors));
         form.valid = !form.errors.length;
 
         return form;
@@ -484,10 +587,16 @@ exports['default'] = _react2['default'].createClass({
 
     onChange: function onChange() {
         this.props.onChange(this.serialize());
+        if (this.props.showErrorsOnChange) {
+            this.showFieldErrors();
+        }
     },
 
     onSubmit: function onSubmit(event) {
         event && event.preventDefault && event.preventDefault();
+        if (this.props.showErrorsOnSubmit) {
+            this.showFieldErrors();
+        }
         this.props.onSubmit(this.serialize());
     },
 
@@ -498,35 +607,19 @@ exports['default'] = _react2['default'].createClass({
     },
 
     showFieldErrors: function showFieldErrors() {
-        var props = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-        if (typeof props !== 'object') throw 'Bad props passed to showErrors';
-
         var _serialize = this.serialize();
 
         var fieldErrors = _serialize.fieldErrors;
+        var errors = _serialize.errors;
 
-        // Validate our props object
-        var vals = (0, _helpersValues2['default'])(props);
-        var hasIncludes = vals.indexOf(1) !== -1;
-        var hasExcludes = vals.indexOf(0) !== -1;
-
-        if (hasIncludes && hasExcludes) throw 'You can not include and exclude in showErrors';
-
-        var propKeys = (0, _helpersKeys2['default'])(props);
-
-        // Set our internal state to house all our errors. This will pass down
-        // errors to each component
-        var shownErrors = hasIncludes ? (0, _helpersPick2['default'])(propKeys, fieldErrors) : (0, _helpersOmit2['default'])(propKeys, fieldErrors);
-
-        this.setState({ fieldErrors: shownErrors });
-
-        return (0, _helpersUniq2['default'])(deNestErrors(shownErrors));
+        this.setState({ errors: errors, fieldErrors: fieldErrors });
+        return errors;
     },
 
     clearFieldErrors: function clearFieldErrors() {
         this.setState({
-            fieldErrors: []
+            fieldErrors: {},
+            errors: []
         });
     },
 
@@ -536,20 +629,26 @@ exports['default'] = _react2['default'].createClass({
         // Define our helpers for cloneing our children
         var childNames = [];
         var clonePred = function clonePred(child) {
-            return child.props && child.props.name;
+            return child.props && child.props.name || child.type.displayName === 'Errors';
         };
         var cloneProps = function cloneProps(child) {
+            if (child.type.displayName === 'Errors') {
+                return {
+                    errors: _this.state.errors,
+                    fieldErrors: _this.state.fieldErrors
+                };
+            }
+
             (0, _warning2['default'])(!child.ref, 'Attempting to attach ref "' + child.ref + '" to "' + child.props.name + '" will be bad for your health');
-
             (0, _warning2['default'])(childNames.indexOf(child.props.name) === -1, 'Duplicate name "' + child.props.name + '" found. Duplicate fields will be ignored');
-
             childNames = childNames.concat(child.props.name);
 
             return {
                 ref: child.ref || child.props.name,
                 onChange: (0, _helpersCompose2['default'])(child.props.onChange || _helpersIdentity2['default'], _this.onChange),
                 onSubmit: (0, _helpersCompose2['default'])(child.props.onSubmit || _helpersIdentity2['default'], _this.onSubmit),
-                errors: child.props.errors || _this.state.fieldErrors[child.props.name] || []
+                errors: _this.state.errors,
+                fieldErrors: child.props.fieldErrors || _this.state.fieldErrors[child.props.name]
             };
         };
 
@@ -557,7 +656,6 @@ exports['default'] = _react2['default'].createClass({
             'form',
             _extends({}, this.props, {
                 ref: 'form',
-                className: 'testingggg',
                 onSubmit: this.onSubmit,
                 onChange: function () {},
                 onKeyDown: this.onKeyDown }),
@@ -566,7 +664,7 @@ exports['default'] = _react2['default'].createClass({
     }
 });
 
-},{"./helpers/cloneChildren":5,"./helpers/compose":6,"./helpers/identity":7,"./helpers/keys":8,"./helpers/omit":9,"./helpers/pick":10,"./helpers/uniq":11,"./helpers/values":12,"react":undefined,"warning":1}],5:[function(require,module,exports){
+},{"./helpers/cloneChildren":6,"./helpers/compose":7,"./helpers/identity":9,"./helpers/uniq":10,"./helpers/values":11,"react":undefined,"warning":1}],6:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -612,7 +710,7 @@ function cloneChildren(predicate, getProps, children) {
 
 module.exports = exports['default'];
 
-},{"react":undefined}],6:[function(require,module,exports){
+},{"react":undefined}],7:[function(require,module,exports){
 /*eslint func-style:0*/
 
 "use strict";
@@ -630,7 +728,22 @@ function compose(f2, f1) {
 
 module.exports = exports["default"];
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+/*eslint func-style:0*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = flatten;
+
+function flatten(arr) {
+    return [].concat.apply([], arr);
+}
+
+module.exports = exports["default"];
+
+},{}],9:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -645,70 +758,7 @@ function identity(x) {
 
 module.exports = exports["default"];
 
-},{}],8:[function(require,module,exports){
-/*eslint func-style:0*/
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = keys;
-
-function keys(obj) {
-    return Object.keys(obj);
-}
-
-module.exports = exports["default"];
-
-},{}],9:[function(require,module,exports){
-/*eslint func-style:0*/
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = omit;
-
-function omit(names, obj) {
-    var result = {};
-
-    for (var prop in obj) {
-        if (names.indexOf(prop) === -1) {
-            result[prop] = obj[prop];
-        }
-    }
-
-    return result;
-}
-
-module.exports = exports["default"];
-
 },{}],10:[function(require,module,exports){
-/*eslint func-style:0*/
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = pick;
-
-function pick(names, obj) {
-    var result = {};
-    var idx = 0;
-
-    while (idx < names.length) {
-        if (names[idx] in obj) {
-            result[names[idx]] = obj[names[idx]];
-        }
-        idx += 1;
-    }
-
-    return result;
-}
-
-module.exports = exports["default"];
-
-},{}],11:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -725,7 +775,7 @@ function uniq(arr) {
 
 module.exports = exports["default"];
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -745,7 +795,7 @@ function values(obj) {
 
 module.exports = exports["default"];
 
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -768,13 +818,18 @@ exports['default'] = _react2['default'].createClass({
     displayName: 'input',
 
     propTypes: {
-        errors: _react.PropTypes.arrayOf(_react.PropTypes.string)
+        fieldErrors: _react.PropTypes.arrayOf(_react.PropTypes.string),
+        validateOnBlur: _react.PropTypes.bool,
+        onChange: _react.PropTypes.func,
+        onSubmit: _react.PropTypes.func,
+        className: _react.PropTypes.string
     },
 
     getDefaultProps: function getDefaultProps() {
         return {
             onChange: identity,
-            onSubmit: identity
+            onSubmit: identity,
+            className: ''
         };
     },
 
@@ -782,16 +837,27 @@ exports['default'] = _react2['default'].createClass({
         return this.refs.input.value;
     },
 
-    render: function render() {
-        var hasError = this.props.errors && this.props.errors.length;
+    onChange: function onChange(e) {
+        if (!this.props.validateOnBlur) {
+            this.props.onChange(e);
+        }
+    },
 
-        var style = {
-            border: '1px solid ' + (hasError ? 'red' : 'black')
-        };
+    onBlur: function onBlur() {
+        if (this.props.validateOnBlur) {
+            this.props.onChange();
+        }
+    },
+
+    render: function render() {
+        var hasError = this.props.fieldErrors && this.props.fieldErrors.length;
+        var className = this.props.className + ' ' + (hasError ? 'error' : '');
 
         return _react2['default'].createElement('input', _extends({}, this.props, {
-            ref: 'input',
-            style: style }));
+            className: className,
+            onChange: this.onChange,
+            onBlur: this.onBlur,
+            ref: 'input' }));
     }
 });
 module.exports = exports['default'];
@@ -821,11 +887,16 @@ var _inputsInput = require('./inputs/input');
 
 var _inputsInput2 = _interopRequireDefault(_inputsInput);
 
+var _errors = require('./errors');
+
+var _errors2 = _interopRequireDefault(_errors);
+
 exports.Form = _form2['default'];
 exports.getBlankForm = _form.getBlankForm;
 exports.Fieldset = _fieldset2['default'];
 exports.Fieldlist = _fieldlist2['default'];
 exports.Input = _inputsInput2['default'];
+exports.Errors = _errors2['default'];
 exports['default'] = _form2['default'];
 
-},{"./fieldlist":2,"./fieldset":3,"./form":4,"./inputs/input":13}]},{},[]);
+},{"./errors":2,"./fieldlist":3,"./fieldset":4,"./form":5,"./inputs/input":12}]},{},[]);
