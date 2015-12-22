@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Form, { Input, Fieldset, Errors, Fieldlist } from 'react-formable';
+import BasicExample from '../examples/BasicExample.js'
 
 export default React.createClass({
     propTypes: {
@@ -9,14 +10,17 @@ export default React.createClass({
 
     componentWillMount() {
         this.props.setSublinks([
-            { name: 'subexample', to: 'subexample' },
-            { name: 'subexample1', to: 'subexample1' }
+            { name: 'Basic form', to: 'basicexample' }
         ]);
     },
 
     validators: [
         ({ errors }) => errors.length ? 'DOUBLE BAD' : null
     ],
+
+    renderbasicForm() {
+        return <BasicExample />;
+    },
 
     render() {
         return <div className="examples">
@@ -27,6 +31,7 @@ export default React.createClass({
                 <Input name="name" validators={[val => val.length > 3 ? 'bad' : null]} />
                 <Errors  />
             </Form>
+            {this.renderbasicForm()}
         </div>;
     }
 });
