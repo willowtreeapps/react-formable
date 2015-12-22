@@ -246,6 +246,17 @@ pre {
   border-radius: 3px;
   width: 100%;
 }
+code {
+  border-radius: 3px;
+  background-color: #F7F7F7;
+  padding: 2px 5px;
+}
+em {
+  font-style: italic;
+}
+strong {
+  font-weight: bold;
+}
 textarea:focus,
 input:focus {
   outline: 0;
@@ -315,5 +326,28 @@ body {
 .app .app-content {
   padding: 24px 48px;
   margin-left: 200px;
-  max-width: 800px;
+  max-width: 900px;
+}
+table {
+  border: 1px solid #DBDBDB;
+  border-radius: 3px;
+  width: 100%;
+}
+table th,
+table td {
+  border: 1px solid #DBDBDB;
+}
+table td {
+  padding: 12px;
+}
+table th {
+  font-weight: bold;
+  padding: 12px;
+}
+table tbody tr:nth-child(even) {
+  background-color: #F7F7F7;
+}
+.docs .subsection {
+  border-top: 3px solid #F7F7F7;
+  padding-bottom: 24px;
 }
