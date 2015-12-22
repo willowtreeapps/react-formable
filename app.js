@@ -21,6 +21,8 @@ var history = (0, _history.useBasename)(_history.createHistory)({
     basename: window.location.pathname.indexOf('react') !== -1 ? '/react-formable' : '/'
 });
 
+console.log(window.location.pathname.indexOf('react') !== -1 ? '/react-formable' : '/');
+
 (0, _reactDom.render)(_react2['default'].createElement(
     _reactRouter.Router,
     { history: history },
