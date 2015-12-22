@@ -7,11 +7,13 @@ marked.setOptions({
 });
 
 export default function MarkdownViewer(props) {
-    const html = marked(props.text || '', { sanitize: true });
+    const html = marked(props.text || props.children || '', { sanitize: true });
+    const { children, ...divProps } = props;
 
-    return <div {...props} dangerouslySetInnerHTML={{ __html: html }} />
+    return <div {...divProps} dangerouslySetInnerHTML={{ __html: html }} />
 }
 
 MarkdownViewer.propTypes = {
-    text: PropTypes.string
+    text: PropTypes.string,
+    children: PropTypes.node
 };

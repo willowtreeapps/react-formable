@@ -1,19 +1,16 @@
-import React, { PropTypes } from 'react';
+/*eslint func-style:0*/
+import React from 'react';
+import { Link } from 'react-router';
 
-export default React.createClass({
-    propTypes: {
-        children: PropTypes.node
-    },
+export default function Header() {
+    return <header className="header">
+		<h1><Link to="/home">react-formable</Link></h1>
 
-    render() {
-        return <header className="header">
-			<h1>Willowtree</h1>
-			<nav>
-				<ul>
-					<li><a href="http://willowtreeapps.github.io/react-formable/" target="_blank"><i className="fa fa-github"></i></a></li>
-					<li><a href="#"><i className="fa fa-twitter"></i></a></li>
-				</ul>
-			</nav>
-        </header>;
-    }
-});
+		<nav>
+			<ul>
+				<li><a href="http://willowtreeapps.github.io/react-formable/" target="_blank"><i className="fa fa-github"></i></a></li>
+				<li><a href="#"><i className="fa fa-twitter"></i></a></li>
+			</ul>
+		</nav>
+    </header>;
+}

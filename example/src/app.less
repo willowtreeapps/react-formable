@@ -19,8 +19,10 @@
 // ====================================
 // Components
 // ====================================
-a {
+a, .a {
     text-decoration: none;
+    cursor: pointer;
+
     &:hover {
         text-decoration: underline;
     }
@@ -34,6 +36,7 @@ pre {
     padding: 11px;
     border: 1px solid @color-border;
     border-radius: 3px;
+    width: 100%;
     // background-color: #002029;
 }
 
@@ -52,7 +55,7 @@ html {
 *, *:before, *:after { box-sizing: inherit; }
 
 // Make sure everything is always full height
-html, body, .container, #app, .app, .app-inner, .sidebar {
+html, body, .container, #app, .app, .app-inner {
     height: 100%;
 }
 
@@ -66,43 +69,45 @@ body {
 // ====================================
 // layout
 .app {
-    .header {
+    .header, .footer {
         &:extend(#padded-container);
         width: 100%;
         background: @color-teal;
         color: @color-white;
+        height: 100px;
 
         h1 { margin-top: 0; }
         ul { margin: 0; }
+        a { color: @color-white; }
+        i { color: @color-white; }
 
-        i {
-            color: white;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 200px;
+
+        // background: @color-off-white;
+        &:extend(#padded-container);
+        border-right: 1px solid @color-border;
+        background-color: #F7F7F7;
+        padding: 24px;
+
+        a { color: @color-text; }
+
+        li ul {
+            margin-left: 10px;
         }
     }
 
-    .app-inner {
-        display: flex;
-        flex-flow: row;
-        flex-wrap: nowrap;
-
-        .sidebar {
-            flex-shrink: 0;
-            // background: @color-off-white;
-            &:extend(#padded-container);
-            border-right: 1px solid @color-border;
-            width: 200px;
-            background-color: #F7F7F7;
-            padding: 24px;
-
-            a { color: @color-text; }
-        }
-
-        .app-content {
-            flex-shrink: 1;
-            padding: 24px 48px;
-            max-width: 800px;
-            &:extend(#padded-container);
-        }
+    .app-content {
+        padding: 24px 48px;
+        margin-left: 200px;
+        max-width: 800px;
+        &:extend(#padded-container);
     }
 }
 

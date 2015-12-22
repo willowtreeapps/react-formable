@@ -1,47 +1,44 @@
+/*eslint func-style:0*/
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
-export default React.createClass({
-    propTypes: {
-        children: PropTypes.node,
-        subLinks: PropTypes.arrayOf(PropTypes.shape({
-            name: PropTypes.string,
-            to: PropTypes.string
-        })).isRequired
-    },
+const links = [
+	{ link: 'getting-started', title: 'Getting Started' },
+	{ link: 'demo', title: 'Demo' },
+	{ link: 'examples', title: 'Examples' },
+	{ link: 'docs', title: 'Docs' }
+];
 
-    render() {
-        const [,activePath] = window.location.pathname.split('/');
+export default function Sidebar({ subLinks=[], style }) {
+    const [,activePath] = window.location.pathname.split('/');
 
-        const links = [
-            { to: 'home', name: 'react-formable' },
-			{ to: 'getting-started', name: 'Getting Started' },
-			{ to: 'demo', name: 'Demo' },
-			{ to: 'examples', name: 'Examples' },
-			{ to: 'docs', name: 'Docs' }
-        ];
+    const navLinks = links.map(({ link, title }, i) =>
+        <li key={i}>
+            <Link to={`/${link}`} activeClassName="active">
+                {title}
+            </Link>
 
-        const navLinks = links.map(({ to, name }, i) =>
-            <li key={i}>
-                <Link to={`/${to}`} activeClassName="active">
-                    {name}
-                </Link>
+            {activePath === link && <ul>
+                {subLinks.map(({ title, link }, j) =>
+                    <li key={i * 10 + j}>
+                        <a href={`#${link}`}>{title}</a>
+                    </li>
+                )}
+            </ul>}
+        </li>
+    );
 
-                {activePath === to && <ul>
-                    {this.props.subLinks.map(({ name, to }, j) =>
-                        <li key={i * 10 + j}>
-                            <a id={to} href={`#${to}`}>{name}</a>
-                        </li>
-                    )}
-                </ul>}
-            </li>
-        );
+    return <nav className="sidebar" style={style}>
+		<ul>
+            {navLinks}
+		</ul>
+    </nav>;
+}
 
-
-        return <nav className="sidebar">
-			<ul>
-                {navLinks}
-			</ul>
-        </nav>;
-    }
-});
+Sidebar.propTypes = {
+    subLinks: PropTypes.arrayOf(PropTypes.shape({
+        title: PropTypes.string,
+        link: PropTypes.string
+    })).isRequired,
+    style: PropTypes.object
+};
