@@ -30,10 +30,12 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 
 `;
 
-export const code = <div>
-	<h4>Hello!</h4>
-	<h4>Hello!</h4>
-	<h4>Hello!</h4>
-	<h4>Hello!</h4>
-	<h4>Hello!</h4>
-</div>;
+export const code = function () {
+    return <div>
+        <h4>Hello!</h4>
+        <h4>Hello!</h4>
+        <h4>Hello!</h4>
+        <h4>Hello!</h4>
+        <h4>Hello!</h4>
+    </div>;
+};

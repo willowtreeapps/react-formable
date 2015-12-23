@@ -18,7 +18,8 @@ initGulpTasks(gulp, {
         dist: 'example/dist',
         files: [
             'index.html',
-            '.gitignore'
+            '.gitignore',
+            'imgs/*'
         ],
         scripts: [
             'app.js'

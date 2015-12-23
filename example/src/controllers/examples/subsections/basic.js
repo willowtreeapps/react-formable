@@ -1,4 +1,5 @@
 import React from 'react';
+import Form, { Input } from 'react-formable';
 
 export const title = 'Basic';
 export const link = 'basic';
@@ -16,6 +17,8 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 	</div>;
 `;
 
-export const code = <div>
-	<h4>Hello!</h4>
-</div>;
+export const code = function () {
+    return <Form>
+		<Input />
+    </Form>;
+};

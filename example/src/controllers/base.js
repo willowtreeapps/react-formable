@@ -3,8 +3,8 @@ import Header from './header';
 import Sidebar from './sidebar';
 import Footer from './footer';
 
-const headerHeight = 100;
-const footerHeight = 100;
+const headerHeight = 88;
+const footerHeight = 160;
 
 const documentHeight = function documentHeight() {
     return Math.max(
