@@ -15,6 +15,7 @@
 @color-text: #4A4A4A;
 @color-border: #DBDBDB;
 @color-white: white;
+@color-footer: #2e3c44;
 
 // ====================================
 // Components
@@ -40,6 +41,24 @@ pre {
     // background-color: #002029;
 }
 
+code {
+    border-radius: 3px;
+    background-color: @color-off-white;
+    padding: 2px 5px;
+}
+
+em { font-style: italic; }
+strong { font-weight: bold; }
+
+.wt-logo {
+    img {
+        width: 31px;
+        height: 31px;
+    }
+}
+.gh-logo {
+    i { font-size: 36px; }
+}
 
 // ====================================
 // Remove
@@ -72,15 +91,51 @@ body {
     .header, .footer {
         &:extend(#padded-container);
         width: 100%;
-        background: @color-teal;
         color: @color-white;
-        height: 100px;
 
-        h1 { margin-top: 0; }
         ul { margin: 0; }
         a { color: @color-white; }
         i { color: @color-white; }
+    }
 
+    .header {
+        display: flex;
+        align-items: center;
+        background-color: @color-teal;
+        height: 88px;
+
+        .logo {
+            width: 301px;
+            height: 47px;
+            margin: 20px;
+        }
+
+        nav {
+            margin-left: auto;
+            padding: 34px;
+
+        }
+    }
+    .footer {
+        height: 160px;
+        // display: flex;
+        // justify-content: center;
+        // flex-wrap: wrap;
+
+        text-align: center;
+
+        background-color: @color-footer;
+
+        .logos {
+            padding-top: 31px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            a { padding: 5px; }
+        }
+
+        p { margin: 0; }
     }
 
     .sidebar {
@@ -106,7 +161,8 @@ body {
     .app-content {
         padding: 24px 48px;
         margin-left: 200px;
-        max-width: 800px;
+        max-width: 900px;
+        // max-width: 800px;
         &:extend(#padded-container);
     }
 }
@@ -118,4 +174,29 @@ body {
     .getting-started {}
     .demos {}
     .docs {}
+}
+
+
+table {
+    border: 1px solid @color-border;
+    border-radius: 3px;
+    width: 100%;
+
+    th, td { border: 1px solid @color-border; }
+    td { padding: 12px; }
+    th {
+        font-weight: bold;
+        padding: 12px;
+     }
+
+     tbody tr:nth-child(even) {
+         background-color: @color-off-white;
+     }
+}
+
+.docs {
+    .subsection {
+        border-top: 3px solid @color-off-white;
+        padding-bottom: 24px;
+    }
 }

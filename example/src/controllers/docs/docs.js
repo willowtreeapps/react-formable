@@ -1,11 +1,17 @@
 import React, { PropTypes } from 'react';
 import Page from '../../components/page';
-// import * as Basic from './subsections/basic';
-// import * as Advanced from './subsections/advanced';
+import * as Form from './subsections/form';
+import * as Fieldset from './subsections/fieldset';
+import * as Fieldlist from './subsections/fieldlist';
+import * as Input from './subsections/input';
+import * as Errors from './subsections/errors';
 
 const subsections = [
-    // Basic,
-    // Advanced
+    Form,
+    Fieldset,
+    Fieldlist,
+    Input,
+    Errors
 ];
 
 export default React.createClass({

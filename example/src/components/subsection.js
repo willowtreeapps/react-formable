@@ -6,13 +6,16 @@ export default function Subsection(props) {
     const {
         title='Subsection',
         markdown,
-        link
+        link,
+        code: Code
     } = props;
 
     return <div id={link} className="subsection">
         <h3>{title}</h3>
 
         {markdown && <MD text={markdown} />}
+
+        {Code && <Code />}
     </div>;
 }
 
@@ -21,5 +24,8 @@ Subsection.propTypes = {
     id: PropTypes.string,
     link: PropTypes.string,
     markdown: PropTypes.string,
-    code: PropTypes.node
+    code: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.func
+    ])
 };

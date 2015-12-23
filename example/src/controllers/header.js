@@ -1,15 +1,15 @@
 /*eslint func-style:0*/
 import React from 'react';
 import { Link } from 'react-router';
+import GHLogo from '../components/ghLogo';
 
 export default function Header() {
     return <header className="header">
-		<h1><Link to="/home">react-formable</Link></h1>
+		<Link to="/home"><img className="logo" src="./imgs/logo@2x.png" /></Link>
 
 		<nav>
 			<ul>
-				<li><a href="http://willowtreeapps.github.io/react-formable/" target="_blank"><i className="fa fa-github"></i></a></li>
-				<li><a href="#"><i className="fa fa-twitter"></i></a></li>
+                <li><GHLogo /></li>
 			</ul>
 		</nav>
     </header>;
