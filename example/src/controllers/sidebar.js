@@ -10,7 +10,7 @@ const links = [
 ];
 
 export default function Sidebar({ subLinks=[], style }) {
-    const [,activePath] = window.location.pathname.split('/');
+    const activePath = window.location.pathname.split('/').pop();
 
     const navLinks = links.map(({ link, title }, i) =>
         <li key={i}>
