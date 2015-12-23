@@ -257,6 +257,13 @@ em {
 strong {
   font-weight: bold;
 }
+.wt-logo img {
+  width: 31px;
+  height: 31px;
+}
+.gh-logo i {
+  font-size: 36px;
+}
 textarea:focus,
 input:focus {
   outline: 0;
@@ -287,13 +294,7 @@ body {
 .app .header,
 .app .footer {
   width: 100%;
-  background: #2A7885;
   color: white;
-  height: 100px;
-}
-.app .header h1,
-.app .footer h1 {
-  margin-top: 0;
 }
 .app .header ul,
 .app .footer ul {
@@ -306,6 +307,38 @@ body {
 .app .header i,
 .app .footer i {
   color: white;
+}
+.app .header {
+  display: flex;
+  align-items: center;
+  background-color: #2A7885;
+  height: 88px;
+}
+.app .header .logo {
+  width: 301px;
+  height: 47px;
+  margin: 20px;
+}
+.app .header nav {
+  margin-left: auto;
+  padding: 34px;
+}
+.app .footer {
+  height: 160px;
+  text-align: center;
+  background-color: #2e3c44;
+}
+.app .footer .logos {
+  padding-top: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app .footer .logos a {
+  padding: 5px;
+}
+.app .footer p {
+  margin: 0;
 }
 .app .sidebar {
   position: fixed;

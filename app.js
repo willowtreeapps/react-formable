@@ -21,15 +21,40 @@ var history = (0, _history.useBasename)(_history.createHistory)({
     basename: window.location.pathname.indexOf('react') !== -1 ? '/react-formable' : '/'
 });
 
-console.log(window.location.pathname.indexOf('react') !== -1 ? '/react-formable' : '/');
-
 (0, _reactDom.render)(_react2['default'].createElement(
     _reactRouter.Router,
     { history: history },
     _routes2['default']
 ), document.getElementById('app'));
 
-},{"./routes":19,"history":undefined,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
+},{"./routes":21,"history":undefined,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
+/*eslint func-style:0*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = GHLogo;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function GHLogo() {
+    return _react2["default"].createElement(
+        "a",
+        { className: "gh-logo",
+            href: "https://github.com/willowtreeapps/react-formable",
+            target: "_blank" },
+        _react2["default"].createElement("i", { className: "fa fa-github" })
+    );
+}
+
+module.exports = exports["default"];
+
+},{"react":undefined}],3:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -74,7 +99,7 @@ MarkdownViewer.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"marked":20,"react":undefined}],3:[function(require,module,exports){
+},{"marked":22,"react":undefined}],4:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -131,12 +156,12 @@ Page.propTypes = {
     subsections: _react.PropTypes.arrayOf(_react.PropTypes.shape({
         title: _react.PropTypes.string,
         markdown: _react.PropTypes.string,
-        code: _react.PropTypes.node
+        code: _react.PropTypes.oneOfType([_react.PropTypes.node, _react.PropTypes.func])
     }))
 };
 module.exports = exports['default'];
 
-},{"./md":2,"./subsection":4,"react":undefined}],4:[function(require,module,exports){
+},{"./md":3,"./subsection":5,"react":undefined}],5:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -160,6 +185,7 @@ function Subsection(props) {
     var title = _props$title === undefined ? 'Subsection' : _props$title;
     var markdown = props.markdown;
     var link = props.link;
+    var Code = props.code;
 
     return _react2['default'].createElement(
         'div',
@@ -169,7 +195,8 @@ function Subsection(props) {
             null,
             title
         ),
-        markdown && _react2['default'].createElement(_md2['default'], { text: markdown })
+        markdown && _react2['default'].createElement(_md2['default'], { text: markdown }),
+        Code && _react2['default'].createElement(Code, null)
     );
 }
 
@@ -178,11 +205,38 @@ Subsection.propTypes = {
     id: _react.PropTypes.string,
     link: _react.PropTypes.string,
     markdown: _react.PropTypes.string,
-    code: _react.PropTypes.node
+    code: _react.PropTypes.oneOfType([_react.PropTypes.node, _react.PropTypes.func])
 };
 module.exports = exports['default'];
 
-},{"./md":2,"react":undefined}],5:[function(require,module,exports){
+},{"./md":3,"react":undefined}],6:[function(require,module,exports){
+/*eslint func-style:0*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = GHLogo;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function GHLogo() {
+    return _react2["default"].createElement(
+        "a",
+        { className: "wt-logo",
+            href: "http://willowtreeapps.com/",
+            target: "_blank" },
+        _react2["default"].createElement("img", { src: "./imgs/willowtree-logo@2x.png" })
+    );
+}
+
+module.exports = exports["default"];
+
+},{"react":undefined}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -207,8 +261,8 @@ var _footer = require('./footer');
 
 var _footer2 = _interopRequireDefault(_footer);
 
-var headerHeight = 100;
-var footerHeight = 100;
+var headerHeight = 88;
+var footerHeight = 160;
 
 var documentHeight = function documentHeight() {
     return Math.max(document.documentElement.clientHeight, document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight);
@@ -288,7 +342,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./footer":14,"./header":16,"./sidebar":18,"react":undefined}],6:[function(require,module,exports){
+},{"./footer":16,"./header":18,"./sidebar":20,"react":undefined}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -334,7 +388,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":3,"react":undefined}],7:[function(require,module,exports){
+},{"../../components/page":4,"react":undefined}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -396,7 +450,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":3,"./subsections/errors":8,"./subsections/fieldlist":9,"./subsections/fieldset":10,"./subsections/form":11,"./subsections/input":12,"react":undefined}],8:[function(require,module,exports){
+},{"../../components/page":4,"./subsections/errors":10,"./subsections/fieldlist":11,"./subsections/fieldset":12,"./subsections/form":13,"./subsections/input":14,"react":undefined}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -410,7 +464,7 @@ exports.link = link;
 var markdown = '\nA component which soaks up and displays form errors. You can think of `Errors` like it is a placeholder. Wherever you place it, errors will be rendered there.\n\n**NB**: Make sure to place this component *within* the `Form` tag.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| scoped | boolean | false | **EXPERIMENTAL:** Only displays form errors in relation to the elements nearest parent |\n| additionalErrors | array[string] | [] | Any additional errors you would want to render to the screen can be passed down as an array of strings. |\n| renderError | function(error) => node | identity | If you want to overwrite how errors are rendered, you can do so by providing a callback to errors. This function will receive each error and will return what you want to be rendered as your error. |\n';
 exports.markdown = markdown;
 
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -424,7 +478,7 @@ exports.link = link;
 var markdown = '\n`Fieldlist` uses `Fieldset` under the hood to render each *direct* child it owns. This means if you nest `Fieldset`s within a `Fieldlist`, you will get some extra objects floating around. Similarly to `Fieldset`, validators return the subtree that the `Fieldlist` represents.\n\n| Property | Type | Default| Description |\n| :------- | :--- | :----- | :---------- |\n| validators | array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n';
 exports.markdown = markdown;
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -438,7 +492,7 @@ exports.link = link;
 var markdown = '\n`Fieldset`s are where most of the magic happens. They let us group together similar fields into smaller bite-sized objects. We can use these within individual forms, or make reusable form components and use them all over the place.\n\nOne important thing to understand: `Fieldset`s will always make an object with the `name` provided. If you use a `Fieldset` within a `Fieldlist`, you will have a nested object with the name of the `Fieldset`.\n\nOne last thing to keep in mind: you can attach validators to `Fieldset`s. Instead of a primitive passed down as the first param, it will be the subtree that the `Fieldset` represents. Any errors returned from a `Fieldset`s validators will skip `fieldErrors` and go directly to `errors`.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n\n';
 exports.markdown = markdown;
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -452,7 +506,7 @@ exports.link = link;
 var markdown = '\nThe top level `Form` component is what serializes your data.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| onChange| function(form) | undefined | A callback which will be called whenever any child input changes. Receives the serialized form object |\n| onSubmit | function(form) | undefined | A callback which will be called whenever the form is submitted. Receives the serialized form object |\n| showErrorsOnSubmit | boolean | true | A boolean to decide if errors should be shown on submit |\n| showErrorsOnChange | boolean(form) | false | A boolean to decide if errors should be shown on change |\n| validators | array[function(form)] | [] | An array of validators to run over the form. Usefull to capture business logic. Not automatically bound to the form. |\n\n\nThere are a handful of methods on the `Form` component which are useful. To access these, attach a `ref` to the `Form` and call them via `this.refs.refName.methodName();`.\n\n| Method | Params | Description |\n| :----- | :----- | :---------- |\n| serialize | | Returns the serialized form object |\n| showFieldErrors | | Passes down errors to inputs within the form |\n| clearFieldErrors | | Clears errors passed down to inputs within the form |\n';
 exports.markdown = markdown;
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -466,7 +520,7 @@ exports.link = link;
 var markdown = '\nTo integrate inputs with `Form`s, you need to ensure two things.\n\n1. The input has a `getValue` method. This method returns the current value of the input.\n2. The input has to be able to work with your `refs`. This unfortunately means no stateless components.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| value | string | undefined | The value of the field |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n| fieldErrors | array[string] | [] | An array of string errors to pass down to the input. This is automatically filled via the form. You can overwrite this field if you want to manually show an error on an input |\n| validateOnBlur | boolean | false | A boolean which forces the field to wait until it fires a blur event to trigger form validation |\n';
 exports.markdown = markdown;
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -512,28 +566,52 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":3,"react":undefined}],14:[function(require,module,exports){
+},{"../../components/page":4,"react":undefined}],16:[function(require,module,exports){
 /*eslint func-style:0*/
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
-exports["default"] = Footer;
+exports['default'] = Footer;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _componentsGhLogo = require('../components/ghLogo');
+
+var _componentsGhLogo2 = _interopRequireDefault(_componentsGhLogo);
+
+var _componentsWtLogo = require('../components/wtLogo');
+
+var _componentsWtLogo2 = _interopRequireDefault(_componentsWtLogo);
+
 function Footer() {
-    return _react2["default"].createElement("div", { className: "footer" });
+    return _react2['default'].createElement(
+        'div',
+        { className: 'footer' },
+        _react2['default'].createElement(
+            'div',
+            { className: 'logos' },
+            _react2['default'].createElement(_componentsWtLogo2['default'], null),
+            _react2['default'].createElement(_componentsGhLogo2['default'], null)
+        ),
+        _react2['default'].createElement(
+            'p',
+            null,
+            'Built with love by the Web Apps Team at ',
+            _react2['default'].createElement('br', null),
+            ' WillowTree and by our awesome contributors.'
+        )
+    );
 }
 
-module.exports = exports["default"];
+module.exports = exports['default'];
 
-},{"react":undefined}],15:[function(require,module,exports){
+},{"../components/ghLogo":2,"../components/wtLogo":6,"react":undefined}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -579,7 +657,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":3,"react":undefined}],16:[function(require,module,exports){
+},{"../../components/page":4,"react":undefined}],18:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -596,33 +674,38 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
 
+var _componentsGhLogo = require('../components/ghLogo');
+
+var _componentsGhLogo2 = _interopRequireDefault(_componentsGhLogo);
+
 function Header() {
 	return _react2['default'].createElement(
 		'header',
 		{ className: 'header' },
 		_react2['default'].createElement(
-			'h1',
+			_reactRouter.Link,
+			{ to: '/home' },
+			_react2['default'].createElement('img', { className: 'logo', src: './imgs/logo@2x.png' })
+		),
+		_react2['default'].createElement(
+			'nav',
 			null,
 			_react2['default'].createElement(
-				_reactRouter.Link,
-				{ to: '/home' },
-				'react-formable'
+				'ul',
+				null,
+				_react2['default'].createElement(
+					'li',
+					null,
+					_react2['default'].createElement(_componentsGhLogo2['default'], null)
+				)
 			)
 		)
 	);
 }
 
 module.exports = exports['default'];
-/*
-<nav>
-<ul>
-<li><a href="http://willowtreeapps.github.io/react-formable/" target="_blank"><i className="fa fa-github"></i></a></li>
-<li><a href="#"><i className="fa fa-twitter"></i></a></li>
-</ul>
-</nav>
-*/
 
-},{"react":undefined,"react-router":undefined}],17:[function(require,module,exports){
+},{"../components/ghLogo":2,"react":undefined,"react-router":undefined}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -666,7 +749,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":3,"react":undefined}],18:[function(require,module,exports){
+},{"../../components/page":4,"react":undefined}],20:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -750,7 +833,7 @@ Sidebar.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"react":undefined,"react-router":undefined}],19:[function(require,module,exports){
+},{"react":undefined,"react-router":undefined}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -801,7 +884,7 @@ exports['default'] = _react2['default'].createElement(
 );
 module.exports = exports['default'];
 
-},{"./controllers/base":5,"./controllers/demo/demo":6,"./controllers/docs/docs":7,"./controllers/examples/examples":13,"./controllers/getting-started/getting-started":15,"./controllers/home/home":17,"react":undefined,"react-router":undefined}],20:[function(require,module,exports){
+},{"./controllers/base":7,"./controllers/demo/demo":8,"./controllers/docs/docs":9,"./controllers/examples/examples":15,"./controllers/getting-started/getting-started":17,"./controllers/home/home":19,"react":undefined,"react-router":undefined}],22:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
