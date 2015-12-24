@@ -14,7 +14,8 @@ export default React.createClass({
         ]),
         additionalErrors: PropTypes.arrayOf(PropTypes.string),
         scoped: PropTypes.bool,
-        renderError: PropTypes.func
+        renderError: PropTypes.func,
+        className: PropTypes.string
     },
 
     getDefaultProps() {
@@ -23,7 +24,8 @@ export default React.createClass({
             additionalErrors: [],
             fieldErrors: [],
             scoped: false,
-            renderError: identity
+            renderError: identity,
+            className: ''
         };
     },
 
@@ -36,7 +38,9 @@ export default React.createClass({
         const allErrors = [].concat(scoped ? fieldErrors : errors)
                             .concat(additionalErrors);
 
-        return <ul className="errors" {...this.props}>
+        const className = `${this.props.className} errors`;
+
+        return <ul {...this.props} className={className}>
             {allErrors.map((error, i) =>
                 <li key={i}> {this.props.renderError(error)} </li>)}
         </ul>;

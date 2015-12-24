@@ -45,20 +45,19 @@ export default React.createClass({
         const scrollTop = window.pageYOffset;
         const totalHeight = documentHeight();
         const scrollBottom = window.innerHeight + window.pageYOffset;
-
         const headerVisible = headerHeight - scrollTop > 0;
         const footerVisible = totalHeight - scrollBottom < footerHeight;
-        const bottom = Math.abs(totalHeight - scrollBottom - footerHeight);
+
+        let style = {};
+
+        style.position = (headerVisible || footerVisible) ? 'absolute' : 'fixed';
+        if (footerVisible) style.top = totalHeight - window.innerHeight - footerHeight - headerHeight;
 
         return <div className="app" onScroll={this.onScroll}>
             <Header />
 
             <div style={{ position: 'relative', minHeight: '100%' }}>
-                <Sidebar subLinks={this.state.subLinks} style={{
-                    position: headerVisible ? 'absolute' : 'fixed',
-                    top: 0,
-                    bottom: footerVisible ? bottom : 0
-                }}/>
+                <Sidebar subLinks={this.state.subLinks} style={style}/>
 
                 <div className="app-content">
                     {React.cloneElement(this.props.children, {

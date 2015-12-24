@@ -1,6 +1,7 @@
 /*eslint func-style:0*/
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import Smooth from '../components/smoothLink';
 
 const links = [
 	{ link: 'getting-started', title: 'Getting Started' },
@@ -21,7 +22,7 @@ export default function Sidebar({ subLinks=[], style }) {
             {activePath === link && <ul>
                 {subLinks.map(({ title, link }, j) =>
                     <li key={i * 10 + j}>
-                        <a href={`#${link}`}>{title}</a>
+						<Smooth link={link} title={title} />
                     </li>
                 )}
             </ul>}
