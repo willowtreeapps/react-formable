@@ -184,8 +184,7 @@ function SmoothLink(_ref) {
     var link = _ref.link;
     var title = _ref.title;
 
-    function onClick(event) {
-        event.preventDefault();
+    function onClick() {
         (0, _smoothscroll2['default'])(document.querySelector('#' + link));
     }
 
@@ -331,6 +330,10 @@ exports['default'] = _react2['default'].createClass({
         window.addEventListener('resize', function () {
             return _this.forceUpdate();
         });
+
+        // TODO: On the index route the sidebar doesn't render correctly.
+        // This hack keeps it rendering... for now.
+        window.scrollTo(1, 1);
     },
 
     componentDidUnMount: function componentDidUnMount() {
