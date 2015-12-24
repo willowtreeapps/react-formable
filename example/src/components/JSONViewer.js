@@ -8,10 +8,8 @@ import MD  from './md';
 export default class JSONViewer extends React.Component {
 
     render() {
-        const data = this.props.data || 'Start filling the form out';
-        const mddata = '```json\n'
-            + JSON.stringify(data, null, 2)
-            + '\n```';
+        const data = this.props.data ? JSON.stringify(this.props.data, null, 2) : 'Start filling the form out';
+        const mddata = `\`\`\`json\n ${data} \n\`\`\``;
 
         return <MD text={mddata} />;
     }
