@@ -95,7 +95,8 @@ exports['default'] = _react2['default'].createClass({
         fieldErrors: _react.PropTypes.oneOfType([_react.PropTypes.array, _react.PropTypes.object]),
         additionalErrors: _react.PropTypes.arrayOf(_react.PropTypes.string),
         scoped: _react.PropTypes.bool,
-        renderError: _react.PropTypes.func
+        renderError: _react.PropTypes.func,
+        className: _react.PropTypes.string
     },
 
     getDefaultProps: function getDefaultProps() {
@@ -104,7 +105,8 @@ exports['default'] = _react2['default'].createClass({
             additionalErrors: [],
             fieldErrors: [],
             scoped: false,
-            renderError: _helpersIdentity2['default']
+            renderError: _helpersIdentity2['default'],
+            className: ''
         };
     },
 
@@ -122,9 +124,11 @@ exports['default'] = _react2['default'].createClass({
 
         var allErrors = [].concat(scoped ? fieldErrors : errors).concat(additionalErrors);
 
+        var className = this.props.className + ' errors';
+
         return _react2['default'].createElement(
             'ul',
-            _extends({ className: 'errors' }, this.props),
+            _extends({}, this.props, { className: className }),
             allErrors.map(function (error, i) {
                 return _react2['default'].createElement(
                     'li',
@@ -681,7 +685,8 @@ var _react2 = _interopRequireDefault(_react);
 
 /**
  * Clones a child subtree, when we encounter a component that passes our
- * predicate pass it down additional props.
+ * predicate pass it down additional props. This function only goes one level
+ * deep. Once it encounters a child to clone, it halts. 
  *
  * @param  {Function} predicate A predicate function which recives the child
  * @param  {Function} getProps  A function which recives the component and

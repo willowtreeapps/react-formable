@@ -27,7 +27,7 @@ var history = (0, _history.useBasename)(_history.createHistory)({
     _routes2['default']
 ), document.getElementById('app'));
 
-},{"./routes":21,"history":undefined,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
+},{"./routes":22,"history":undefined,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -99,7 +99,7 @@ MarkdownViewer.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"marked":22,"react":undefined}],4:[function(require,module,exports){
+},{"marked":23,"react":undefined}],4:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -161,7 +161,48 @@ Page.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"./md":3,"./subsection":5,"react":undefined}],5:[function(require,module,exports){
+},{"./md":3,"./subsection":6,"react":undefined}],5:[function(require,module,exports){
+/*eslint func-style:0*/
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports['default'] = SmoothLink;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _smoothscroll = require('smoothscroll');
+
+var _smoothscroll2 = _interopRequireDefault(_smoothscroll);
+
+function SmoothLink(_ref) {
+    var link = _ref.link;
+    var title = _ref.title;
+
+    function onClick(event) {
+        event.preventDefault();
+        (0, _smoothscroll2['default'])(document.querySelector('#' + link));
+    }
+
+    return _react2['default'].createElement(
+        'a',
+        { href: '#' + link, onClick: onClick },
+        title
+    );
+}
+
+SmoothLink.propTypes = {
+    link: _react.PropTypes.string,
+    title: _react.PropTypes.string
+};
+module.exports = exports['default'];
+
+},{"react":undefined,"smoothscroll":24}],6:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -209,7 +250,7 @@ Subsection.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"./md":3,"react":undefined}],6:[function(require,module,exports){
+},{"./md":3,"react":undefined}],7:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -236,7 +277,7 @@ function GHLogo() {
 
 module.exports = exports["default"];
 
-},{"react":undefined}],7:[function(require,module,exports){
+},{"react":undefined}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -311,10 +352,13 @@ exports['default'] = _react2['default'].createClass({
         var scrollTop = window.pageYOffset;
         var totalHeight = documentHeight();
         var scrollBottom = window.innerHeight + window.pageYOffset;
-
         var headerVisible = headerHeight - scrollTop > 0;
         var footerVisible = totalHeight - scrollBottom < footerHeight;
-        var bottom = Math.abs(totalHeight - scrollBottom - footerHeight);
+
+        var style = {};
+
+        style.position = headerVisible || footerVisible ? 'absolute' : 'fixed';
+        if (footerVisible) style.top = totalHeight - window.innerHeight - footerHeight - headerHeight;
 
         return _react2['default'].createElement(
             'div',
@@ -323,11 +367,7 @@ exports['default'] = _react2['default'].createClass({
             _react2['default'].createElement(
                 'div',
                 { style: { position: 'relative', minHeight: '100%' } },
-                _react2['default'].createElement(_sidebar2['default'], { subLinks: this.state.subLinks, style: {
-                        position: headerVisible ? 'absolute' : 'fixed',
-                        top: 0,
-                        bottom: footerVisible ? bottom : 0
-                    } }),
+                _react2['default'].createElement(_sidebar2['default'], { subLinks: this.state.subLinks, style: style }),
                 _react2['default'].createElement(
                     'div',
                     { className: 'app-content' },
@@ -342,7 +382,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./footer":16,"./header":18,"./sidebar":20,"react":undefined}],8:[function(require,module,exports){
+},{"./footer":17,"./header":19,"./sidebar":21,"react":undefined}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -388,7 +428,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"react":undefined}],9:[function(require,module,exports){
+},{"../../components/page":4,"react":undefined}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -450,7 +490,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"./subsections/errors":10,"./subsections/fieldlist":11,"./subsections/fieldset":12,"./subsections/form":13,"./subsections/input":14,"react":undefined}],10:[function(require,module,exports){
+},{"../../components/page":4,"./subsections/errors":11,"./subsections/fieldlist":12,"./subsections/fieldset":13,"./subsections/form":14,"./subsections/input":15,"react":undefined}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -464,7 +504,7 @@ exports.link = link;
 var markdown = '\nA component which soaks up and displays form errors. You can think of `Errors` like it is a placeholder. Wherever you place it, errors will be rendered there.\n\n**NB**: Make sure to place this component *within* the `Form` tag.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| scoped | boolean | false | **EXPERIMENTAL:** Only displays form errors in relation to the elements nearest parent |\n| additionalErrors | array[string] | [] | Any additional errors you would want to render to the screen can be passed down as an array of strings. |\n| renderError | function(error) => node | identity | If you want to overwrite how errors are rendered, you can do so by providing a callback to errors. This function will receive each error and will return what you want to be rendered as your error. |\n';
 exports.markdown = markdown;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -478,7 +518,7 @@ exports.link = link;
 var markdown = '\n`Fieldlist` uses `Fieldset` under the hood to render each *direct* child it owns. This means if you nest `Fieldset`s within a `Fieldlist`, you will get some extra objects floating around. Similarly to `Fieldset`, validators return the subtree that the `Fieldlist` represents.\n\n| Property | Type | Default| Description |\n| :------- | :--- | :----- | :---------- |\n| validators | array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n';
 exports.markdown = markdown;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -492,7 +532,7 @@ exports.link = link;
 var markdown = '\n`Fieldset`s are where most of the magic happens. They let us group together similar fields into smaller bite-sized objects. We can use these within individual forms, or make reusable form components and use them all over the place.\n\nOne important thing to understand: `Fieldset`s will always make an object with the `name` provided. If you use a `Fieldset` within a `Fieldlist`, you will have a nested object with the name of the `Fieldset`.\n\nOne last thing to keep in mind: you can attach validators to `Fieldset`s. Instead of a primitive passed down as the first param, it will be the subtree that the `Fieldset` represents. Any errors returned from a `Fieldset`s validators will skip `fieldErrors` and go directly to `errors`.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n\n';
 exports.markdown = markdown;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -506,7 +546,7 @@ exports.link = link;
 var markdown = '\nThe top level `Form` component is what serializes your data.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| onChange| function(form) | undefined | A callback which will be called whenever any child input changes. Receives the serialized form object |\n| onSubmit | function(form) | undefined | A callback which will be called whenever the form is submitted. Receives the serialized form object |\n| showErrorsOnSubmit | boolean | true | A boolean to decide if errors should be shown on submit |\n| showErrorsOnChange | boolean(form) | false | A boolean to decide if errors should be shown on change |\n| validators | array[function(form)] | [] | An array of validators to run over the form. Usefull to capture business logic. Not automatically bound to the form. |\n\n\nThere are a handful of methods on the `Form` component which are useful. To access these, attach a `ref` to the `Form` and call them via `this.refs.refName.methodName();`.\n\n| Method | Params | Description |\n| :----- | :----- | :---------- |\n| serialize | | Returns the serialized form object |\n| showFieldErrors | | Passes down errors to inputs within the form |\n| clearFieldErrors | | Clears errors passed down to inputs within the form |\n';
 exports.markdown = markdown;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -520,7 +560,7 @@ exports.link = link;
 var markdown = '\nTo integrate inputs with `Form`s, you need to ensure two things.\n\n1. The input has a `getValue` method. This method returns the current value of the input.\n2. The input has to be able to work with your `refs`. This unfortunately means no stateless components.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| value | string | undefined | The value of the field |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n| fieldErrors | array[string] | [] | An array of string errors to pass down to the input. This is automatically filled via the form. You can overwrite this field if you want to manually show an error on an input |\n| validateOnBlur | boolean | false | A boolean which forces the field to wait until it fires a blur event to trigger form validation |\n';
 exports.markdown = markdown;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -566,7 +606,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"react":undefined}],16:[function(require,module,exports){
+},{"../../components/page":4,"react":undefined}],17:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -611,7 +651,7 @@ function Footer() {
 
 module.exports = exports['default'];
 
-},{"../components/ghLogo":2,"../components/wtLogo":6,"react":undefined}],17:[function(require,module,exports){
+},{"../components/ghLogo":2,"../components/wtLogo":7,"react":undefined}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -657,7 +697,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"react":undefined}],18:[function(require,module,exports){
+},{"../../components/page":4,"react":undefined}],19:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -705,7 +745,7 @@ function Header() {
 
 module.exports = exports['default'];
 
-},{"../components/ghLogo":2,"react":undefined,"react-router":undefined}],19:[function(require,module,exports){
+},{"../components/ghLogo":2,"react":undefined,"react-router":undefined}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -749,7 +789,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"react":undefined}],20:[function(require,module,exports){
+},{"../../components/page":4,"react":undefined}],21:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -765,6 +805,10 @@ var _react = require('react');
 var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
+
+var _componentsSmoothLink = require('../components/smoothLink');
+
+var _componentsSmoothLink2 = _interopRequireDefault(_componentsSmoothLink);
 
 var links = [{ link: 'getting-started', title: 'Getting Started' }, { link: 'demo', title: 'Demo' }, { link: 'examples', title: 'Examples' }, { link: 'docs', title: 'Docs' }];
 
@@ -795,11 +839,7 @@ function Sidebar(_ref) {
                     return _react2['default'].createElement(
                         'li',
                         { key: i * 10 + j },
-                        _react2['default'].createElement(
-                            'a',
-                            { href: '#' + link },
-                            title
-                        )
+                        _react2['default'].createElement(_componentsSmoothLink2['default'], { link: link, title: title })
                     );
                 })
             )
@@ -826,7 +866,7 @@ Sidebar.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"react":undefined,"react-router":undefined}],21:[function(require,module,exports){
+},{"../components/smoothLink":5,"react":undefined,"react-router":undefined}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -877,7 +917,7 @@ exports['default'] = _react2['default'].createElement(
 );
 module.exports = exports['default'];
 
-},{"./controllers/base":7,"./controllers/demo/demo":8,"./controllers/docs/docs":9,"./controllers/examples/examples":15,"./controllers/getting-started/getting-started":17,"./controllers/home/home":19,"react":undefined,"react-router":undefined}],22:[function(require,module,exports){
+},{"./controllers/base":8,"./controllers/demo/demo":9,"./controllers/docs/docs":10,"./controllers/examples/examples":16,"./controllers/getting-started/getting-started":18,"./controllers/home/home":20,"react":undefined,"react-router":undefined}],23:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
@@ -2166,4 +2206,121 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],24:[function(require,module,exports){
+(function (root, smoothScroll) {
+  'use strict';
+
+  // Support RequireJS and CommonJS/NodeJS module formats.
+  // Attach smoothScroll to the `window` when executed as a <script>.
+
+  // RequireJS
+  if (typeof define === 'function' && define.amd) {
+    define(smoothScroll);
+
+  // CommonJS
+  } else if (typeof exports === 'object' && typeof module === 'object') {
+    module.exports = smoothScroll();
+
+  } else {
+    root.smoothScroll = smoothScroll();
+  }
+
+})(this, function(){
+'use strict';
+
+// Do not initialize smoothScroll when running server side, handle it in client:
+if (typeof window !== 'object') return;
+
+// We do not want this script to be applied in browsers that do not support those
+// That means no smoothscroll on IE9 and below.
+if(document.querySelectorAll === void 0 || window.pageYOffset === void 0 || history.pushState === void 0) { return; }
+
+// Get the top position of an element in the document
+var getTop = function(element) {
+    // return value of html.getBoundingClientRect().top ... IE : 0, other browsers : -pageYOffset
+    if(element.nodeName === 'HTML') return -window.pageYOffset
+    return element.getBoundingClientRect().top + window.pageYOffset;
+}
+// ease in out function thanks to:
+// http://blog.greweb.fr/2012/02/bezier-curve-based-easing-functions-from-concept-to-implementation/
+var easeInOutCubic = function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 }
+
+// calculate the scroll position we should be in
+// given the start and end point of the scroll
+// the time elapsed from the beginning of the scroll
+// and the total duration of the scroll (default 500ms)
+var position = function(start, end, elapsed, duration) {
+    if (elapsed > duration) return end;
+    return start + (end - start) * easeInOutCubic(elapsed / duration); // <-- you can change the easing funtion there
+    // return start + (end - start) * (elapsed / duration); // <-- this would give a linear scroll
+}
+
+// we use requestAnimationFrame to be called by the browser before every repaint
+// if the first argument is an element then scroll to the top of this element
+// if the first argument is numeric then scroll to this location
+// if the callback exist, it is called when the scrolling is finished
+// if context is set then scroll that element, else scroll window 
+var smoothScroll = function(el, duration, callback, context){
+    duration = duration || 500;
+    context = context || window;
+    var start = window.pageYOffset;
+
+    if (typeof el === 'number') {
+      var end = parseInt(el);
+    } else {
+      var end = getTop(el);
+    }
+
+    var clock = Date.now();
+    var requestAnimationFrame = window.requestAnimationFrame ||
+        window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
+        function(fn){window.setTimeout(fn, 15);};
+
+    var step = function(){
+        var elapsed = Date.now() - clock;
+        if (context !== window) {
+        	context.scrollTop = position(start, end, elapsed, duration);
+        }
+        else {
+        	window.scroll(0, position(start, end, elapsed, duration));
+        }
+
+        if (elapsed > duration) {
+            if (typeof callback === 'function') {
+                callback(el);
+            }
+        } else {
+            requestAnimationFrame(step);
+        }
+    }
+    step();
+}
+
+var linkHandler = function(ev) {
+    ev.preventDefault();
+
+    if (location.hash !== this.hash) window.history.pushState(null, null, this.hash)
+    // using the history api to solve issue #1 - back doesn't work
+    // most browser don't update :target when the history api is used:
+    // THIS IS A BUG FROM THE BROWSERS.
+    // change the scrolling duration in this call
+    smoothScroll(document.getElementById(this.hash.substring(1)), 500, function(el) {
+        location.replace('#' + el.id)
+        // this will cause the :target to be activated.
+    });
+}
+
+// We look for all the internal links in the documents and attach the smoothscroll function
+document.addEventListener("DOMContentLoaded", function () {
+    var internal = document.querySelectorAll('a[href^="#"]:not([href="#"])'), a;
+    for(var i=internal.length; a=internal[--i];){
+        a.addEventListener("click", linkHandler, false);
+    }
+});
+
+// return smoothscroll API
+return smoothScroll;
+
+});
+
 },{}]},{},[1]);
