@@ -52,6 +52,7 @@ export default class BasicExample extends React.Component {
                     validators={[this.requiredValidator]}
                     style={inputStyles} />
             </div>
+            <Errors />
         </Form>
         <br />
         <FormData data={this.state.formData} />
