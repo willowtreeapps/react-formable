@@ -22,6 +22,7 @@ export default class BasicExample extends React.Component {
             alert('Tada!');
     }
 
+    //TODO: replace this with a stock validator once it's written
     requiredValidator(value) {
         if (!value)
             return 'Required field missing!';
