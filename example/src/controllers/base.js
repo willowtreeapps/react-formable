@@ -30,6 +30,10 @@ export default React.createClass({
     componentDidMount() {
         window.addEventListener('scroll', () => this.forceUpdate());
         window.addEventListener('resize', () => this.forceUpdate());
+
+        // TODO: On the index route the sidebar doesn't render correctly.
+        // This hack keeps it rendering... for now.
+        window.scrollTo(1, 1);
     },
 
     componentDidUnMount() {
