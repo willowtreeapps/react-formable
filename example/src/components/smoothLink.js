@@ -3,8 +3,7 @@ import React, { PropTypes } from 'react';
 import smoothScroll from 'smoothscroll';
 
 export default function SmoothLink({ link, title }) {
-    function onClick(event) {
-        event.preventDefault();
+    function onClick() {
         smoothScroll(document.querySelector(`#${link}`));
     }
 
