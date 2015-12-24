@@ -1,19 +1,25 @@
 import React, { PropTypes } from 'react';
 
 /**
- * Takes the form payload and renders it's content in a pretty
+ * A component used to display the underlying data model of a react-formable™ form
+ * (requires highlight.js)
  */
 export default class FormData extends React.Component {
 
     render() {
-        const jsonPayload = this.props.data ? JSON.stringify(this.props.data, null, 2) : "Start filling out the form";
-        const styles = {
-            fontFamily: "courier",
-            width: 600
-        }
-        return <div style={styles}>
-            <pre>{jsonPayload}</pre>
+        const formData = this.props.data ? JSON.stringify(this.props.data, null, 2) : '{}';
+
+        return <div>
+            <pre><code class="json">{formData}</code></pre>
         </div>;
     }
 
 }
+
+FormData.propTypes = {
+    data: PropTypes.object.isRequired
+};
+
+FormData.defaultProps = {
+    className: ''
+};
