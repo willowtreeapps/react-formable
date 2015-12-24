@@ -35,8 +35,7 @@ export default class BasicExample extends React.Component {
             marginLeft: '10'
         }
 
-        return <div style={{ paddingTop: 15 }}>
-            <p>Here is a simple form. It's got a couple of fields and a bit of validation, easy right?</p>
+        return <div>
             <Form ref="form" onChange={this.onChange.bind(this)}
                 onSubmit={this.onSubmit.bind(this)}>
                 <Errors />
