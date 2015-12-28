@@ -2,10 +2,13 @@ import React from 'react';
 import { Form, Input, Errors } from 'react-formable';
 import JSONViewer from '../../../components/JSONViewer';
 
-export default class BasicExample extends React.Component {
+export default class BasicForm extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            success: false
+        }
     }
 
     onChange(form) {
@@ -15,8 +18,9 @@ export default class BasicExample extends React.Component {
     }
 
     onSubmit(form) {
-        if (form.valid)
-            alert('Tada!');
+        this.setState({
+            success: form.valid
+        })
     }
 
     //TODO: replace this with a stock validator once it's written
@@ -24,6 +28,12 @@ export default class BasicExample extends React.Component {
         return (value) => {
             if (!value)
                 return message || 'Required field missing!';
+        }
+    }
+
+    renderSuccess() {
+        if (this.state.success) {
+            return <div className="formSuccess">Form submitted</div>;
         }
     }
 
@@ -36,7 +46,8 @@ export default class BasicExample extends React.Component {
             <h3>The Form</h3>
             <Form ref="form" onChange={this.onChange.bind(this)}
                 onSubmit={this.onSubmit.bind(this)}>
-                <Errors />
+                <Errors className="formErrors" />
+                {this.renderSuccess()}
                 <div>
                     <label>First name *</label>
                     <Input name="firstname" type="text"
