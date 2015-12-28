@@ -9,7 +9,7 @@ const links = [
 	{ link: 'docs', title: 'Docs' }
 ];
 
-export default function Sidebar({  subLinks=[], style, activePath }) {
+export default function Sidebar({ subLinks=[], style, activePath }) {
     activePath = activePath.split('/').pop();
 
     const navLinks = links.map(({ link, title }) =>
