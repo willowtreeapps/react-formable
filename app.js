@@ -27,7 +27,69 @@ var history = (0, _history.useBasename)(_history.createHistory)({
     _routes2['default']
 ), document.getElementById('app'));
 
-},{"./routes":22,"history":undefined,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
+},{"./routes":25,"history":undefined,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _md = require('./md');
+
+var _md2 = _interopRequireDefault(_md);
+
+/**
+ * A component used to pretty display JSON using Markdown
+ */
+
+var JSONViewer = (function (_React$Component) {
+    _inherits(JSONViewer, _React$Component);
+
+    function JSONViewer() {
+        _classCallCheck(this, JSONViewer);
+
+        _get(Object.getPrototypeOf(JSONViewer.prototype), 'constructor', this).apply(this, arguments);
+    }
+
+    _createClass(JSONViewer, [{
+        key: 'render',
+        value: function render() {
+            var data = JSON.stringify(this.props.data, null, 2);
+            var mddata = '```json\n ' + data + ' \n```';
+
+            return _react2['default'].createElement(_md2['default'], { text: mddata });
+        }
+    }]);
+
+    return JSONViewer;
+})(_react2['default'].Component);
+
+exports['default'] = JSONViewer;
+
+JSONViewer.propTypes = {
+    data: _react.PropTypes.object.isRequired
+};
+
+JSONViewer.defaultProps = {
+    data: 'Empty object'
+};
+module.exports = exports['default'];
+
+},{"./md":4,"react":undefined}],3:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -54,7 +116,7 @@ function GHLogo() {
 
 module.exports = exports["default"];
 
-},{"react":undefined}],3:[function(require,module,exports){
+},{"react":undefined}],4:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -99,7 +161,7 @@ MarkdownViewer.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"marked":23,"react":undefined}],4:[function(require,module,exports){
+},{"marked":26,"react":undefined}],5:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -161,7 +223,7 @@ Page.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"./md":3,"./subsection":6,"react":undefined}],5:[function(require,module,exports){
+},{"./md":4,"./subsection":7,"react":undefined}],6:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -201,7 +263,7 @@ SmoothLink.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"react":undefined,"smoothscroll":24}],6:[function(require,module,exports){
+},{"react":undefined,"smoothscroll":27}],7:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -249,7 +311,7 @@ Subsection.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"./md":3,"react":undefined}],7:[function(require,module,exports){
+},{"./md":4,"react":undefined}],8:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -276,7 +338,7 @@ function GHLogo() {
 
 module.exports = exports["default"];
 
-},{"react":undefined}],8:[function(require,module,exports){
+},{"react":undefined}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -385,7 +447,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./footer":17,"./header":19,"./sidebar":21,"react":undefined}],9:[function(require,module,exports){
+},{"./footer":20,"./header":22,"./sidebar":24,"react":undefined}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -431,7 +493,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"react":undefined}],10:[function(require,module,exports){
+},{"../../components/page":5,"react":undefined}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -493,7 +555,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"./subsections/errors":11,"./subsections/fieldlist":12,"./subsections/fieldset":13,"./subsections/form":14,"./subsections/input":15,"react":undefined}],11:[function(require,module,exports){
+},{"../../components/page":5,"./subsections/errors":12,"./subsections/fieldlist":13,"./subsections/fieldset":14,"./subsections/form":15,"./subsections/input":16,"react":undefined}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -507,7 +569,7 @@ exports.link = link;
 var markdown = '\nA component which soaks up and displays form errors. You can think of `Errors` like it is a placeholder. Wherever you place it, errors will be rendered there.\n\n**NB**: Make sure to place this component *within* the `Form` tag.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| scoped | boolean | false | **EXPERIMENTAL:** Only displays form errors in relation to the elements nearest parent |\n| additionalErrors | array[string] | [] | Any additional errors you would want to render to the screen can be passed down as an array of strings. |\n| renderError | function(error) => node | identity | If you want to overwrite how errors are rendered, you can do so by providing a callback to errors. This function will receive each error and will return what you want to be rendered as your error. |\n';
 exports.markdown = markdown;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -521,7 +583,7 @@ exports.link = link;
 var markdown = '\n`Fieldlist` uses `Fieldset` under the hood to render each *direct* child it owns. This means if you nest `Fieldset`s within a `Fieldlist`, you will get some extra objects floating around. Similarly to `Fieldset`, validators return the subtree that the `Fieldlist` represents.\n\n| Property | Type | Default| Description |\n| :------- | :--- | :----- | :---------- |\n| validators | array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n';
 exports.markdown = markdown;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -535,7 +597,7 @@ exports.link = link;
 var markdown = '\n`Fieldset`s are where most of the magic happens. They let us group together similar fields into smaller bite-sized objects. We can use these within individual forms, or make reusable form components and use them all over the place.\n\nOne important thing to understand: `Fieldset`s will always make an object with the `name` provided. If you use a `Fieldset` within a `Fieldlist`, you will have a nested object with the name of the `Fieldset`.\n\nOne last thing to keep in mind: you can attach validators to `Fieldset`s. Instead of a primitive passed down as the first param, it will be the subtree that the `Fieldset` represents. Any errors returned from a `Fieldset`s validators will skip `fieldErrors` and go directly to `errors`.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n\n';
 exports.markdown = markdown;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -549,7 +611,7 @@ exports.link = link;
 var markdown = '\nThe top level `Form` component is what serializes your data.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| onChange| function(form) | undefined | A callback which will be called whenever any child input changes. Receives the serialized form object |\n| onSubmit | function(form) | undefined | A callback which will be called whenever the form is submitted. Receives the serialized form object |\n| showErrorsOnSubmit | boolean | true | A boolean to decide if errors should be shown on submit |\n| showErrorsOnChange | boolean(form) | false | A boolean to decide if errors should be shown on change |\n| validators | array[function(form)] | [] | An array of validators to run over the form. Usefull to capture business logic. Not automatically bound to the form. |\n\n\nThere are a handful of methods on the `Form` component which are useful. To access these, attach a `ref` to the `Form` and call them via `this.refs.refName.methodName();`.\n\n| Method | Params | Description |\n| :----- | :----- | :---------- |\n| serialize | | Returns the serialized form object |\n| showFieldErrors | | Passes down errors to inputs within the form |\n| clearFieldErrors | | Clears errors passed down to inputs within the form |\n';
 exports.markdown = markdown;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -563,12 +625,14 @@ exports.link = link;
 var markdown = '\nTo integrate inputs with `Form`s, you need to ensure two things.\n\n1. The input has a `getValue` method. This method returns the current value of the input.\n2. The input has to be able to work with your `refs`. This unfortunately means no stateless components.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| value | string | undefined | The value of the field |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n| fieldErrors | array[string] | [] | An array of string errors to pass down to the input. This is automatically filled via the form. You can overwrite this field if you want to manually show an error on an input |\n| validateOnBlur | boolean | false | A boolean which forces the field to wait until it fires a blur event to trigger form validation |\n';
 exports.markdown = markdown;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -580,13 +644,11 @@ var _componentsPage = require('../../components/page');
 
 var _componentsPage2 = _interopRequireDefault(_componentsPage);
 
-// import * as Basic from './subsections/basic';
-// import * as Advanced from './subsections/advanced';
+var _subsectionsBasic = require('./subsections/basic');
 
-var subsections = [
-    // Basic,
-    // Advanced
-];
+var Basic = _interopRequireWildcard(_subsectionsBasic);
+
+var subsections = [Basic];
 
 exports['default'] = _react2['default'].createClass({
     displayName: 'examples',
@@ -609,7 +671,183 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"react":undefined}],17:[function(require,module,exports){
+},{"../../components/page":5,"./subsections/basic":19,"react":undefined}],18:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactFormable = require('react-formable');
+
+var _componentsJSONViewer = require('../../../components/JSONViewer');
+
+var _componentsJSONViewer2 = _interopRequireDefault(_componentsJSONViewer);
+
+var BasicForm = (function (_React$Component) {
+    _inherits(BasicForm, _React$Component);
+
+    function BasicForm(props) {
+        _classCallCheck(this, BasicForm);
+
+        _get(Object.getPrototypeOf(BasicForm.prototype), 'constructor', this).call(this, props);
+        this.state = {
+            success: false
+        };
+    }
+
+    _createClass(BasicForm, [{
+        key: 'onChange',
+        value: function onChange(form) {
+            this.setState({
+                data: form
+            });
+        }
+    }, {
+        key: 'onSubmit',
+        value: function onSubmit(form) {
+            this.setState({
+                success: form.valid,
+                data: form
+            });
+        }
+
+        //TODO: replace this with a stock validator once it's written
+    }, {
+        key: 'requiredValidator',
+        value: function requiredValidator(message) {
+            return function (value) {
+                if (!value) return message || 'Required field missing!';
+            };
+        }
+    }, {
+        key: 'renderSuccess',
+        value: function renderSuccess() {
+            if (this.state.success) {
+                return _react2['default'].createElement(
+                    'div',
+                    { className: 'formSuccess' },
+                    'Form submitted'
+                );
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2['default'].createElement(
+                'div',
+                { className: 'exampleForm' },
+                _react2['default'].createElement(
+                    'h3',
+                    null,
+                    'The Form'
+                ),
+                _react2['default'].createElement(
+                    _reactFormable.Form,
+                    { ref: 'form', onChange: this.onChange.bind(this),
+                        onSubmit: this.onSubmit.bind(this) },
+                    _react2['default'].createElement(_reactFormable.Errors, { className: 'formErrors' }),
+                    this.renderSuccess(),
+                    _react2['default'].createElement(
+                        'div',
+                        null,
+                        _react2['default'].createElement(
+                            'label',
+                            null,
+                            'First name *'
+                        ),
+                        _react2['default'].createElement(_reactFormable.Input, { name: 'firstname', type: 'text',
+                            validators: [this.requiredValidator('First name is required')] })
+                    ),
+                    _react2['default'].createElement(
+                        'div',
+                        null,
+                        _react2['default'].createElement(
+                            'label',
+                            null,
+                            'Last name *'
+                        ),
+                        _react2['default'].createElement(_reactFormable.Input, { name: 'lastname', type: 'text',
+                            validators: [this.requiredValidator('Last name is required')] })
+                    ),
+                    _react2['default'].createElement(
+                        'div',
+                        null,
+                        _react2['default'].createElement(
+                            'label',
+                            null,
+                            'Phone number'
+                        ),
+                        _react2['default'].createElement(_reactFormable.Input, { name: 'phone', type: 'text' })
+                    ),
+                    _react2['default'].createElement(
+                        'div',
+                        null,
+                        _react2['default'].createElement('input', { type: 'submit', value: 'Submit' })
+                    )
+                ),
+                _react2['default'].createElement('br', null),
+                _react2['default'].createElement(
+                    'h3',
+                    null,
+                    'The Form Model'
+                ),
+                _react2['default'].createElement(_componentsJSONViewer2['default'], this.state)
+            );
+        }
+    }]);
+
+    return BasicForm;
+})(_react2['default'].Component);
+
+exports['default'] = BasicForm;
+module.exports = exports['default'];
+
+},{"../../../components/JSONViewer":2,"react":undefined,"react-formable":undefined}],19:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _BasicForm = require('./BasicForm');
+
+var _BasicForm2 = _interopRequireDefault(_BasicForm);
+
+var title = 'Basic';
+exports.title = title;
+var link = 'basic';
+
+exports.link = link;
+var markdown = 'Here is a simple form. It\'s got a couple of fields and a bit of validation, easy right?\n\n\nThe JSX to render the form looks like the following:\n\n### The JSX\n\n```\n<Form ref=\'form\' onChange={this.onChange.bind(this)}\n    onSubmit={this.onSubmit.bind(this)}>\n    <Errors />\n    <div>\n        <label>First name *</label>\n        <Input name=\'firstname\' type=\'text\'\n            validators={[this.requiredValidator(\'First name is required\')]} />\n    </div>\n    <div>\n        <label>Last name *</label>\n        <Input name=\'lastname\' type=\'text\'\n            validators={[this.requiredValidator(\'Last name is required\')]} />\n    </div>\n    <div>\n        <label>Phone number</label>\n        <Input name=\'phone\' type=\'text\' />\n    </div>\n    <div>\n        <input type=\'submit\' value=\'Submit\' />\n    </div>\n</Form>\n```\n\n';
+
+exports.markdown = markdown;
+var code = function code() {
+    return _react2['default'].createElement(_BasicForm2['default'], null);
+};
+exports.code = code;
+
+},{"./BasicForm":18,"react":undefined}],20:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -654,7 +892,7 @@ function Footer() {
 
 module.exports = exports['default'];
 
-},{"../components/ghLogo":2,"../components/wtLogo":7,"react":undefined}],18:[function(require,module,exports){
+},{"../components/ghLogo":3,"../components/wtLogo":8,"react":undefined}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -700,7 +938,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"react":undefined}],19:[function(require,module,exports){
+},{"../../components/page":5,"react":undefined}],22:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -748,7 +986,7 @@ function Header() {
 
 module.exports = exports['default'];
 
-},{"../components/ghLogo":2,"react":undefined,"react-router":undefined}],20:[function(require,module,exports){
+},{"../components/ghLogo":3,"react":undefined,"react-router":undefined}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -792,7 +1030,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":4,"react":undefined}],21:[function(require,module,exports){
+},{"../../components/page":5,"react":undefined}],24:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -869,7 +1107,7 @@ Sidebar.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"../components/smoothLink":5,"react":undefined,"react-router":undefined}],22:[function(require,module,exports){
+},{"../components/smoothLink":6,"react":undefined,"react-router":undefined}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -920,7 +1158,7 @@ exports['default'] = _react2['default'].createElement(
 );
 module.exports = exports['default'];
 
-},{"./controllers/base":8,"./controllers/demo/demo":9,"./controllers/docs/docs":10,"./controllers/examples/examples":16,"./controllers/getting-started/getting-started":18,"./controllers/home/home":20,"react":undefined,"react-router":undefined}],23:[function(require,module,exports){
+},{"./controllers/base":9,"./controllers/demo/demo":10,"./controllers/docs/docs":11,"./controllers/examples/examples":17,"./controllers/getting-started/getting-started":21,"./controllers/home/home":23,"react":undefined,"react-router":undefined}],26:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
@@ -2209,7 +2447,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],24:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (root, smoothScroll) {
   'use strict';
 
