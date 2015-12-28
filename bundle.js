@@ -143,7 +143,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./helpers/flatten":8,"./helpers/identity":9,"./helpers/values":11,"react":undefined}],3:[function(require,module,exports){
+},{"./helpers/flatten":8,"./helpers/identity":9,"./helpers/values":12,"react":undefined}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -219,7 +219,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./fieldset":4,"./helpers/values":11,"react":undefined,"warning":1}],4:[function(require,module,exports){
+},{"./fieldset":4,"./helpers/values":12,"react":undefined,"warning":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -313,7 +313,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./helpers/cloneChildren":6,"./helpers/identity":9,"./helpers/values":11,"react":undefined,"warning":1}],5:[function(require,module,exports){
+},{"./helpers/cloneChildren":6,"./helpers/identity":9,"./helpers/values":12,"react":undefined,"warning":1}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -668,7 +668,7 @@ exports['default'] = _react2['default'].createClass({
     }
 });
 
-},{"./helpers/cloneChildren":6,"./helpers/compose":7,"./helpers/identity":9,"./helpers/uniq":10,"./helpers/values":11,"react":undefined,"warning":1}],6:[function(require,module,exports){
+},{"./helpers/cloneChildren":6,"./helpers/compose":7,"./helpers/identity":9,"./helpers/uniq":11,"./helpers/values":12,"react":undefined,"warning":1}],6:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -685,8 +685,7 @@ var _react2 = _interopRequireDefault(_react);
 
 /**
  * Clones a child subtree, when we encounter a component that passes our
- * predicate pass it down additional props. This function only goes one level
- * deep. Once it encounters a child to clone, it halts. 
+ * predicate pass it down additional props.
  *
  * @param  {Function} predicate A predicate function which recives the child
  * @param  {Function} getProps  A function which recives the component and
@@ -770,6 +769,21 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports["default"] = isNil;
+
+function isNil(x) {
+    return x == null;
+}
+
+module.exports = exports["default"];
+
+},{}],11:[function(require,module,exports){
+/*eslint func-style:0*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports["default"] = uniq;
 
 function uniq(arr) {
@@ -780,7 +794,7 @@ function uniq(arr) {
 
 module.exports = exports["default"];
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -800,7 +814,7 @@ function values(obj) {
 
 module.exports = exports["default"];
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -867,7 +881,131 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"react":undefined}],"react-formable":[function(require,module,exports){
+},{"react":undefined}],14:[function(require,module,exports){
+/*eslint func-style:0*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = greaterThan;
+
+function greaterThan(greaterThanValue, errorMessage) {
+    return function (value) {
+        if (greaterThanValue > parseFloat(value, 10)) {
+            return errorMessage;
+        }
+    };
+}
+
+module.exports = exports["default"];
+
+},{}],15:[function(require,module,exports){
+/*eslint func-style:0*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = lessThan;
+
+function lessThan(lessThanValue, errorMessage) {
+    return function (value) {
+        if (lessThanValue < parseFloat(value, 10)) {
+            return errorMessage;
+        }
+    };
+}
+
+module.exports = exports["default"];
+
+},{}],16:[function(require,module,exports){
+/*eslint func-style:0*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = maxLength;
+
+function maxLength(maxLength, errorMessage) {
+    return function (value) {
+        if (value.length > maxLength) {
+            return errorMessage;
+        }
+    };
+}
+
+module.exports = exports["default"];
+
+},{}],17:[function(require,module,exports){
+/*eslint func-style:0*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = minLength;
+
+function minLength(minLength, errorMessage) {
+    return function (value) {
+        if (value.length < minLength) {
+            return errorMessage;
+        }
+    };
+}
+
+module.exports = exports["default"];
+
+},{}],18:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports['default'] = required;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _helpersIsNil = require('../helpers/isNil');
+
+var _helpersIsNil2 = _interopRequireDefault(_helpersIsNil);
+
+/*eslint func-style:0*/
+
+function required(errorMessage) {
+    return function (value) {
+        if ((0, _helpersIsNil2['default'])(value) || !value.length) {
+            return errorMessage;
+        }
+    };
+}
+
+module.exports = exports['default'];
+
+},{"../helpers/isNil":10}],19:[function(require,module,exports){
+/*eslint func-style:0*/
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports["default"] = regexp;
+
+function regexp(regexp, errorMessage) {
+    return function (value) {
+        var r = regexp && regexp.test ? regexp : new RegExp(regexp);
+
+        if (r.test(value)) {
+            return errorMessage;
+        }
+    };
+}
+
+module.exports = exports["default"];
+
+},{}],"react-formable":[function(require,module,exports){
+// Components
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -896,12 +1034,41 @@ var _errors = require('./errors');
 
 var _errors2 = _interopRequireDefault(_errors);
 
+// Validators
+
+var _validatorsRequired = require('./validators/required');
+
+var _validatorsRequired2 = _interopRequireDefault(_validatorsRequired);
+
+var _validatorsGreaterThan = require('./validators/greaterThan');
+
+var _validatorsGreaterThan2 = _interopRequireDefault(_validatorsGreaterThan);
+
+var _validatorsLessThan = require('./validators/lessThan');
+
+var _validatorsLessThan2 = _interopRequireDefault(_validatorsLessThan);
+
+var _validatorsMaxLength = require('./validators/maxLength');
+
+var _validatorsMaxLength2 = _interopRequireDefault(_validatorsMaxLength);
+
+var _validatorsMinLength = require('./validators/minLength');
+
+var _validatorsMinLength2 = _interopRequireDefault(_validatorsMinLength);
+
+var _validatorsRegexp = require('./validators/regexp');
+
+var _validatorsRegexp2 = _interopRequireDefault(_validatorsRegexp);
+
+var validators = { required: _validatorsRequired2['default'], greaterThan: _validatorsGreaterThan2['default'], lessThan: _validatorsLessThan2['default'], maxLength: _validatorsMaxLength2['default'], minLength: _validatorsMinLength2['default'], test: _validatorsRegexp2['default'] };
+
 exports.Form = _form2['default'];
 exports.getBlankForm = _form.getBlankForm;
 exports.Fieldset = _fieldset2['default'];
 exports.Fieldlist = _fieldlist2['default'];
 exports.Input = _inputsInput2['default'];
 exports.Errors = _errors2['default'];
+exports.validators = validators;
 exports['default'] = _form2['default'];
 
-},{"./errors":2,"./fieldlist":3,"./fieldset":4,"./form":5,"./inputs/input":12}]},{},[]);
+},{"./errors":2,"./fieldlist":3,"./fieldset":4,"./form":5,"./inputs/input":13,"./validators/greaterThan":14,"./validators/lessThan":15,"./validators/maxLength":16,"./validators/minLength":17,"./validators/regexp":18,"./validators/required":19}]},{},[]);
