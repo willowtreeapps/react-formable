@@ -33,6 +33,7 @@ export default class BasicExample extends React.Component {
         }
 
         return <div>
+            <h3>The Form</h3>
             <Form ref="form" onChange={this.onChange.bind(this)}
                 onSubmit={this.onSubmit.bind(this)}>
                 <Errors />
@@ -58,6 +59,7 @@ export default class BasicExample extends React.Component {
                 </div>
             </Form>
             <br />
+            <h3>The Form Model</h3>
             <JSONViewer {...this.state} />
         </div>;
     }
