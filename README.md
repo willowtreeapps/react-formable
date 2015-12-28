@@ -10,6 +10,8 @@
 
 `npm start`
 
+Then open localhost:8000 in a browser.
+
 ## Examples
 
 ### Basic usage
