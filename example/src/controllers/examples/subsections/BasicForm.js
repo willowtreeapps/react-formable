@@ -38,11 +38,7 @@ export default class BasicForm extends React.Component {
     }
 
     render() {
-        const inputStyles = {
-            marginLeft: '10'
-        }
-
-        return <div>
+        return <div className="exampleForm">
             <h3>The Form</h3>
             <Form ref="form" onChange={this.onChange.bind(this)}
                 onSubmit={this.onSubmit.bind(this)}>
@@ -51,19 +47,16 @@ export default class BasicForm extends React.Component {
                 <div>
                     <label>First name *</label>
                     <Input name="firstname" type="text"
-                        validators={[this.requiredValidator('First name is required')]}
-                        style={inputStyles} />
+                        validators={[this.requiredValidator('First name is required')]} />
                 </div>
                 <div>
                     <label>Last name *</label>
                     <Input name="lastname" type="text"
-                        validators={[this.requiredValidator('Last name is required')]}
-                        style={inputStyles} />
+                        validators={[this.requiredValidator('Last name is required')]} />
                 </div>
                 <div>
                     <label>Phone number</label>
-                    <Input name="phone" type="text"
-                        style={inputStyles} />
+                    <Input name="phone" type="text" />
                 </div>
                 <div>
                     <input type="submit" value="Submit" />
