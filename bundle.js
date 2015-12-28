@@ -685,7 +685,8 @@ var _react2 = _interopRequireDefault(_react);
 
 /**
  * Clones a child subtree, when we encounter a component that passes our
- * predicate pass it down additional props.
+ * predicate pass it down additional props. This function only goes one level
+ * deep. Once it encounters a child to clone, it halts. 
  *
  * @param  {Function} predicate A predicate function which recives the child
  * @param  {Function} getProps  A function which recives the component and

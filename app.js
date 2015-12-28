@@ -189,7 +189,7 @@ var _subsection2 = _interopRequireDefault(_subsection);
 
 function Page(props) {
     var _props$title = props.title;
-    var title = _props$title === undefined ? 'Title' : _props$title;
+    var title = _props$title === undefined ? '' : _props$title;
     var _props$className = props.className;
     var className = _props$className === undefined ? '' : _props$className;
     var description = props.description;
@@ -199,7 +199,7 @@ function Page(props) {
     return _react2['default'].createElement(
         'div',
         { className: className + ' page' },
-        _react2['default'].createElement(
+        title && title.length && _react2['default'].createElement(
             'h1',
             null,
             title
@@ -263,7 +263,7 @@ SmoothLink.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"react":undefined,"smoothscroll":27}],7:[function(require,module,exports){
+},{"react":undefined,"smoothscroll":28}],7:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -282,9 +282,13 @@ var _md = require('./md');
 
 var _md2 = _interopRequireDefault(_md);
 
+var _reactWaypoint = require('react-waypoint');
+
+var _reactWaypoint2 = _interopRequireDefault(_reactWaypoint);
+
 function Subsection(props) {
     var _props$title = props.title;
-    var title = _props$title === undefined ? 'Subsection' : _props$title;
+    var title = _props$title === undefined ? '' : _props$title;
     var markdown = props.markdown;
     var link = props.link;
     var Code = props.code;
@@ -292,7 +296,14 @@ function Subsection(props) {
     return _react2['default'].createElement(
         'div',
         { id: link, className: 'subsection' },
-        _react2['default'].createElement(
+        _react2['default'].createElement(_reactWaypoint2['default'], { onEnter: function () {
+                return console.log('onEnter: ' + link);
+            },
+            onLeave: function () {
+                return console.log('onLeave: ' + link);
+            },
+            threshold: 1 }),
+        title && title.length && _react2['default'].createElement(
             'h3',
             null,
             title
@@ -311,7 +322,44 @@ Subsection.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"./md":4,"react":undefined}],8:[function(require,module,exports){
+},{"./md":4,"react":undefined,"react-waypoint":27}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports['default'] = Well;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+/*eslint func-style:0*/
+
+function Well(props) {
+    return _react2['default'].createElement(
+        'div',
+        _extends({}, props, { className: props.className + ' well' }),
+        props.children
+    );
+}
+
+Well.propTypes = {
+    children: _react.PropTypes.node,
+    className: _react.PropTypes.string
+};
+
+Well.defaultProps = {
+    className: ''
+};
+module.exports = exports['default'];
+
+},{"react":undefined}],9:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -338,7 +386,7 @@ function GHLogo() {
 
 module.exports = exports["default"];
 
-},{"react":undefined}],9:[function(require,module,exports){
+},{"react":undefined}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -447,53 +495,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./footer":20,"./header":22,"./sidebar":24,"react":undefined}],10:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _componentsPage = require('../../components/page');
-
-var _componentsPage2 = _interopRequireDefault(_componentsPage);
-
-// import * as Basic from './subsections/basic';
-// import * as Advanced from './subsections/advanced';
-
-var subsections = [
-    // Basic,
-    // Advanced
-];
-
-exports['default'] = _react2['default'].createClass({
-    displayName: 'demo',
-
-    propTypes: {
-        children: _react.PropTypes.node,
-        setSublinks: _react.PropTypes.func
-    },
-
-    componentWillMount: function componentWillMount() {
-        this.props.setSublinks(subsections);
-        window.scrollTo(0, 0);
-    },
-
-    render: function render() {
-        return _react2['default'].createElement(_componentsPage2['default'], { title: 'Demo',
-            className: 'demo',
-            subsections: subsections });
-    }
-});
-module.exports = exports['default'];
-
-},{"../../components/page":5,"react":undefined}],11:[function(require,module,exports){
+},{"./footer":20,"./header":22,"./sidebar":24,"react":undefined}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -892,7 +894,7 @@ function Footer() {
 
 module.exports = exports['default'];
 
-},{"../components/ghLogo":3,"../components/wtLogo":8,"react":undefined}],21:[function(require,module,exports){
+},{"../components/ghLogo":3,"../components/wtLogo":9,"react":undefined}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -917,7 +919,7 @@ var subsections = [
     // Advanced
 ];
 
-var description = '\nLooking to get started with react-formable? Awesome!\n\n## Installation\n\n**NPM**\n\n    npm install react-formable --save\n\n**Bower**\n\n    bower install react-formable --save\n\n## Quickstart\n\nWe can include the library in several ways.\n\n    // ES6 Imports\n    import Form, { Input, Errors } from \'react-formable\';\n\n    // require\n    var Formable = require(\'react-formable\');\n    var Form = Formable.Form;\n    var Input = Formable.Input;\n    var Errors = Formable.Errors;\n\n    // require with de-structuring\n    var { Form, Input, Errors } = require(\'react-formable\');\n\nNow lets render a simple login form that will display errors.\n\n    const LoginForm = React.createClass({\n        onSubmit(form) {\n            console.log(form);\n        },\n\n        render() {\n            return <Form onSubmit={this.onSubmit}>\n                <Input name="username" type="text" />\n                <Input name="password" type="password" />\n                <button>Login</button>\n                <Errors />\n            </Form>;\n        }\n    });\n';
+var description = '\nLooking to get started with react-formable? Awesome!\n\n## Installation\n\n**NPM**\n\n    npm install react-formable --save\n\n**Bower**\n\n    bower install react-formable --save\n\n## Quickstart\n\n    // ES6 Imports\n    import Form, { Input, Errors } from \'react-formable\';\n\n    // require\n    var Formable = require(\'react-formable\');\n    var Form = Formable.Form;\n    var Input = Formable.Input;\n    var Errors = Formable.Errors;\n\n    // require with de-structuring\n    var { Form, Input, Errors } = require(\'react-formable\');\n\nNow lets render a simple login form that will display errors.\n\n    const LoginForm = React.createClass({\n        onSubmit(form) {\n            console.log(form);\n        },\n\n        render() {\n            return <Form onSubmit={this.onSubmit}>\n                <Input name="username" type="text" />\n                <Input name="password" type="password" />\n                <button>Login</button>\n                <Errors />\n            </Form>;\n        }\n    });\n';
 
 exports['default'] = _react2['default'].createClass({
     displayName: 'getting-started',
@@ -1006,13 +1008,11 @@ var _componentsPage = require('../../components/page');
 
 var _componentsPage2 = _interopRequireDefault(_componentsPage);
 
-// import * as Basic from './subsections/basic';
-// import * as Advanced from './subsections/advanced';
+var _componentsWell = require('../../components/well');
 
-var subsections = [
-    // Basic,
-    // Advanced
-];
+var _componentsWell2 = _interopRequireDefault(_componentsWell);
+
+var _reactRouter = require('react-router');
 
 exports['default'] = _react2['default'].createClass({
     displayName: 'home',
@@ -1026,14 +1026,72 @@ exports['default'] = _react2['default'].createClass({
     },
 
     render: function render() {
-        return _react2['default'].createElement(_componentsPage2['default'], { title: 'Home',
-            className: 'home',
-            subsections: subsections });
+        return _react2['default'].createElement(
+            'div',
+            { className: 'home' },
+            _react2['default'].createElement(
+                'h2',
+                null,
+                'What is react-formable?'
+            ),
+            _react2['default'].createElement(
+                'p',
+                null,
+                'React-Formable is a form library that gets out of your way. It makes no assumptions on schemas, inputs, structure, or favorite foods.'
+            ),
+            _react2['default'].createElement(
+                'p',
+                null,
+                'Inspiried by functional libraries such as ',
+                _react2['default'].createElement(
+                    'a',
+                    { href: 'http://ramdajs.com/', target: '_blank' },
+                    'ramdajs'
+                ),
+                ', react-formable favors predictable discrete components which you compose together to build complex forms. Nested forms? List forms? Conditional forms that behave certain ways on the full moon? No problem, react-formable has your back.'
+            ),
+            _react2['default'].createElement(
+                'p',
+                null,
+                'Check out the ',
+                _react2['default'].createElement(
+                    _reactRouter.Link,
+                    { to: '/getting-started' },
+                    'getting started'
+                ),
+                ' page for installation help. Looking for proof why its so cool? Head on over to our ',
+                _react2['default'].createElement(
+                    _reactRouter.Link,
+                    { to: '/examples' },
+                    'examples'
+                ),
+                ' to see whats up!'
+            ),
+            _react2['default'].createElement(
+                _componentsWell2['default'],
+                { className: 'github-well' },
+                _react2['default'].createElement(
+                    'h3',
+                    null,
+                    'Like it? Love it? Want to marry it?'
+                ),
+                _react2['default'].createElement(
+                    'p',
+                    null,
+                    'Contribute to our repo on GitHub.'
+                ),
+                _react2['default'].createElement(
+                    'a',
+                    { className: 'btn', href: 'https://github.com/willowtreeapps/react-formable', target: '_blank' },
+                    'GitHub'
+                )
+            )
+        );
     }
 });
 module.exports = exports['default'];
 
-},{"../../components/page":5,"react":undefined}],24:[function(require,module,exports){
+},{"../../components/page":5,"../../components/well":8,"react":undefined,"react-router":undefined}],24:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -1054,7 +1112,7 @@ var _componentsSmoothLink = require('../components/smoothLink');
 
 var _componentsSmoothLink2 = _interopRequireDefault(_componentsSmoothLink);
 
-var links = [{ link: 'getting-started', title: 'Getting Started' }, { link: 'demo', title: 'Demo' }, { link: 'examples', title: 'Examples' }, { link: 'docs', title: 'Docs' }];
+var links = [{ link: 'getting-started', title: 'Getting Started' }, { link: 'examples', title: 'Examples' }, { link: 'docs', title: 'Docs' }];
 
 function Sidebar(_ref) {
     var _ref$subLinks = _ref.subLinks;
@@ -1133,10 +1191,6 @@ var _controllersHomeHome = require('./controllers/home/home');
 
 var _controllersHomeHome2 = _interopRequireDefault(_controllersHomeHome);
 
-var _controllersDemoDemo = require('./controllers/demo/demo');
-
-var _controllersDemoDemo2 = _interopRequireDefault(_controllersDemoDemo);
-
 var _controllersExamplesExamples = require('./controllers/examples/examples');
 
 var _controllersExamplesExamples2 = _interopRequireDefault(_controllersExamplesExamples);
@@ -1154,14 +1208,13 @@ exports['default'] = _react2['default'].createElement(
 	{ path: '/', component: _controllersBase2['default'] },
 	_react2['default'].createElement(_reactRouter.IndexRoute, { component: _controllersHomeHome2['default'] }),
 	_react2['default'].createElement(_reactRouter.Route, { path: 'home', component: _controllersHomeHome2['default'] }),
-	_react2['default'].createElement(_reactRouter.Route, { path: 'demo', component: _controllersDemoDemo2['default'] }),
 	_react2['default'].createElement(_reactRouter.Route, { path: 'examples', component: _controllersExamplesExamples2['default'] }),
 	_react2['default'].createElement(_reactRouter.Route, { path: 'docs', component: _controllersDocsDocs2['default'] }),
 	_react2['default'].createElement(_reactRouter.Route, { path: 'getting-started', component: _controllersGettingStartedGettingStarted2['default'] })
 );
 module.exports = exports['default'];
 
-},{"./controllers/base":9,"./controllers/demo/demo":10,"./controllers/docs/docs":11,"./controllers/examples/examples":17,"./controllers/getting-started/getting-started":21,"./controllers/home/home":23,"react":undefined,"react-router":undefined}],26:[function(require,module,exports){
+},{"./controllers/base":10,"./controllers/docs/docs":11,"./controllers/examples/examples":17,"./controllers/getting-started/getting-started":21,"./controllers/home/home":23,"react":undefined,"react-router":undefined}],26:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
@@ -2451,6 +2504,213 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],27:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+var PropTypes = React.PropTypes;
+
+var POSITIONS = {
+  above: 'above',
+  inside: 'inside',
+  below: 'below'
+};
+
+/**
+ * Calls a function when you scroll to the element.
+ */
+var Waypoint = React.createClass({
+  displayName: 'Waypoint',
+
+  propTypes: {
+    // threshold is percentage of the height of the visible part of the
+    // scrollable ancestor (e.g. 0.1)
+    threshold: PropTypes.number,
+    onEnter: PropTypes.func,
+    onLeave: PropTypes.func
+  },
+
+  statics: {
+    above: POSITIONS.above,
+    below: POSITIONS.below
+  },
+
+  /**
+   * @return {Object}
+   */
+  getDefaultProps: function getDefaultProps() {
+    return {
+      threshold: 0,
+      onEnter: function onEnter() {},
+      onLeave: function onLeave() {}
+    };
+  },
+
+  componentDidMount: function componentDidMount() {
+    this.scrollableAncestor = this._findScrollableAncestor();
+    this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
+    window.addEventListener('resize', this._handleScroll);
+    this._handleScroll(null);
+  },
+
+  componentDidUpdate: function componentDidUpdate() {
+    // The element may have moved.
+    this._handleScroll(null);
+  },
+
+  componentWillUnmount: function componentWillUnmount() {
+    if (this.scrollableAncestor) {
+      // At the time of unmounting, the scrollable ancestor might no longer
+      // exist. Guarding against this prevents the following error:
+      //
+      //   Cannot read property 'removeEventListener' of undefined
+      this.scrollableAncestor.removeEventListener('scroll', this._handleScroll);
+    }
+    window.removeEventListener('resize', this._handleScroll);
+  },
+
+  /**
+   * Traverses up the DOM to find an ancestor container which has an overflow
+   * style that allows for scrolling.
+   *
+   * @return {Object} the closest ancestor element with an overflow style that
+   *   allows for scrolling. If none is found, the `window` object is returned
+   *   as a fallback.
+   */
+  _findScrollableAncestor: function _findScrollableAncestor() {
+    var node = ReactDOM.findDOMNode(this);
+
+    while (node.parentNode) {
+      node = node.parentNode;
+
+      if (node === document) {
+        // This particular node does not have a computed style.
+        continue;
+      }
+
+      if (node === document.documentElement) {
+        // This particular node does not have a scroll bar, it uses the window.
+        continue;
+      }
+
+      var style = window.getComputedStyle(node);
+      var overflowY = style.getPropertyValue('overflow-y') || style.getPropertyValue('overflow');
+
+      if (overflowY === 'auto' || overflowY === 'scroll') {
+        return node;
+      }
+    }
+
+    // A scrollable ancestor element was not found, which means that we need to
+    // do stuff on window.
+    return window;
+  },
+
+  /**
+   * @param {Object} event the native scroll event coming from the scrollable
+   *   ancestor, or resize event coming from the window. Will be undefined if
+   *   called by a React lifecyle method
+   */
+  _handleScroll: function _handleScroll(event) {
+    if (!this.isMounted()) {
+      return;
+    }
+
+    var currentPosition = this._currentPosition();
+    var previousPosition = this._previousPosition || null;
+
+    // Save previous position as early as possible to prevent cycles
+    this._previousPosition = currentPosition;
+
+    if (previousPosition === currentPosition) {
+      // No change since last trigger
+      return;
+    }
+
+    if (currentPosition === POSITIONS.inside) {
+      this.props.onEnter.call(this, event, previousPosition);
+    } else if (previousPosition === POSITIONS.inside) {
+      this.props.onLeave.call(this, event, currentPosition);
+    }
+
+    var isRapidScrollDown = previousPosition === POSITIONS.below && currentPosition === POSITIONS.above;
+    var isRapidScrollUp = previousPosition === POSITIONS.above && currentPosition === POSITIONS.below;
+    if (isRapidScrollDown || isRapidScrollUp) {
+      // If the scroll event isn't fired often enough to occur while the
+      // waypoint was visible, we trigger both callbacks anyway.
+      this.props.onEnter.call(this, event, previousPosition);
+      this.props.onLeave.call(this, event, currentPosition);
+    }
+  },
+
+  /**
+   * @param {Object} node
+   * @return {Number}
+   */
+  _distanceToTopOfScrollableAncestor: function _distanceToTopOfScrollableAncestor(node) {
+    if (this.scrollableAncestor !== window && !node.offsetParent) {
+      throw new Error('The scrollable ancestor of Waypoint needs to have positioning to ' + 'properly determine position of Waypoint (e.g. `position: relative;`)');
+    }
+
+    if (this.scrollableAncestor === window) {
+      var rect = node.getBoundingClientRect();
+      return rect.top + window.pageYOffset - document.documentElement.clientTop;
+    }
+
+    if (node.offsetParent === this.scrollableAncestor || !node.offsetParent) {
+      return node.offsetTop;
+    } else {
+      return node.offsetTop + this._distanceToTopOfScrollableAncestor(node.offsetParent);
+    }
+  },
+
+  /**
+   * @return {boolean} true if scrolled down almost to the end of the scrollable
+   *   ancestor element.
+   */
+  _currentPosition: function _currentPosition() {
+    var waypointTop = this._distanceToTopOfScrollableAncestor(ReactDOM.findDOMNode(this));
+    var contextHeight = undefined;
+    var contextScrollTop = undefined;
+
+    if (this.scrollableAncestor === window) {
+      contextHeight = window.innerHeight;
+      contextScrollTop = window.pageYOffset;
+    } else {
+      contextHeight = this.scrollableAncestor.offsetHeight;
+      contextScrollTop = this.scrollableAncestor.scrollTop;
+    }
+
+    var thresholdPx = contextHeight * this.props.threshold;
+
+    var isBelowTop = contextScrollTop <= waypointTop + thresholdPx;
+    if (!isBelowTop) {
+      return POSITIONS.above;
+    }
+
+    var contextBottom = contextScrollTop + contextHeight;
+    var isAboveBottom = contextBottom >= waypointTop - thresholdPx;
+    if (!isAboveBottom) {
+      return POSITIONS.below;
+    }
+
+    return POSITIONS.inside;
+  },
+
+  /**
+   * @return {Object}
+   */
+  render: function render() {
+    // We need an element that we can locate in the DOM to determine where it is
+    // rendered relative to the top of its context.
+    return React.createElement('span', { style: { fontSize: 0 } });
+  }
+});
+
+module.exports = Waypoint;
+
+},{"react":undefined,"react-dom":undefined}],28:[function(require,module,exports){
 (function (root, smoothScroll) {
   'use strict';
 
