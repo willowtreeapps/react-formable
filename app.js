@@ -909,13 +909,15 @@ var _componentsPage = require('../../components/page');
 
 var _componentsPage2 = _interopRequireDefault(_componentsPage);
 
-// import * as Basic from './subsections/basic';
+//import * as Basic from './subsections/basic';
 // import * as Advanced from './subsections/advanced';
 
 var subsections = [
-    // Basic,
+    //Basic,
     // Advanced
 ];
+
+var description = '\nLooking to get started with react-formable? Awesome!\n\n## Installation\n\n**NPM**\n\n    npm install react-formable --save\n\n**Bower**\n\n    bower install react-formable --save\n\n## Quickstart\n\nWe can include the library in several ways.\n\n    // ES6 Imports\n    import Form, { Input, Errors } from \'react-formable\';\n\n    // require\n    var Formable = require(\'react-formable\');\n    var Form = Formable.Form;\n    var Input = Formable.Input;\n    var Errors = Formable.Errors;\n\n    // require with de-structuring\n    var { Form, Input, Errors } = require(\'react-formable\');\n\nNow lets render a simple login form that will display errors.\n\n    const LoginForm = React.createClass({\n        onSubmit(form) {\n            console.log(form);\n        },\n\n        render() {\n            return <Form onSubmit={this.onSubmit}>\n                <Input name="username" type="text" />\n                <Input name="password" type="password" />\n                <button>Login</button>\n                <Errors />\n            </Form>;\n        }\n    });\n';
 
 exports['default'] = _react2['default'].createClass({
     displayName: 'getting-started',
@@ -932,6 +934,7 @@ exports['default'] = _react2['default'].createClass({
 
     render: function render() {
         return _react2['default'].createElement(_componentsPage2['default'], { title: 'Getting Started',
+            description: description,
             className: 'getting-started',
             subsections: subsections });
     }

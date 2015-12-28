@@ -239,6 +239,7 @@ a:hover,
 pre,
 code {
   font-family: 'Inconsolata';
+  background-color: #F5F5F5;
 }
 pre {
   padding: 11px;
