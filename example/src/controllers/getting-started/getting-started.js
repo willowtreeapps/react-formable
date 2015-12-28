@@ -23,8 +23,6 @@ Looking to get started with react-formable? Awesome!
 
 ## Quickstart
 
-We can include the library in several ways.
-
     // ES6 Imports
     import Form, { Input, Errors } from 'react-formable';
 

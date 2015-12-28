@@ -5,7 +5,6 @@ import Smooth from '../components/smoothLink';
 
 const links = [
 	{ link: 'getting-started', title: 'Getting Started' },
-	{ link: 'demo', title: 'Demo' },
 	{ link: 'examples', title: 'Examples' },
 	{ link: 'docs', title: 'Docs' }
 ];

@@ -18,6 +18,11 @@
 @color-footer: #2e3c44;
 @color-code: #F5F5F5;
 
+// Sizes
+@padding: 24px;
+@padding-small: @padding/2;
+@padding-large: @padding*2;
+
 // ====================================
 // Components
 // ====================================
@@ -36,7 +41,7 @@ pre, code {
 }
 
 pre {
-    padding: 11px;
+    padding: @padding-small;
     border: 1px solid @color-border;
     border-radius: 3px;
     width: 100%;
@@ -114,7 +119,7 @@ body {
 
         nav {
             margin-left: auto;
-            padding: 34px;
+            padding: @padding-large;
 
         }
     }
@@ -129,7 +134,7 @@ body {
         background-color: @color-footer;
 
         .logos {
-            padding-top: 31px;
+            padding-top: @padding;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -150,7 +155,7 @@ body {
         background: @color-off-white;
         &:extend(#padded-container);
         border-right: 1px solid @color-border;
-        padding: 24px;
+        padding: @padding;
 
         a { color: @color-text; }
 
@@ -160,7 +165,7 @@ body {
     }
 
     .app-content {
-        padding: 24px 48px;
+        padding: @padding @padding-large;
         margin-left: 200px;
         max-width: 900px;
         // max-width: 800px;
@@ -184,10 +189,10 @@ table {
     width: 100%;
 
     th, td { border: 1px solid @color-border; }
-    td { padding: 12px; }
+    td { padding: @padding-small; }
     th {
         font-weight: bold;
-        padding: 12px;
+        padding: @padding-small;
      }
 
      tbody tr:nth-child(even) {
@@ -198,7 +203,7 @@ table {
 .docs {
     .subsection {
         border-top: 3px solid @color-off-white;
-        padding-bottom: 24px;
+        padding-bottom: @padding;
     }
 }
 
@@ -214,4 +219,29 @@ table {
 
 .formSuccess {
     color: green;
+}
+
+.well {
+    padding: @padding;
+    text-align: center;
+    background: @color-teal-light;
+    border-radius: 3px;
+}
+
+.github-well {
+    h3, .btn {
+        text-transform: uppercase;
+    }
+
+    p {
+        padding-top: @padding-small;
+    }
+}
+
+.btn {
+    background: @color-teal;
+    color: @color-white;
+    padding: @padding-small @padding;
+    border-radius: 3px;
+    display: inline-block;
 }
