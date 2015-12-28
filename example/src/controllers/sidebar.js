@@ -9,12 +9,20 @@ const links = [
 	{ link: 'docs', title: 'Docs' }
 ];
 
-export default function Sidebar({ style }) {
-    const navLinks = links.map(({ link, title }, i) =>
-        <li key={i}>
+export default function Sidebar({  subLinks=[], style, activePath }) {
+    activePath = activePath.split('/').pop();
+
+    const navLinks = links.map(({ link, title }) =>
+        <li key={link}>
             <Link to={`/${link}`} activeClassName="active">
                 {title}
             </Link>
+
+            {activePath === link && <ul>
+              {subLinks.map(({ title, link }) =>
+                  <li key={link}>{title}</li>
+              )}
+            </ul>}
         </li>
     );
 
