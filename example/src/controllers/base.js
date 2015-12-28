@@ -18,7 +18,8 @@ const documentHeight = function documentHeight() {
 
 export default React.createClass({
     propTypes: {
-        children: PropTypes.node
+        children: PropTypes.node,
+        location: PropTypes.object
     },
 
     getInitialState() {
@@ -61,7 +62,8 @@ export default React.createClass({
             <Header />
 
             <div style={{ position: 'relative', minHeight: '100%' }}>
-                <Sidebar subLinks={this.state.subLinks} style={style}/>
+                <Sidebar subLinks={this.state.subLinks} style={style}
+                    activePath={this.props.location.pathname} />
 
                 <div className="app-content">
                     {React.cloneElement(this.props.children, {
