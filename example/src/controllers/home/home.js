@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
-import Page from '../../components/page';
 import Well from '../../components/well';
 import { Link } from 'react-router';
 
+/*eslint react/jsx-max-props-per-line:0*/
 export default React.createClass({
     propTypes: {
         children: PropTypes.node
