@@ -6,14 +6,11 @@ export default class BasicExample extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            formData: null
-        };
     }
 
     onChange(form) {
         this.setState({
-            formData: form
+            data: form
         })
     }
 
@@ -61,7 +58,7 @@ export default class BasicExample extends React.Component {
                 </div>
             </Form>
             <br />
-            <JSONViewer data={this.state.formData} />
+            <JSONViewer {...this.state} />
         </div>;
     }
 
