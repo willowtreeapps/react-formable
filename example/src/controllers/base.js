@@ -55,7 +55,7 @@ export default React.createClass({
         let style = {};
 
         style.position = (headerVisible || footerVisible) ? 'absolute' : 'fixed';
-        if (footerVisible) style.top = totalHeight - window.innerHeight - footerHeight - headerHeight;
+        if (footerVisible && !headerVisible) style.top = totalHeight - window.innerHeight - footerHeight - headerHeight;
 
         return <div className="app" onScroll={this.onScroll}>
             <Header />
