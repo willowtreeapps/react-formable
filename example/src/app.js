@@ -1,11 +1,15 @@
 import React from 'react';
 import routes from './routes';
+import createHashHistory from 'history/lib/createHashHistory'
 import { render } from 'react-dom';
 import { Router } from 'react-router';
 
-// default router history is hash based
+const history = createHashHistory({
+    queryKey: false
+});
+
 render(
-    <Router>
+    <Router history={history}>
         {routes}
     </Router>,
     document.getElementById('app')
