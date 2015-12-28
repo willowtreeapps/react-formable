@@ -19,7 +19,8 @@ export default class BasicForm extends React.Component {
 
     onSubmit(form) {
         this.setState({
-            success: form.valid
+            success: form.valid,
+            data: form
         })
     }
 
