@@ -6,7 +6,6 @@ export const link = 'basic';
 
 export const markdown = `Here is a simple form. It's got a couple of fields and a bit of validation, easy right?
 
-
 The JSX to render the form looks like the following:
 
 ### The JSX
@@ -18,12 +17,12 @@ The JSX to render the form looks like the following:
     <div>
         <label>First name *</label>
         <Input name='firstname' type='text'
-            validators={[this.requiredValidator('First name is required')]} />
+            validators={[required('First name is required')]} />
     </div>
     <div>
         <label>Last name *</label>
         <Input name='lastname' type='text'
-            validators={[this.requiredValidator('Last name is required')]} />
+            validators={[required('Last name is required')]} />
     </div>
     <div>
         <label>Phone number</label>
