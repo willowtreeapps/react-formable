@@ -288,8 +288,8 @@ export default React.createClass({
 
             return {
                 ref: child.ref || child.props.name,
-                onChange: compose(child.props.onChange || identity, this.onChange),
-                onSubmit: compose(child.props.onSubmit || identity, this.onSubmit),
+                onChange: compose(this.onChange, child.props.onChange || identity),
+                onSubmit: compose(this.onSubmit, child.props.onSubmit || identity),
                 errors: this.state.errors,
                 fieldErrors: child.props.fieldErrors || this.state.fieldErrors[child.props.name]
             };
