@@ -8,6 +8,10 @@ const links = [
 	{ link: 'docs', title: 'Docs' }
 ];
 
+function scrollToId(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
 export default function Sidebar({ subLinks=[], style, activePath }) {
     activePath = activePath.split('/').pop();
 
@@ -18,9 +22,13 @@ export default function Sidebar({ subLinks=[], style, activePath }) {
             </Link>
 
             {activePath === link && <ul>
-              {subLinks.map(({ title, link }) =>
-                  <li key={link}>{title}</li>
-              )}
+                {subLinks.map(({ title, link }) =>
+                    <li key={link}>
+                        <span className="a" onClick={scrollToId.bind(this, link)}>
+                            {title}
+                        </span>
+                    </li>
+                )}
             </ul>}
         </li>
     );
