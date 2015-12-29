@@ -1,6 +1,5 @@
 import isNil from '../helpers/isNil';
 
-
 function emptyString(value) {
     return !value.trim().length;
 }
@@ -17,8 +16,7 @@ export default function required(errorMessage) {
         }
         if (typeof value === 'string' && emptyString(value)) {
             return errorMessage;
-        }
-        if (typeof value === 'object' && emptyObject(value)) {
+        } else if (typeof value === 'object' && emptyObject(value)) {
             return errorMessage;
         }
     };
