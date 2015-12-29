@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 const links = [
 	{ link: 'getting-started', title: 'Getting Started' },
 	{ link: 'examples', title: 'Examples' },
-	{ link: 'docs', title: 'Docs' }
+	{ link: 'api', title: 'API' }
 ];
 
 function scrollToId(id) {
