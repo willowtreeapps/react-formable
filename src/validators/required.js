@@ -1,9 +1,9 @@
-/*eslint func-style:0*/
-export default function regexp(regexp, errorMessage) {
-    return function (value) {
-        const r = regexp && regexp.test ? regexp : new RegExp(regexp);
+import isNil from '../helpers/isNil';
 
-        if (r.test(value)) {
+/*eslint func-style:0*/
+export default function required(errorMessage) {
+    return function (value) {
+        if (isNil(value) || !value.length) {
             return errorMessage;
         }
     };
