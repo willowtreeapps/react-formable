@@ -11,7 +11,7 @@ import greaterThan from './validators/greaterThan';
 import lessThan from './validators/lessThan';
 import maxLength from './validators/maxLength';
 import minLength from './validators/minLength';
-import test from './validators/regexp';
+import test from './validators/test';
 const validators = { required, greaterThan, lessThan, maxLength, minLength, test };
 
 export { Form, getBlankForm, Fieldset, Fieldlist, Input, Errors, validators };

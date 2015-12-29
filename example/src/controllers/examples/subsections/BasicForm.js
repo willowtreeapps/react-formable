@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Input, Errors } from 'react-formable';
+import { Form, Input, Errors  } from 'react-formable';
 import JSONViewer from '../../../components/JSONViewer';
+const { required } = require('react-formable').validators;
 
 export default class BasicForm extends React.Component {
 
@@ -24,14 +25,6 @@ export default class BasicForm extends React.Component {
         })
     }
 
-    //TODO: replace this with a stock validator once it's written
-    requiredValidator(message) {
-        return (value) => {
-            if (!value)
-                return message || 'Required field missing!';
-        }
-    }
-
     renderSuccess() {
         if (this.state.success) {
             return <div className="formSuccess">Form submitted</div>;
@@ -48,12 +41,12 @@ export default class BasicForm extends React.Component {
                 <div>
                     <label>First name *</label>
                     <Input name="firstname" type="text"
-                        validators={[this.requiredValidator('First name is required')]} />
+                        validators={[required('First name is required')]} />
                 </div>
                 <div>
                     <label>Last name *</label>
                     <Input name="lastname" type="text"
-                        validators={[this.requiredValidator('Last name is required')]} />
+                        validators={[required('Last name is required')]} />
                 </div>
                 <div>
                     <label>Phone number</label>
