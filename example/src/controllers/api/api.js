@@ -5,13 +5,15 @@ import * as Fieldset from './subsections/fieldset';
 import * as Fieldlist from './subsections/fieldlist';
 import * as Input from './subsections/input';
 import * as Errors from './subsections/errors';
+import * as Validators from './subsections/validators/validators';
 
 const subsections = [
     Form,
     Fieldset,
     Fieldlist,
     Input,
-    Errors
+    Errors,
+    Validators
 ];
 
 export default React.createClass({
