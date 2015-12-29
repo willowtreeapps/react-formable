@@ -17,4 +17,14 @@ describe('required', () => {
         expect(required('')).toBe('missing value');
         expect(required(' ')).toBe('missing value');
     });
+
+    it('returns nothing for non empty object', () => {
+        expect(required({
+            a: 1
+        })).toBe(undefined);
+    });
+
+    it('returns error message for empty object', () => {
+        expect(required({})).toBe('missing value');
+    });
 });
