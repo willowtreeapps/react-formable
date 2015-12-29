@@ -1,5 +1,5 @@
 /*eslint func-style:0*/
-export default function regexp(regexp, errorMessage) {
+export default function test(regexp, errorMessage) {
     return function (value) {
         const r = regexp && regexp.test ? regexp : new RegExp(regexp);
 
