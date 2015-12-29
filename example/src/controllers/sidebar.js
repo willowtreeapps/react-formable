@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 
 const links = [
 	{ link: 'getting-started', title: 'Getting Started' },
+	{ link: 'guides', title: 'Guides' },
 	{ link: 'examples', title: 'Examples' },
 	{ link: 'api', title: 'API' }
 ];

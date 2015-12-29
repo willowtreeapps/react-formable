@@ -5,6 +5,7 @@ import Home from './controllers/home/home';
 import Examples from './controllers/examples/examples';
 import API from './controllers/api/api';
 import GettingStarted from './controllers/getting-started/getting-started';
+import Guides from './controllers/guides/guides';
 
 export default (
 	<Route path="/" component={Base}>
@@ -12,6 +13,7 @@ export default (
 		<Route path="home" component={Home} />
 		<Route path="examples" component={Examples} />
 		<Route path="api" component={API} />
+		<Route path="guides" component={Guides} />
 		<Route path="getting-started" component={GettingStarted} />
 	</Route>
 );
