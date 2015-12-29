@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Errors  } from 'react-formable';
-const { required } = require('react-formable').validators;
 import JSONViewer from '../../../components/JSONViewer';
+const { required } = require('react-formable').validators;
 
 export default class BasicForm extends React.Component {
 
