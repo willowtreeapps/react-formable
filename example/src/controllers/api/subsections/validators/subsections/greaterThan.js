@@ -5,7 +5,7 @@ export const markdown = `
 A validator that ensures an input value is greater than pre-specified number.
 
 \`\`\`js
-const { greaterThan\ } = require('react-formable').validators;
+const { greaterThan } = require('react-formable').validators;
 <Input validators={greaterThan(5, 'value must be greater than 5')} ... />
 \`\`\`
 
