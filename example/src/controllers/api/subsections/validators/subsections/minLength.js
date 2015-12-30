@@ -1,5 +1,5 @@
-export const title = 'Minimum Length Validator';
-export const link = 'Minimum Length Validator';
+export const title = 'Minimum Length';
+export const link = 'Minimum Length';
 
 export const markdown = `
 A validator that ensures minimum legnth.
