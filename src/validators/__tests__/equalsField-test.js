@@ -3,7 +3,6 @@ jest.dontMock('../equalsField');
 const equalsField = require('../equalsField').default;
 
 describe('required', () => {
-
     it('returns nothing when other form field is equal', () => {
         let validator = equalsField('password2', 'must be equal');
 
@@ -34,7 +33,7 @@ describe('required', () => {
 
     it('returns error message when nested form field is different', () => {
         let validator = equalsField('deep.nested.field', 'must be equal');
-        
+
         expect(validator('ABC', {
             deep: {
                 nested: {
