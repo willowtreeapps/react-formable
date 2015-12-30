@@ -1,5 +1,5 @@
 /*eslint prefer-template:0*/
-import FormExample from '../../components/codeExample';
+import FormExample from '../../components/formExample';
 import React from 'react';
 import mapObj from '../../../../src/helpers/mapObj';
 
