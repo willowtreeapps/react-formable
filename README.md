@@ -43,7 +43,7 @@ We can include the library in several ways.
     // require with de-structuring
     var { Form, Input, Errors } = require('react-formable');
 
-Now lets render a simple login form that will display errors.
+Now let's render a simple login form that will display errors.
 
     const LoginForm = React.createClass({
         onSubmit(form) {
@@ -59,4 +59,3 @@ Now lets render a simple login form that will display errors.
             </Form>;
         }
     });
-

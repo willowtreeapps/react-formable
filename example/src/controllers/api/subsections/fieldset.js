@@ -10,7 +10,7 @@ One last thing to keep in mind: you can attach validators to \`Fieldset\`s. Inst
 
 | Property | Type | Default | Description |
 | :------- | :--- | :------ | :---------- |
-| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |
+| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input. |
 | name | string | undefined | The name of the field which will get serialized. This will get copied over as \`ref\`. This means \`name\` _must be unique_, otherwise you will run into collisions. |
 
 `;
