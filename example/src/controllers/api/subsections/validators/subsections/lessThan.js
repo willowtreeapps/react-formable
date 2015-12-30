@@ -11,7 +11,7 @@ const { lessThan } = require('react-formable').validators;
 
 | Parameter | Type | Description |
 | :------- | :--- | :---------- |
-| ceiling | number | The number that values must be less than |
-| Error message | string | The error message returned is the supplied value is too big |
+| ceiling | number | The number that values must be less than. |
+| Error message | string | The error message returned is the supplied value is too big. |
 
 `;

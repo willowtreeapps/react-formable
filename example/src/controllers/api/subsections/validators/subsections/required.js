@@ -11,6 +11,6 @@ const { required } = require('react-formable').validators;
 
 | Parameter | Type | Description |
 | :------- | :--- | :---------- |
-| Error message | string | The error message to be returned is the supplied value is missing |
+| Error message | string | The error message to be returned is the supplied value is missing. |
 
 `;

@@ -11,7 +11,7 @@ const { minLength } = require('react-formable').validators;
 
 | Parameter | Type | Description |
 | :------- | :--- | :---------- |
-| Minimum Length | number | The minimum possible length of the value |
-| Error message | string | The error message returned is the supplied value is too short |
+| Minimum Length | number | The minimum possible length of the value. |
+| Error message | string | The error message returned is the supplied value is too short. |
 
 `;

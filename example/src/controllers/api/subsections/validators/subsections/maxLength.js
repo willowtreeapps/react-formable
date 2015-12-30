@@ -11,7 +11,7 @@ const { maxLength } = require('react-formable').validators;
 
 | Parameter | Type | Description |
 | :------- | :--- | :---------- |
-| Maximum Length | number | The maximum possible length of the value |
-| Error message | string | The error message returned is the supplied value is too long |
+| Maximum Length | number | The maximum possible length of the value. |
+| Error message | string | The error message returned is the supplied value is too long. |
 
 `;
