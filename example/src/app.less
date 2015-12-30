@@ -207,12 +207,6 @@ table {
     }
 }
 
-.exampleForm {
-    input {
-        margin-left: 20px;
-    }
-}
-
 .formErrors {
     color: red;
 }
@@ -244,4 +238,15 @@ table {
     padding: @padding-small @padding;
     border-radius: 3px;
     display: inline-block;
+}
+
+.split {
+    display: flex;
+    & > * {
+        width: 50%;
+    }
+}
+
+label {
+    display: block;
 }
