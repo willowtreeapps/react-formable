@@ -11,7 +11,7 @@ const { test } = require('react-formable').validators;
 
 | Parameter | Type | Description |
 | :------- | :--- | :---------- |
-| Regexp | string/regex | The regex that the value must match |
-| Error message | string | The error message to be returned is the supplied value is missing |
+| Regexp | string/regex | The regex that the value must match. |
+| Error message | string | The error message to be returned is the supplied value is missing. |
 
 `;
