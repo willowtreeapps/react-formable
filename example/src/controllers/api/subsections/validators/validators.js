@@ -4,6 +4,7 @@ import * as LessThan from './subsections/lessThan';
 import * as GreaterThan from './subsections/greaterThan';
 import * as MinLength from './subsections/minLength';
 import * as MaxLength from './subsections/maxLength';
+import * as EqualsField from './subsections/equalsField';
 
 export const subSections = [
     Required,
@@ -11,7 +12,8 @@ export const subSections = [
     LessThan,
     GreaterThan,
     MinLength,
-    MaxLength
+    MaxLength,
+    EqualsField
 ];
 
 export const title = 'Validators';
