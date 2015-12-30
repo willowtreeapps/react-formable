@@ -12,7 +12,8 @@ import lessThan from './validators/lessThan';
 import maxLength from './validators/maxLength';
 import minLength from './validators/minLength';
 import test from './validators/test';
-const validators = { required, greaterThan, lessThan, maxLength, minLength, test };
+import equalsField from './validators/equalsField';
+const validators = { required, greaterThan, lessThan, maxLength, minLength, test, equalsField };
 
 export { Form, getBlankForm, Fieldset, Fieldlist, Input, Errors, validators };
 export default Form;

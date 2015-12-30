@@ -2,7 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import { Form, Input, Errors } from 'react-formable';
-const { required } = require('react-formable').validators;
+const { required, equalsField } = require('react-formable').validators;
 
 export default function ValidatorForm({ onChange }) {
     return <Form onChange={onChange}>
@@ -19,7 +19,7 @@ export default function ValidatorForm({ onChange }) {
 
         <label>
             Password *
-            <Input name="password1"
+            <Input name="password"
                    type="password"
                    validators={[
                        required('password is required')
@@ -31,7 +31,7 @@ export default function ValidatorForm({ onChange }) {
             <Input name="password2"
                    type="password"
                    validators={[
-                       required('password confirm is required')
+                       equalsField('password', 'passwords must match')
                    ]} />
         </label>
 
