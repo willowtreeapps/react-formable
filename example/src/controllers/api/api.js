@@ -28,8 +28,8 @@ export default React.createClass({
     },
 
     render() {
-        return <Page title="Docs"
-                     className="docs"
+        return <Page title="API"
+                     className="api"
                      subsections={subsections} />
     }
 });

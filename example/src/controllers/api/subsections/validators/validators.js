@@ -5,7 +5,7 @@ import * as GreaterThan from './subsections/greaterThan';
 import * as MinLength from './subsections/minLength';
 import * as MaxLength from './subsections/maxLength';
 
-const subsections = [
+export const subSections = [
     Required,
     Test,
     LessThan,
