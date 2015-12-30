@@ -13,6 +13,19 @@ function scrollToId(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
 
+function renderSublinks(subLinks) {
+    return <ul>
+        {subLinks.map(({ title, link, subSections }) => {
+            return <li key={link}>
+                <span className="a" onClick={scrollToId.bind(this, link)}>
+                    {title}
+                </span>
+                {subSections && renderSublinks(subSections)}
+            </li>
+        })}
+    </ul>
+}
+
 export default function Sidebar({ subLinks=[], style, activePath }) {
     activePath = activePath.split('/').pop();
 
@@ -22,15 +35,7 @@ export default function Sidebar({ subLinks=[], style, activePath }) {
                 {title}
             </Link>
 
-            {activePath === link && <ul>
-                {subLinks.map(({ title, link }) =>
-                    <li key={link}>
-                        <span className="a" onClick={scrollToId.bind(this, link)}>
-                            {title}
-                        </span>
-                    </li>
-                )}
-            </ul>}
+            {activePath === link && renderSublinks(subLinks)}
         </li>
     );
 
