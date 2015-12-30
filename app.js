@@ -29,7 +29,7 @@ var history = (0, _historyLibCreateHashHistory2['default'])({
     _routes2['default']
 ), document.getElementById('app'));
 
-},{"./routes":42,"history/lib/createHashHistory":52,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
+},{"./routes":44,"history/lib/createHashHistory":54,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -245,7 +245,7 @@ MarkdownViewer.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"marked":60,"react":undefined}],7:[function(require,module,exports){
+},{"marked":62,"react":undefined}],7:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -342,7 +342,7 @@ function Subsection(props) {
         'div',
         { id: link, className: 'subsection' },
         title && title.length && _react2['default'].createElement(
-            'h3',
+            'h2',
             null,
             title
         ),
@@ -800,7 +800,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./footer":29,"./header":39,"./sidebar":41,"react":undefined}],25:[function(require,module,exports){
+},{"./footer":29,"./header":41,"./sidebar":43,"react":undefined}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -890,7 +890,7 @@ var code = (0, _srcHelpersMapObj2['default'])(function (value, key) {
 }, codeTextFiles);
 exports.code = code;
 
-},{"../../../../src/helpers/mapObj":63,"../../components/formExample":4,"./subsections/basic/code":27,"react":undefined}],27:[function(require,module,exports){
+},{"../../../../src/helpers/mapObj":65,"../../components/formExample":4,"./subsections/basic/code":27,"react":undefined}],27:[function(require,module,exports){
 /*eslint func-style:0*/
 
 'use strict';
@@ -1100,7 +1100,15 @@ var _subsectionsHighorderForms = require('./subsections/highorder-forms');
 
 var HighorderForms = _interopRequireWildcard(_subsectionsHighorderForms);
 
-var subsections = [FormWalkThrough, AddingValidation, DisplayErrors, CreatignInputs, ReusableFormSections, HighorderForms];
+var _subsectionsFieldset = require('./subsections/fieldset');
+
+var Fieldset = _interopRequireWildcard(_subsectionsFieldset);
+
+var _subsectionsFieldlist = require('./subsections/fieldlist');
+
+var Fieldlist = _interopRequireWildcard(_subsectionsFieldlist);
+
+var subsections = [FormWalkThrough, Fieldset, Fieldlist, AddingValidation, DisplayErrors, CreatignInputs, ReusableFormSections, HighorderForms];
 
 exports['default'] = _react2['default'].createClass({
     displayName: 'guides',
@@ -1122,7 +1130,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/page":7,"./subsections/adding-validation":33,"./subsections/creating-inputs":34,"./subsections/displaying-errors":35,"./subsections/form-walk-through":36,"./subsections/highorder-forms":37,"./subsections/reusable-form-sections":38,"react":undefined}],32:[function(require,module,exports){
+},{"../../components/page":7,"./subsections/adding-validation":33,"./subsections/creating-inputs":34,"./subsections/displaying-errors":35,"./subsections/fieldlist":36,"./subsections/fieldset":37,"./subsections/form-walk-through":38,"./subsections/highorder-forms":39,"./subsections/reusable-form-sections":40,"react":undefined}],32:[function(require,module,exports){
 /*eslint prefer-template:0*/
 
 'use strict';
@@ -1131,7 +1139,9 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 var markdown = {
-    'form-walk-through': ""
+    'form-walk-through': "react-formable gives you a handful of components that allow you to compose abstract forms to your hearts content. To demonstrate this, we will build a \"person\" form. We want the ability to add people with a name, age, and a pet. To start, we will only need two components, `Form` and `Input`.\n\n```js\nimport Form, { Input } from 'react-formable';\n\nfunction onSubmit(form) {\n\tconsole.log(form);\n}\n\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t<label> Age: <Input name=\"age\" type=\"text\" /> </label>\n\t\t<label> Pet: <Input name=\"pet\" type=\"text\" /> </label>\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n\nThis simple example brings to light a few design decisions of react-formable.\n\n1. There is no need for rigid markup or schemas. You can structure your markup however you want.\n2. To make an input visible to the `Form` component, you must supply a `name` property which is unique.\n\nWith this in mind, what is actually happening here? We have created a [stateless component](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) which renders a `Form` to the screen. Our component logs out the value of the form whenever it is submitted either via the html buttons default click functionality or pressing enter within an input. All in all, not too exciting. Let's take a peak at the data that gets logged to the console.\n\n### Form return value\n\n```json\n{\n\t\"valid\": true,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\",\n\t\t\"pet\": \"\"\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [],\n\t\t\"age\": [],\n\t\t\"pet\": []\n\t},\n\t\"errors\": []\n}\n```\n\nNow this is more exciting to look at. At the core of this data structure is `fieldValues` and `fieldErrors`. These two objects mirror the structure of your form. `fieldValues`, as the name implies, is a key value object where the key is the name of your input and the value is its value.  `fieldErrors` is similar, however the values in this object are arrays of string representing errors.\n\nThe remaining fields, `valid` and `errors`, are computed properties. `errors` is a flattened down and compacted array of all the errors found in `fieldErrors`. This means if multiple fields have errors of the message `\"required\"` then the `errors` array will only contain a single string, `\"required\"`. We can use this array for easily keeping track of errors as our forms grow in complexity. `valid` is a simple boolean which tells us if our form is valid. It does this by checking the length of the `errors` property.\n",
+    fieldset: "Suddenly, our requirements change! Now we want to know more information about our person's pet. We want to know its `name` and `type`. Our server expects a `Pet` model to be an object with `name` and `type` as fields, how can we accommodate this?\n\nreact-formable comes with a `Fieldset` component which does exactly this. `Fieldset` takes in a `name` property and groups inputs within its scope.\n\n```js\nimport Form, { Input, Fieldset } from 'react-formable';\n\nfunction onSubmit(form) {\n\tconsole.log(form);\n}\n\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t<label> Age: <Input name=\"age\" type=\"text\" /> </label>\n\t\t<Fieldset name=\"pet\">\n\t\t\t<label> Pet Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t\t<label> Pet Type: <Input name=\"type\" type=\"text\" /> </label>\n\t\t</Fieldset>\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n\nNot too much has changed. We wrapped our two pet fields within a `Fieldset` named `pet`. One interesting thing to note is we now have two inputs in our form with a name of `name`. Normally, `Form` would warn you that your inputs must have unique names. `Fieldset`s (and `Fieldlist`s) get around this limitation by scoping fields. To better understand this, here is the result of serializing the form.\n\n```json\n{\n\t\"valid\": true,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\",\n\t\t\"pet\": {\n\t\t\t\"name\": \"\",\n\t\t\t\"type\": \"\"\n\t\t}\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [],\n\t\t\"age\": [],\n\t\t\"pet\": {\n\t\t\t\"name\": [],\n\t\t\t\"type\": []\n\t\t}\n\t},\n\t\"errors\": []\n}\n```\n\nAs we can see, our `fieldValues` and `fieldList` properties have a new `pet` object that has child properties of `name` and `type`. Similarly, our `fieldErrors` property has nested arrays that match up with our `fieldValues`.\n",
+    fieldlist: "What? _Another_ requirement change? As it turns out, people typically have more than one pet. How can we have lists of pets within our form? Simply, we can use the `Fieldlist` component to group together lists of values.\n\n```js\nimport Form, { Input, Fieldlist } from 'react-formable';\n\nfunction onSubmit(form) {\n\tconsole.log(form);\n}\n\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t<label> Age: <Input name=\"age\" type=\"text\" /> </label>\n\t\t<Fieldlist name=\"pets\">\n\t\t\t<div>\n\t\t\t\t<label> Pet Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t\t\t<label> Pet Type: <Input name=\"type\" type=\"text\" /> </label>\n\t\t\t</div>\n\t\t\t{/* more pets here... */}\n\t\t</Fieldlist>\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n\nSimilar to `Fieldset`, `Fieldlist` accepts a `name` property which it nests all its children under. Internally, `Fieldlist` works by taking each direct child it owns and wrapping it in a `Fieldset`. This is why we don't need to use `Fieldset` within `Fieldlists`. If we did, we would have an extra object with the name of the `Fieldset` within our form data.\n\nAs we would expect, our `Fieldlist` has a value of an array of objects which we see in its returned value.\n\n```json\n{\n\t\"valid\": true,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\",\n\t\t\"pets\": [\n\t\t\t{\n\t\t\t\t\"name\": \"\",\n\t\t\t\t\"type\": \"\"\n\t\t\t}\n\t\t]\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [],\n\t\t\"age\": [],\n\t\t\"pets\": [\n\t\t\t{\n\t\t\t\t\"name\": [],\n\t\t\t\t\"type\": []\n\t\t\t}\n\t\t]\n\t},\n\t\"errors\": []\n}\n```\n"
 };
 exports.markdown = markdown;
 
@@ -1183,6 +1193,32 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+var title = 'Grouping Inputs: Fieldlist';
+exports.title = title;
+var link = 'grouping-inputs-fieldlist';
+exports.link = link;
+var markdown = require('../../samples').markdown['fieldlist'];
+exports.markdown = markdown;
+
+},{"../../samples":32}],37:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+var title = 'Grouping Inputs: Fieldset';
+exports.title = title;
+var link = 'grouping-inputs-fieldset';
+exports.link = link;
+var markdown = require('../../samples').markdown['fieldset'];
+exports.markdown = markdown;
+
+},{"../../samples":32}],38:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
 var title = 'Form Walk Through';
 exports.title = title;
 var link = 'form-walk-through';
@@ -1190,7 +1226,7 @@ exports.link = link;
 var markdown = require('../../samples').markdown['form-walk-through'];
 exports.markdown = markdown;
 
-},{"../../samples":32}],37:[function(require,module,exports){
+},{"../../samples":32}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1204,7 +1240,7 @@ exports.link = link;
 var markdown = '\n';
 exports.markdown = markdown;
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1218,7 +1254,7 @@ exports.link = link;
 var markdown = '\n';
 exports.markdown = markdown;
 
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -1266,7 +1302,7 @@ function Header() {
 
 module.exports = exports['default'];
 
-},{"../components/ghLogo":5,"react":undefined,"react-router":undefined}],40:[function(require,module,exports){
+},{"../components/ghLogo":5,"react":undefined,"react-router":undefined}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1363,7 +1399,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/well":9,"react":undefined,"react-router":undefined}],41:[function(require,module,exports){
+},{"../../components/well":9,"react":undefined,"react-router":undefined}],43:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -1454,7 +1490,7 @@ Sidebar.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"react":undefined,"react-router":undefined}],42:[function(require,module,exports){
+},{"react":undefined,"react-router":undefined}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1505,7 +1541,7 @@ exports['default'] = _react2['default'].createElement(
 );
 module.exports = exports['default'];
 
-},{"./controllers/api/api":11,"./controllers/base":24,"./controllers/examples/examples":25,"./controllers/getting-started/getting-started":30,"./controllers/guides/guides":31,"./controllers/home/home":40,"react":undefined,"react-router":undefined}],43:[function(require,module,exports){
+},{"./controllers/api/api":11,"./controllers/base":24,"./controllers/examples/examples":25,"./controllers/getting-started/getting-started":30,"./controllers/guides/guides":31,"./controllers/home/home":42,"react":undefined,"react-router":undefined}],45:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -1601,7 +1637,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":44,"./lib/keys.js":45}],44:[function(require,module,exports){
+},{"./lib/is_arguments.js":46,"./lib/keys.js":47}],46:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -1623,7 +1659,7 @@ function unsupported(object){
     false;
 };
 
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -1634,7 +1670,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -1666,7 +1702,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],47:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1693,7 +1729,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],48:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -1764,7 +1800,7 @@ function readState(key) {
   return null;
 }
 }).call(this,require('_process'))
-},{"_process":61,"warning":62}],49:[function(require,module,exports){
+},{"_process":63,"warning":64}],51:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1845,13 +1881,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],50:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1894,7 +1930,7 @@ function createDOMHistory(options) {
 exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./DOMUtils":49,"./ExecutionEnvironment":50,"./createHistory":53,"_process":61,"invariant":59}],52:[function(require,module,exports){
+},{"./DOMUtils":51,"./ExecutionEnvironment":52,"./createHistory":55,"_process":63,"invariant":61}],54:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2145,7 +2181,7 @@ function createHashHistory() {
 exports['default'] = createHashHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":46,"./DOMStateStorage":48,"./DOMUtils":49,"./ExecutionEnvironment":50,"./createDOMHistory":51,"./parsePath":57,"_process":61,"invariant":59,"warning":62}],53:[function(require,module,exports){
+},{"./Actions":48,"./DOMStateStorage":50,"./DOMUtils":51,"./ExecutionEnvironment":52,"./createDOMHistory":53,"./parsePath":59,"_process":63,"invariant":61,"warning":64}],55:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2437,7 +2473,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":46,"./AsyncUtils":47,"./createLocation":54,"./deprecate":55,"./parsePath":57,"./runTransitionHook":58,"deep-equal":43}],54:[function(require,module,exports){
+},{"./Actions":48,"./AsyncUtils":49,"./createLocation":56,"./deprecate":57,"./parsePath":59,"./runTransitionHook":60,"deep-equal":45}],56:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2492,7 +2528,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":46,"./parsePath":57}],55:[function(require,module,exports){
+},{"./Actions":48,"./parsePath":59}],57:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -2508,7 +2544,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],56:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2522,7 +2558,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],57:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2569,7 +2605,7 @@ function parsePath(path) {
 exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./extractPath":56,"_process":61,"warning":62}],58:[function(require,module,exports){
+},{"./extractPath":58,"_process":63,"warning":64}],60:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2596,7 +2632,7 @@ function runTransitionHook(hook, location, callback) {
 exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":61,"warning":62}],59:[function(require,module,exports){
+},{"_process":63,"warning":64}],61:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -2649,7 +2685,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 
-},{}],60:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
@@ -3938,7 +3974,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],61:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -4031,7 +4067,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -4093,7 +4129,7 @@ if ("production" !== 'production') {
 
 module.exports = warning;
 
-},{}],63:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
