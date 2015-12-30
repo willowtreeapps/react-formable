@@ -11,7 +11,7 @@ const { equalsField } = require('react-formable').validators;
 
 | Parameter | Type | Description |
 | :------- | :--- | :---------- |
-| field name | string | name of another field value that this value must match (nesting available using dot notation). |
+| Field Name | string | name of another field value that this value must match (nesting available using dot notation). |
 | Error message | string | The error message returned is the supplied value does not match. |
 
 `;
