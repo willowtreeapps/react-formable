@@ -1,3 +1,5 @@
+/*eslint func-style:0*/
+
 import React, { PropTypes } from 'react';
 import { Form, Input, Errors } from 'react-formable';
 const { required } = require('react-formable').validators;

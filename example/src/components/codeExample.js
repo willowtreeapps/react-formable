@@ -12,7 +12,7 @@ export default React.createClass({
 
     getDefaultProps() {
         return {
-            className:''
+            className: ''
         };
     },
 
@@ -27,7 +27,7 @@ export default React.createClass({
         const Example = this.props.example;
 
         return <div className={`${this.props.className} code-example`}>
-            <span className="a" onClick={() => this.setState({ showCode: !this.state.showCode})}>
+            <span className="a" onClick={() => this.setState({ showCode: !this.state.showCode })}>
                 {this.state.showCode ? 'Hide Code' : 'Show Code'}
             </span>
 
@@ -42,4 +42,3 @@ export default React.createClass({
         </div>;
     }
 });
-
