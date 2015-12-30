@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
 import Page from '../../components/page';
 import * as Basic from './subsections/basic';
+import * as Signup from './subsections/signup';
 
 const subsections = [
-    Basic
+    Basic,
+    Signup
 ];
 
 export default React.createClass({
