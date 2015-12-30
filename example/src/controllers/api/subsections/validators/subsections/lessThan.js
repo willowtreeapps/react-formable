@@ -6,7 +6,7 @@ A validator that ensures an input value is less than a pre-specified number.
 
 \`\`\`js
 const { lessThan\ } = require('react-formable').validators;
-<Input validators={lessThan(5, 'number must be less than 5')} ... />
+<Input validators={lessThan(5, 'value must be less than 5')} ... />
 \`\`\`
 
 | Parameter | Type | Description |
