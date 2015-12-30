@@ -649,8 +649,8 @@ exports['default'] = _react2['default'].createClass({
 
             return {
                 ref: child.ref || child.props.name,
-                onChange: (0, _helpersCompose2['default'])(child.props.onChange || _helpersIdentity2['default'], _this.onChange),
-                onSubmit: (0, _helpersCompose2['default'])(child.props.onSubmit || _helpersIdentity2['default'], _this.onSubmit),
+                onChange: (0, _helpersCompose2['default'])(_this.onChange, child.props.onChange || _helpersIdentity2['default']),
+                onSubmit: (0, _helpersCompose2['default'])(_this.onSubmit, child.props.onSubmit || _helpersIdentity2['default']),
                 errors: _this.state.errors,
                 fieldErrors: child.props.fieldErrors || _this.state.fieldErrors[child.props.name]
             };
@@ -892,7 +892,7 @@ exports["default"] = greaterThan;
 
 function greaterThan(greaterThanValue, errorMessage) {
     return function (value) {
-        if (greaterThanValue > parseFloat(value, 10)) {
+        if (parseFloat(value) <= greaterThanValue) {
             return errorMessage;
         }
     };
@@ -911,7 +911,7 @@ exports["default"] = lessThan;
 
 function lessThan(lessThanValue, errorMessage) {
     return function (value) {
-        if (lessThanValue < parseFloat(value, 10)) {
+        if (parseFloat(value) >= lessThanValue) {
             return errorMessage;
         }
     };
@@ -920,44 +920,58 @@ function lessThan(lessThanValue, errorMessage) {
 module.exports = exports["default"];
 
 },{}],16:[function(require,module,exports){
-/*eslint func-style:0*/
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
-exports["default"] = maxLength;
+exports['default'] = maxLength;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _helpersIsNil = require('../helpers/isNil');
+
+var _helpersIsNil2 = _interopRequireDefault(_helpersIsNil);
+
+/*eslint func-style:0*/
 
 function maxLength(maxLength, errorMessage) {
     return function (value) {
-        if (value.length > maxLength) {
+        if ((0, _helpersIsNil2['default'])(value) || value.length > maxLength) {
             return errorMessage;
         }
     };
 }
 
-module.exports = exports["default"];
+module.exports = exports['default'];
 
-},{}],17:[function(require,module,exports){
-/*eslint func-style:0*/
-"use strict";
+},{"../helpers/isNil":10}],17:[function(require,module,exports){
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
     value: true
 });
-exports["default"] = minLength;
+exports['default'] = minLength;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _helpersIsNil = require('../helpers/isNil');
+
+var _helpersIsNil2 = _interopRequireDefault(_helpersIsNil);
+
+/*eslint func-style:0*/
 
 function minLength(minLength, errorMessage) {
     return function (value) {
-        if (value.length < minLength) {
+        if ((0, _helpersIsNil2['default'])(value) || value.length < minLength) {
             return errorMessage;
         }
     };
 }
 
-module.exports = exports["default"];
+module.exports = exports['default'];
 
-},{}],18:[function(require,module,exports){
+},{"../helpers/isNil":10}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -971,11 +985,24 @@ var _helpersIsNil = require('../helpers/isNil');
 
 var _helpersIsNil2 = _interopRequireDefault(_helpersIsNil);
 
+function emptyString(value) {
+    return !value.trim().length;
+}
+
+function emptyObject(value) {
+    return !Object.keys(value).length;
+}
+
 /*eslint func-style:0*/
 
 function required(errorMessage) {
     return function (value) {
-        if ((0, _helpersIsNil2['default'])(value) || !value.length) {
+        if ((0, _helpersIsNil2['default'])(value)) {
+            return errorMessage;
+        }
+        if (typeof value === 'string' && emptyString(value)) {
+            return errorMessage;
+        } else if (typeof value === 'object' && emptyObject(value)) {
             return errorMessage;
         }
     };
@@ -990,13 +1017,13 @@ module.exports = exports['default'];
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports["default"] = regexp;
+exports["default"] = test;
 
-function regexp(regexp, errorMessage) {
+function test(regexp, errorMessage) {
     return function (value) {
         var r = regexp && regexp.test ? regexp : new RegExp(regexp);
 
-        if (r.test(value)) {
+        if (!r.test(value)) {
             return errorMessage;
         }
     };
@@ -1056,11 +1083,11 @@ var _validatorsMinLength = require('./validators/minLength');
 
 var _validatorsMinLength2 = _interopRequireDefault(_validatorsMinLength);
 
-var _validatorsRegexp = require('./validators/regexp');
+var _validatorsTest = require('./validators/test');
 
-var _validatorsRegexp2 = _interopRequireDefault(_validatorsRegexp);
+var _validatorsTest2 = _interopRequireDefault(_validatorsTest);
 
-var validators = { required: _validatorsRequired2['default'], greaterThan: _validatorsGreaterThan2['default'], lessThan: _validatorsLessThan2['default'], maxLength: _validatorsMaxLength2['default'], minLength: _validatorsMinLength2['default'], test: _validatorsRegexp2['default'] };
+var validators = { required: _validatorsRequired2['default'], greaterThan: _validatorsGreaterThan2['default'], lessThan: _validatorsLessThan2['default'], maxLength: _validatorsMaxLength2['default'], minLength: _validatorsMinLength2['default'], test: _validatorsTest2['default'] };
 
 exports.Form = _form2['default'];
 exports.getBlankForm = _form.getBlankForm;
@@ -1071,4 +1098,4 @@ exports.Errors = _errors2['default'];
 exports.validators = validators;
 exports['default'] = _form2['default'];
 
-},{"./errors":2,"./fieldlist":3,"./fieldset":4,"./form":5,"./inputs/input":13,"./validators/greaterThan":14,"./validators/lessThan":15,"./validators/maxLength":16,"./validators/minLength":17,"./validators/regexp":18,"./validators/required":19}]},{},[]);
+},{"./errors":2,"./fieldlist":3,"./fieldset":4,"./form":5,"./inputs/input":13,"./validators/greaterThan":14,"./validators/lessThan":15,"./validators/maxLength":16,"./validators/minLength":17,"./validators/required":18,"./validators/test":19}]},{},[]);

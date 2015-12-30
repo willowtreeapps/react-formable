@@ -346,7 +346,7 @@ body {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 200px;
+  width: 250px;
   background: #F7F7F7;
   border-right: 1px solid #DBDBDB;
   padding: 24px;
@@ -359,8 +359,8 @@ body {
 }
 .app .app-content {
   padding: 24px 48px;
-  margin-left: 200px;
-  max-width: 900px;
+  margin-left: 250px;
+  /*max-width: 900px;*/
 }
 table {
   border: 1px solid #DBDBDB;
@@ -384,9 +384,6 @@ table tbody tr:nth-child(even) {
 .docs .subsection {
   border-top: 3px solid #F7F7F7;
   padding-bottom: 24px;
-}
-.exampleForm input {
-  margin-left: 20px;
 }
 .formErrors {
   color: red;
@@ -413,4 +410,13 @@ table tbody tr:nth-child(even) {
   padding: 12px 24px;
   border-radius: 3px;
   display: inline-block;
+}
+.split {
+  display: flex;
+}
+.split > * {
+  width: 50%;
+}
+label {
+  display: block;
 }
