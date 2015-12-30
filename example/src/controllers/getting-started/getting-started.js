@@ -35,7 +35,7 @@ Looking to get started with react-formable? Awesome!
     // require with de-structuring
     var { Form, Input, Errors } = require('react-formable');
 
-Now lets render a simple login form that will display errors.
+Now let's render a simple login form that will display errors.
 
     const LoginForm = React.createClass({
         onSubmit(form) {
