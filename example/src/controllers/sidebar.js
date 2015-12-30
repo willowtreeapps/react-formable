@@ -15,12 +15,12 @@ function scrollToId(id) {
 
 function renderSublinks(subLinks) {
     return <ul>
-        {subLinks.map(({ title, link, subSections=[] }) => {
+        {subLinks.map(({ title, link, subSections }) => {
             return <li key={link}>
                 <span className="a" onClick={scrollToId.bind(this, link)}>
                     {title}
                 </span>
-                    {subSections.length && renderSublinks(subSections)}
+                {subSections && renderSublinks(subSections)}
             </li>
         })}
     </ul>
