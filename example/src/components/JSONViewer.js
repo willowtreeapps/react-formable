@@ -1,24 +1,16 @@
+/*eslint func-style:0*/
 import React, { PropTypes } from 'react';
-import MD  from './md';
+import Code from './code';
 
 /**
- * A component used to pretty display JSON using Markdown
+ * A component used to pretty display JSON
  */
-export default class JSONViewer extends React.Component {
-
-    render() {
-        const data = JSON.stringify(this.props.data, null, 2);
-        const mddata = `\`\`\`json\n ${data} \n\`\`\``;
-
-        return <MD text={mddata} />;
-    }
-
+export default function JSONViewer({ data }) {
+    return <Code>{JSON.stringify(data, null, 2)}</Code>;
 }
 
 JSONViewer.propTypes = {
     data: PropTypes.object.isRequired
 };
 
-JSONViewer.defaultProps = {
-    data: 'Empty object'
-};
+
