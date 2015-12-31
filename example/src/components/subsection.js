@@ -34,6 +34,11 @@ Subsection.propTypes = {
     title: PropTypes.string,
     id: PropTypes.string,
     link: PropTypes.string,
-    content: PropTypes.array,
+    content: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+            PropTypes.func,
+            PropTypes.string
+        ])
+    ),
     subSections: PropTypes.array
 };
