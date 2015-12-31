@@ -7,7 +7,8 @@ export default React.createClass({
     propTypes: {
         code: PropTypes.string.isRequired,
         example: PropTypes.func.isRequired,
-        className: PropTypes.string
+        className: PropTypes.string,
+        showCodeByDefault: PropTypes.bool
     },
 
     getDefaultProps() {
@@ -18,7 +19,7 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            showCode: false,
+            showCode: this.props.showCodeByDefault || false,
             form: getBlankForm()
         };
     },
@@ -28,7 +29,7 @@ export default React.createClass({
 
         return <div className={`${this.props.className} code-example`}>
             <span className="a" onClick={() => this.setState({ showCode: !this.state.showCode })}>
-                {this.state.showCode ? 'Hide Code' : 'Show Code'}
+                {this.state.showCode ? 'Show Result' : 'Show Code'}
             </span>
 
             {this.state.showCode && <Code>{this.props.code}</Code>}
