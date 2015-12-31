@@ -3,14 +3,14 @@ import React, { PropTypes } from 'react';
 import MD  from './md';
 
 /*
- * A simple section that displays the array of elements it is given.
+ * A componment which displays an array of elements
  *
  * - string elements treated as markdown
- * - all other components treated as Reactable
+ * - all other components treated as Reacty
  */
 export default function SimpleSection(props) {
     const {
-        elements
+        elements=[]
     } = props;
 
     return <div>
