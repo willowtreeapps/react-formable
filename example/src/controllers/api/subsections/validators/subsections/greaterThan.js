@@ -1,7 +1,4 @@
-export const title = 'Greater Than';
-export const link = 'Greater Than';
-
-export const markdown = `
+const markdown = `
 A validator that ensures an input value is greater than pre-specified number.
 
 \`\`\`js
@@ -15,3 +12,7 @@ const { greaterThan } = require('react-formable').validators;
 | Error message | string | The error message returned is the supplied value is too small. |
 
 `;
+
+export const content = [markdown];
+export const title = 'Greater Than';
+export const link = 'Greater Than';

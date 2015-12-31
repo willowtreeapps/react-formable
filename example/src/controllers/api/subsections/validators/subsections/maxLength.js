@@ -1,7 +1,4 @@
-export const title = 'Maximum Length';
-export const link = 'Maximum Length';
-
-export const markdown = `
+const markdown = `
 A validator that ensures maximum legnth of a supplied value.
 
 \`\`\`js
@@ -15,3 +12,7 @@ const { maxLength } = require('react-formable').validators;
 | Error message | string | The error message returned is the supplied value is too long. |
 
 `;
+
+export const content = [markdown];
+export const title = 'Maximum Length';
+export const link = 'Maximum Length';
