@@ -1,6 +1,6 @@
 /*eslint func-style:0*/
 import React, { PropTypes } from 'react';
-import SimpleSection from './SimpleSection';
+import MD  from './md';
 
 /*
  * Represents some site content
@@ -16,7 +16,14 @@ export default function Subsection(props) {
     return <div id={link} className="subsection">
         {title && title.length && <h3>{title}</h3>}
 
-        {content && <SimpleSection elements={content} />}
+        {content && content.map(Content => {
+            if (typeof Content === 'string') {
+                return <MD text={Content} />
+            }
+            if (typeof Content === 'function') {
+                return <Content />
+            }
+        })}
         {subSections.map((subSection) => {
             return <Subsection key={subSection.link} {...subSection} />;
         })}
