@@ -1,5 +1,3 @@
 export const title = 'Adding Validation';
 export const link = 'adding-validation';
-
-export const markdown = `
-`;
+export const markdown = require('../../samples').markdown['adding-validation'];
