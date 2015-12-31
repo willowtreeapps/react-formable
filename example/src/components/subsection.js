@@ -1,5 +1,6 @@
 /*eslint func-style:0*/
 import React, { PropTypes } from 'react';
+import SimpleSection from './SimpleSection';
 
 /*
  * Represents some site content
@@ -9,13 +10,13 @@ export default function Subsection(props) {
         title='',
         link,
         subSections=[],
-        content: Content
+        content
     } = props;
 
     return <div id={link} className="subsection">
         {title && title.length && <h3>{title}</h3>}
 
-        {Content && <Content />}
+        {content && <SimpleSection elements={content} />}
         {subSections.map((subSection) => {
             return <Subsection key={subSection.link} {...subSection} />;
         })}
@@ -26,9 +27,6 @@ Subsection.propTypes = {
     title: PropTypes.string,
     id: PropTypes.string,
     link: PropTypes.string,
-    content: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.func
-    ]),
+    content: PropTypes.array,
     subSections: PropTypes.array
 };
