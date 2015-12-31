@@ -16,12 +16,12 @@ export default function Subsection(props) {
     return <div id={link} className="subsection">
         {title && title.length && <h3>{title}</h3>}
 
-        {content && content.map(Content => {
+        {content && content.map((Content, i) => {
             if (typeof Content === 'string') {
-                return <MD text={Content} />
+                return <MD key={i} text={Content} />
             }
             if (typeof Content === 'function') {
-                return <Content />
+                return <Content key={i} />
             }
         })}
         {subSections.map((subSection) => {
