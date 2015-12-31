@@ -19,7 +19,7 @@ export default React.createClass({
         window.scrollTo(0,0);
     },
 
-    render() {        
+    render() {
         return <Page title="Examples"
                      className="examples"
                      subsections={subsections} />
