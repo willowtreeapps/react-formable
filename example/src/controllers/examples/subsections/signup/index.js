@@ -8,5 +8,5 @@ export const code = require('../../samples').code.signup
 
 /*eslint func-style:0*/
 export function content() {
-    return <SimpleSection markdown={markdown} code={code} />
+    return <SimpleSection elements={[markdown, code]} />
 }

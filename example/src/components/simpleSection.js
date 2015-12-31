@@ -3,25 +3,28 @@ import React, { PropTypes } from 'react';
 import MD  from './md';
 
 /*
- * A simple section that displays some Markdown and some code. Covers most use
- * cases for site documentation.
+ * A simple section that displays the array of elements it is given.
+ *
+ * - string elements treated as markdown
+ * - all other components treated as Reactable
  */
 export default function SimpleSection(props) {
     const {
-        markdown,
-        code: Code
+        elements
     } = props;
 
     return <div>
-        {markdown && <MD text={markdown} />}
-        {Code && <Code />}
+        {elements.map(Element => {
+            if (typeof Element === 'string') {
+                return <MD text={Element} />
+            }
+            if (typeof Element === 'function') {
+                return <Element />
+            }
+        })}
     </div>;
 }
 
 SimpleSection.propTypes = {
-    markdown: PropTypes.string,
-    code: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.func
-    ])
+    elements: PropTypes.array
 };
