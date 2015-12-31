@@ -227,7 +227,7 @@ export default React.createClass({
             (this.props.validators || []),
             (this.validators || [])
         );
-        const formErrors = formValidators.map(fn => fn(form));
+        const formErrors = formValidators.map(fn => fn(form.fieldValues, form.fieldValues, form.fieldErrors));
 
         form.errors = uniq(form.errors.concat(formErrors));
         form.valid = !form.errors.length;
