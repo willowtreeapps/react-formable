@@ -24,6 +24,11 @@ Page.propTypes = {
     description: PropTypes.string,
     subsections: PropTypes.arrayOf(PropTypes.shape({
         title: PropTypes.string,
-        content: PropTypes.array
+        content: PropTypes.arrayOf(
+            PropTypes.oneOfType([
+                PropTypes.func,
+                PropTypes.string
+            ])
+        )
     }))
 };
