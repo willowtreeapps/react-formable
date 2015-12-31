@@ -8,7 +8,7 @@ export default React.createClass({
         code: PropTypes.string.isRequired,
         example: PropTypes.func.isRequired,
         className: PropTypes.string,
-        showCode: PropTypes.bool
+        showCodeByDefault: PropTypes.bool
     },
 
     getDefaultProps() {
@@ -19,7 +19,7 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            showCode: this.props.showCode || false,
+            showCode: this.props.showCodeByDefault || false,
             form: getBlankForm()
         };
     },
