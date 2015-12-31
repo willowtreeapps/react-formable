@@ -1,23 +1,21 @@
 /*eslint func-style:0*/
 import React, { PropTypes } from 'react';
-import MD  from './md';
 
-
+/*
+ * Represents some site content
+ */
 export default function Subsection(props) {
     const {
         title='',
-        markdown,
         link,
         subSections=[],
-        code: Code
+        content: Content
     } = props;
 
     return <div id={link} className="subsection">
         {title && title.length && <h3>{title}</h3>}
 
-        {markdown && <MD text={markdown} />}
-
-        {Code && <Code />}
+        {Content && <Content />}
         {subSections.map((subSection) => {
             return <Subsection key={subSection.link} {...subSection} />;
         })}
@@ -28,8 +26,7 @@ Subsection.propTypes = {
     title: PropTypes.string,
     id: PropTypes.string,
     link: PropTypes.string,
-    markdown: PropTypes.string,
-    code: PropTypes.oneOfType([
+    content: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.func
     ]),

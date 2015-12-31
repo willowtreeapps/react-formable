@@ -24,8 +24,7 @@ Page.propTypes = {
     description: PropTypes.string,
     subsections: PropTypes.arrayOf(PropTypes.shape({
         title: PropTypes.string,
-        markdown: PropTypes.string,
-        code: PropTypes.oneOfType([
+        content: PropTypes.oneOfType([
             PropTypes.node,
             PropTypes.func
         ])
