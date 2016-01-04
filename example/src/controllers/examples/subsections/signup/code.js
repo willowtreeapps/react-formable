@@ -2,7 +2,6 @@
 import React, { PropTypes } from 'react';
 import { Form, Input, Errors } from 'react-formable';
 const { required, equalsField } = require('react-formable').validators;
-const source = require('fs').readFileSync(__filename, 'utf8')
 
 export default function SignupForm({ onChange }) {
     return <Form onChange={onChange}>
@@ -42,5 +41,7 @@ export default function SignupForm({ onChange }) {
 SignupForm.propTypes = {
     onChange: PropTypes.func
 };
+
+const source = require('fs').readFileSync(__filename, 'utf8')
 
 export { source }

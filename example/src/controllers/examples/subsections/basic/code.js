@@ -38,3 +38,7 @@ export default function BasicForm({ onChange }) {
 BasicForm.propTypes = {
     onChange: PropTypes.func
 };
+
+const source = require('fs').readFileSync(__filename, 'utf8')
+
+export { source }
