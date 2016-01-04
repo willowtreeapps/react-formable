@@ -1,7 +1,4 @@
-export const title = 'Regex';
-export const link = 'Regex';
-
-export const markdown = `
+const markdown = `
 A validator that ensures the input value meets the specified regex.
 
 \`\`\`js
@@ -15,3 +12,7 @@ const { test } = require('react-formable').validators;
 | Error message | string | The error message to be returned is the supplied value is missing. |
 
 `;
+
+export const content = [markdown];
+export const title = 'Regex';
+export const link = 'Regex';

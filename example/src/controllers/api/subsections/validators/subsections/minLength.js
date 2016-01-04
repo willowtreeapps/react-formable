@@ -1,7 +1,4 @@
-export const title = 'Minimum Length';
-export const link = 'Minimum Length';
-
-export const markdown = `
+const markdown = `
 A validator that ensures minimum legnth of a supplied value.
 
 \`\`\`js
@@ -15,3 +12,7 @@ const { minLength } = require('react-formable').validators;
 | Error message | string | The error message returned is the supplied value is too short. |
 
 `;
+
+export const content = [markdown];
+export const title = 'Minimum Length';
+export const link = 'Minimum Length';
