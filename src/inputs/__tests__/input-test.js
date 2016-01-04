@@ -18,23 +18,43 @@ describe('Input', () => {
         expect(errorIndex).not.toBe(-1);
     });
 
-    it('does not fire onChange when validateOnBlur is true', () => {
+    it('fires onChange when validateOnBlur is true', () => {
         const onChangeCallback = jest.genMockFunction();
         const input = TestUtils.renderIntoDocument(
             <Input validateOnBlur onChange={onChangeCallback} />
+        );
+
+
+        TestUtils.Simulate.blur(
+            TestUtils.findRenderedDOMComponentWithTag(input, 'input')
+        );
+
+        expect(onChangeCallback.mock.calls.length).toBe(0);
+
+        TestUtils.Simulate.change(
+            TestUtils.findRenderedDOMComponentWithTag(input, 'input')
+        );
+
+        expect(onChangeCallback.mock.calls.length).toBe(1);
+    });
+
+    it('fires onBlur when validateOnBlur is true', () => {
+        const onBlurCallback = jest.genMockFunction();
+        const input = TestUtils.renderIntoDocument(
+            <Input validateOnBlur onBlur={onBlurCallback} />
         );
 
         TestUtils.Simulate.change(
             TestUtils.findRenderedDOMComponentWithTag(input, 'input')
         );
 
-        expect(onChangeCallback.mock.calls.length).toBe(0);
+        expect(onBlurCallback.mock.calls.length).toBe(0);
 
         TestUtils.Simulate.blur(
             TestUtils.findRenderedDOMComponentWithTag(input, 'input')
         );
 
-        expect(onChangeCallback.mock.calls.length).toBe(1);
+        expect(onBlurCallback.mock.calls.length).toBe(1);
     });
 
     it('fires onChange when validateOnBlur is false', () => {
@@ -54,6 +74,25 @@ describe('Input', () => {
         );
 
         expect(onChangeCallback.mock.calls.length).toBe(1);
+    });
+
+    it('fires onBlur when validateOnBlur is false', () => {
+        const onBlurCallback = jest.genMockFunction();
+        const input = TestUtils.renderIntoDocument(
+            <Input onBlur={onBlurCallback} />
+        );
+
+        TestUtils.Simulate.change(
+            TestUtils.findRenderedDOMComponentWithTag(input, 'input')
+        );
+
+        expect(onBlurCallback.mock.calls.length).toBe(0);
+
+        TestUtils.Simulate.blur(
+            TestUtils.findRenderedDOMComponentWithTag(input, 'input')
+        );
+
+        expect(onBlurCallback.mock.calls.length).toBe(1);
     });
 
     it('returns the appropriate value from getValue', () => {
