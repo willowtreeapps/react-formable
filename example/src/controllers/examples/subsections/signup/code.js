@@ -42,6 +42,4 @@ SignupForm.propTypes = {
     onChange: PropTypes.func
 };
 
-const source = require('fs').readFileSync(__filename, 'utf8')
-
-export { source }
+export const source = require('fs').readFileSync(__filename, 'utf8');

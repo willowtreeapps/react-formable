@@ -1,5 +1,4 @@
 /*eslint func-style:0*/
-
 import React, { PropTypes } from 'react';
 import { Form, Input, Errors } from 'react-formable';
 const { required } = require('react-formable').validators;
@@ -39,6 +38,4 @@ BasicForm.propTypes = {
     onChange: PropTypes.func
 };
 
-const source = require('fs').readFileSync(__filename, 'utf8')
-
-export { source }
+export const source = require('fs').readFileSync(__filename, 'utf8');
