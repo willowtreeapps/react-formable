@@ -6,7 +6,7 @@ import * as MinLength from './subsections/minLength';
 import * as MaxLength from './subsections/maxLength';
 import * as EqualsField from './subsections/equalsField';
 
-export const subSections = [
+export const subsections = [
     Required,
     Test,
     LessThan,

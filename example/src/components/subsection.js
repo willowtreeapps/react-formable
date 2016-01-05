@@ -9,7 +9,7 @@ export default function Subsection(props) {
     const {
         title='',
         link,
-        subSections=[],
+        subsections=[],
         content
     } = props;
 
@@ -24,8 +24,8 @@ export default function Subsection(props) {
                 return <Content key={i} />
             }
         })}
-        {subSections.map((subSection) => {
-            return <Subsection key={subSection.link} {...subSection} />;
+        {subsections.map((subsection) => {
+            return <Subsection key={subsection.link} {...subsection} />;
         })}
     </div>;
 }
@@ -40,5 +40,5 @@ Subsection.propTypes = {
             PropTypes.string
         ])
     ),
-    subSections: PropTypes.array
+    subsections: PropTypes.array
 };
