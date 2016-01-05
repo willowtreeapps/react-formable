@@ -35,11 +35,11 @@ export default React.createClass({
     },
 
     /*
-     * Clone the properties of a formable component
+     * Clone the properties of something we are interested in weaving in our magic
      */
     cloneFormableComponentProperties(fieldErrors) {
         let childNames = [];
-        
+
         return (child) => {
             if (child.type.displayName === 'Errors') {
                 return {
