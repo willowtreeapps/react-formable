@@ -29,13 +29,13 @@ describe('Input', () => {
             TestUtils.findRenderedDOMComponentWithTag(input, 'input')
         );
 
-        expect(onChangeCallback.mock.calls.length).toBe(0);
+        expect(onChangeCallback.mock.calls.length).toBe(1);
 
         TestUtils.Simulate.change(
             TestUtils.findRenderedDOMComponentWithTag(input, 'input')
         );
 
-        expect(onChangeCallback.mock.calls.length).toBe(1);
+        expect(onChangeCallback.mock.calls.length).toBe(2);
     });
 
     it('fires onBlur when validateOnBlur is true', () => {
