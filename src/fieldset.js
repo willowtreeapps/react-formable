@@ -27,14 +27,20 @@ export default React.createClass({
         };
     },
 
-    render() {
-        warning( this.props.name, `Fieldset found without a name prop. The children of this component will behave eratically` );
+    /*
+     * Is the child something we are interested in?
+     */
+    isFormableComponent(child) {
+        return child.props && child.props.name || child.type.displayName === 'Errors';
+    },
 
-        const fieldErrors = this.props.fieldErrors || {};
+    /*
+     * Clone the properties of a formable component
+     */
+    cloneFormableComponentProperties(fieldErrors) {
         let childNames = [];
-
-        const clonePred = child => child.props && child.props.name || child.type.displayName === 'Errors';
-        const cloneProps = child => {
+        
+        return (child) => {
             if (child.type.displayName === 'Errors') {
                 return {
                     errors: this.props.errors,
@@ -53,10 +59,18 @@ export default React.createClass({
                 onChange: child.props.onChange || identity,
                 onSubmit: child.props.onSubmit || identity
             };
-        };
+        }
+    },
+
+    render() {
+        warning( this.props.name, `Fieldset found without a name prop. The children of this component will behave eratically` );
+
+        const fieldErrors = this.props.fieldErrors || {};
 
         return <div {...this.props}>
-            {cloneChildren(clonePred, cloneProps, this.props.children)}
+            {cloneChildren(this.isFormableComponent,
+                this.cloneFormableComponentProperties(fieldErrors),
+                this.props.children)}
         </div>;
     }
 });
