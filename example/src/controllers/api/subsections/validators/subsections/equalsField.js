@@ -1,7 +1,4 @@
-export const title = 'Equals Field';
-export const link = 'Equals Field';
-
-export const markdown = `
+const markdown = `
 A validator that ensures an input value is equal to another field in the form.
 
 \`\`\`js
@@ -15,3 +12,7 @@ const { equalsField } = require('react-formable').validators;
 | Error message | string | The error message returned is the supplied value does not match. |
 
 `;
+
+export const content = [markdown];
+export const title = 'Equals Field';
+export const link = 'Equals Field';

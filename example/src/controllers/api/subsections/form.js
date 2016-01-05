@@ -1,7 +1,4 @@
-export const title = 'Form';
-export const link = 'form';
-
-export const markdown = `
+const markdown = `
 The top level \`Form\` component is what serializes your data.
 
 | Property | Type | Default | Description |
@@ -21,3 +18,7 @@ There are a handful of methods on the \`Form\` component which are useful. To ac
 | showFieldErrors | | Passes down errors to inputs within the form. |
 | clearFieldErrors | | Clears errors passed down to inputs within the form. |
 `;
+
+export const content = [markdown];
+export const title = 'Form';
+export const link = 'form';

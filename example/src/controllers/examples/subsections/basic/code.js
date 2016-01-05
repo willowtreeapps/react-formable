@@ -1,5 +1,4 @@
 /*eslint func-style:0*/
-
 import React, { PropTypes } from 'react';
 import { Form, Input, Errors, Fieldset } from 'react-formable';
 const { required } = require('react-formable').validators;
@@ -43,3 +42,5 @@ export default function BasicForm({ onChange }) {
 BasicForm.propTypes = {
     onChange: PropTypes.func
 };
+
+export const source = require('fs').readFileSync(__filename, 'utf8');

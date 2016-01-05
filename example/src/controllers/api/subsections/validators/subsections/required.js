@@ -1,7 +1,4 @@
-export const title = 'Required';
-export const link = 'Required';
-
-export const markdown = `
+const markdown = `
 A validator that ensures an input value is supplied. Null, undefined, empty string (whitespace) or empty object \`{}\` are all considered missing.
 
 \`\`\`js
@@ -14,3 +11,7 @@ const { required } = require('react-formable').validators;
 | Error message | string | The error message to be returned is the supplied value is missing. |
 
 `;
+
+export const content = [markdown];
+export const title = 'Required';
+export const link = 'Required';

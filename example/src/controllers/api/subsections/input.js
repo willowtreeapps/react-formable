@@ -1,7 +1,4 @@
-export const title = 'Input';
-export const link = 'input';
-
-export const markdown = `
+const markdown = `
 To integrate inputs with \`Form\`s, you need to ensure two things.
 
 1. The input has a \`getValue\` method. This method returns the current value of the input.
@@ -15,3 +12,7 @@ To integrate inputs with \`Form\`s, you need to ensure two things.
 | fieldErrors | array[string] | [] | An array of string errors to pass down to the input. This is automatically filled via the form. You can overwrite this field if you want to manually show an error on an input. |
 | validateOnBlur | boolean | false | A boolean which forces the field to wait until it fires a blur event to trigger form validation. |
 `;
+
+export const content = [markdown];
+export const title = 'Input';
+export const link = 'input';

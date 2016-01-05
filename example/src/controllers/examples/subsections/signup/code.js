@@ -1,10 +1,9 @@
 /*eslint func-style:0*/
-
 import React, { PropTypes } from 'react';
 import { Form, Input, Errors } from 'react-formable';
 const { required, equalsField } = require('react-formable').validators;
 
-export default function ValidatorForm({ onChange }) {
+export default function SignupForm({ onChange }) {
     return <Form onChange={onChange}>
         <Errors className="formErrors" />
 
@@ -39,6 +38,8 @@ export default function ValidatorForm({ onChange }) {
     </Form>;
 }
 
-ValidatorForm.propTypes = {
+SignupForm.propTypes = {
     onChange: PropTypes.func
 };
+
+export const source = require('fs').readFileSync(__filename, 'utf8');
