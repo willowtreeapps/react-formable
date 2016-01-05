@@ -9,7 +9,7 @@ const Fieldset = require('../fieldset').default;
 const Input = require('../inputs/input').default;
 
 describe('Fieldset', () => {
-    it('renders with name of the fieldset', () => {
+    it('renders div with name of the fieldset', () => {
         let fieldset = TestUtils.renderIntoDocument(
             <Fieldset name="pet">
                 <label> Pet Name: <Input name="name" type="text" /> </label>
