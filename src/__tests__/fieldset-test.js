@@ -17,11 +17,8 @@ describe('Fieldset', () => {
             </Fieldset>
         );
 
-        var fieldsetNode = ReactDOM.findDOMNode(fieldset);
-        debugger;
+        const fieldsetNode = ReactDOM.findDOMNode(fieldset);
 
-        // Object.keys(fieldsetNode).map((name) => { console.log(name) });
-
-        // console.log(fieldsetNode.name);
+        expect(fieldsetNode.getAttribute('name')).toBe('pet');
     });
 });
