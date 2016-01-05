@@ -21,4 +21,13 @@ describe('Fieldset', () => {
 
         expect(fieldsetNode.getAttribute('name')).toBe('pet');
     });
+
+    it('does something', () => {
+        let fieldset = TestUtils.renderIntoDocument(
+            <Fieldset name="pet">
+                <label> Pet Name: <Input name="name" type="text" /> </label>
+                <label> Pet Type: <Input name="type" type="text" /> </label>
+            </Fieldset>
+        );
+    });
 });
