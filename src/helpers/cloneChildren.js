@@ -12,7 +12,7 @@ const leafCloneRule = {
 
 function defaultRecursiveCloneRule(rule) {
     return {
-        predicate: true,
+        predicate: () => true,
         clone: child => {
             return React.cloneElement(
                 child,
