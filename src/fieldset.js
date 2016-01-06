@@ -28,13 +28,6 @@ export default React.createClass({
     },
 
     /*
-     * Is the child something we are interested in?
-     */
-    isFormableComponent(child) {
-        return child.props && child.props.name || child.type.displayName === 'Errors';
-    },
-
-    /*
      * Clone the properties of something we are interested in weaving in our magic
      */
     cloneFormableComponentProperties(fieldErrors) {
@@ -62,15 +55,18 @@ export default React.createClass({
         }
     },
 
+    getFormableComponentCloneRule(fieldErrors = {}) {
+        return {
+            predicate: child => child.props && child.props.name || child.type.displayName === 'Errors',
+            clone: this.cloneFormableComponentProperties(fieldErrors)
+        }
+    },
+
     render() {
         warning( this.props.name, `Fieldset found without a name prop. The children of this component will behave eratically` );
 
-        const fieldErrors = this.props.fieldErrors || {};
-
         return <div {...this.props}>
-            {cloneChildren(this.isFormableComponent,
-                this.cloneFormableComponentProperties(fieldErrors),
-                this.props.children)}
+            {cloneChildren(this.getFormableComponentCloneRule(this.props.fieldErrors), this.props.children)}
         </div>;
     }
 });
