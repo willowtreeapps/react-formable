@@ -1,5 +1,7 @@
 /*eslint func-style:0*/
 import React from 'react';
+import identity from './identity';
+import warning from 'warning';
 
 function isLeaf(element) {
     return typeof element !== 'object' || element === null;
@@ -41,7 +43,7 @@ function cloneChild(cloneRules) {
  * @param {Object} fieldErrors bbbb
  * @return {Object} rule for cloning Errors element
  */
-export function errorsRule({ errors, fieldErrors = {} }) {
+export function createErrorsRule({ errors = [], fieldErrors = {} }) {
     return {
         predicate: child => child.type && child.type.displayName === 'Errors',
         clone: child => {
@@ -51,6 +53,41 @@ export function errorsRule({ errors, fieldErrors = {} }) {
                     errors: errors,
                     fieldErrors: fieldErrors
                 },
+                child.props && child.props.children
+            );
+        }
+    }
+}
+
+
+/*
+ * Clone the properties of something we are interested in weaving in our magic
+ */
+function cloneFormableComponentProperties(fieldErrors) {
+    let childNames = [];
+
+    return (child) => {
+        warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
+        warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
+        childNames = childNames.concat(child.props.name);
+
+        return {
+            ref: child.ref || child.props.name,
+            errors: this.props.errors,
+            fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name],
+            onChange: child.props.onChange || identity,
+            onSubmit: child.props.onSubmit || identity
+        };
+    }
+}
+
+export function createFormableRule(fieldErrors = {}) {
+    return {
+        predicate: child => child.props && child.props.name,
+        clone: child => {
+            return React.cloneElement(
+                child,
+                cloneFormableComponentProperties(fieldErrors)(child),
                 child.props && child.props.children
             );
         }

@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
-import cloneChildren, { errorsRule } from './helpers/cloneChildren';
+import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
 import values from './helpers/values';
-import identity from './helpers/identity';
 import warning from 'warning';
 
 export default React.createClass({
@@ -27,47 +26,13 @@ export default React.createClass({
         };
     },
 
-    /*
-     * Clone the properties of something we are interested in weaving in our magic
-     */
-    cloneFormableComponentProperties(fieldErrors) {
-        let childNames = [];
-
-        return (child) => {
-            warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
-            warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
-            childNames = childNames.concat(child.props.name);
-
-            return {
-                ref: child.ref || child.props.name,
-                errors: this.props.errors,
-                fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name],
-                onChange: child.props.onChange || identity,
-                onSubmit: child.props.onSubmit || identity
-            };
-        }
-    },
-
-    getFormableComponentCloneRule(fieldErrors = {}) {
-        return {
-            predicate: child => child.props && child.props.name,
-            clone: child => {
-                return React.cloneElement(
-                    child,
-                    this.cloneFormableComponentProperties(fieldErrors)(child),
-                    child.props && child.props.children
-                );
-            }
-        }
-    },
-
     render() {
         warning( this.props.name, `Fieldset found without a name prop. The children of this component will behave eratically` );
-        const errorRule = errorsRule(this.props);
-        const formableRule = this.getFormableComponentCloneRule(this.props.fieldErrors);
+        const errorsRule = createErrorsRule(this.props);
+        const formableRule = createFormableRule(this.props.fieldErrors);
 
         return <div {...this.props}>
-            {cloneChildren([errorRule, formableRule], this.props.children)}
+            {cloneChildren([errorsRule, formableRule], this.props.children)}
         </div>;
     }
 });
