@@ -34,6 +34,30 @@ function cloneChild(cloneRules) {
 }
 
 /**
+ * A common function for cloning Errors element that takes care of injecting
+ * required error data
+ *
+ * @param {Object} errors aaaaa
+ * @param {Object} fieldErrors bbbb
+ * @return {Object} rule for cloning Errors element
+ */
+export function errorsRule(errors, fieldErrors = {}) {
+    return {
+        predicate: child => child.type && child.type.displayName === 'Errors',
+        clone: child => {
+            return React.cloneElement(
+                child,
+                {
+                    errors: errors,
+                    fieldErrors: fieldErrors
+                },
+                child.props && child.props.children
+            );
+        }
+    }
+}
+
+/**
  * Clones a child subtree using the supplied rules which are composed of predicates
  * and clone instructions.
  *

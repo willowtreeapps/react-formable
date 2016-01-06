@@ -295,12 +295,21 @@ export default React.createClass({
             };
         };
 
+        const rules = [{
+            x: 1,
+            y: 2
+        },
+        {
+            predicate: clonePred,
+            clone: cloneProps
+        }];
+
         return <form {...this.props}
                     ref="form"
                     onSubmit={this.onSubmit}
                     onChange={function () {}}
                     onKeyDown={this.onKeyDown}>
-            {cloneChildren(clonePred, cloneProps, this.props.children)}
+            {cloneChildren(rules, this.props.children)}
         </form>;
     }
 });

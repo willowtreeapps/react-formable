@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import cloneChildren from './helpers/cloneChildren';
+import cloneChildren, { errorsRule } from './helpers/cloneChildren';
 import values from './helpers/values';
 import identity from './helpers/identity';
 import warning from 'warning';
@@ -61,26 +61,13 @@ export default React.createClass({
         }
     },
 
-    errorsRule: {
-        predicate: child => child.type && child.type.displayName === 'Errors',
-        clone: child => {
-            return React.cloneElement(
-                child,
-                {
-                    errors: this.props.errors,
-                    fieldErrors: this.props.fieldErrors || {}
-                },
-                child.props && child.props.children
-            );
-        }
-    },
-
     render() {
         warning( this.props.name, `Fieldset found without a name prop. The children of this component will behave eratically` );
-        const rules = [this.errorsRule, this.getFormableComponentCloneRule(this.props.fieldErrors)];
+        const errorRule = errorsRule(this.props.errors, this.props.fieldErrors);
+        const formableRule = this.getFormableComponentCloneRule(this.props.fieldErrors);
 
         return <div {...this.props}>
-            {cloneChildren(rules, this.props.children)}
+            {cloneChildren([errorRule, formableRule], this.props.children)}
         </div>;
     }
 });
