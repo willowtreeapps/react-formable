@@ -63,7 +63,7 @@ export default React.createClass({
 
     render() {
         warning( this.props.name, `Fieldset found without a name prop. The children of this component will behave eratically` );
-        const errorRule = errorsRule(this.props.errors, this.props.fieldErrors);
+        const errorRule = errorsRule(this.props);
         const formableRule = this.getFormableComponentCloneRule(this.props.fieldErrors);
 
         return <div {...this.props}>

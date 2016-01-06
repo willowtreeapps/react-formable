@@ -41,7 +41,7 @@ function cloneChild(cloneRules) {
  * @param {Object} fieldErrors bbbb
  * @return {Object} rule for cloning Errors element
  */
-export function errorsRule(errors, fieldErrors = {}) {
+export function errorsRule({ errors, fieldErrors = {} }) {
     return {
         predicate: child => child.type && child.type.displayName === 'Errors',
         clone: child => {
