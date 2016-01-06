@@ -67,7 +67,7 @@ function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChang
         childNames = childNames.concat(child.props.name);
 
         return {
-            ref: child.ref || child.props.name,            
+            ref: child.ref || child.props.name,
             onChange: compose(onChange, child.props.onChange || identity),
             onSubmit: compose(onSubmit, child.props.onSubmit || identity),
             errors: errors,
@@ -76,7 +76,8 @@ function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChang
     }
 }
 
-export function createFormableRule({ errors = [], fieldErrors = {} },
+export function createFormableRule(
+    { errors = [], fieldErrors = {} },
     onSubmit = identity,
     onChange = identity) {
     return {
