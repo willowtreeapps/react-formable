@@ -3,8 +3,6 @@ import uniq from './helpers/uniq';
 import values from './helpers/values';
 import identity from './helpers/identity';
 import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
-import compose from './helpers/compose';
-import warning from 'warning';
 
 export const getBlankForm =function getBlankForm() {
     return {
