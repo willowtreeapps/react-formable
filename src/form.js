@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import uniq from './helpers/uniq';
 import values from './helpers/values';
 import identity from './helpers/identity';
-import cloneChildren, { errorsRule } from './helpers/cloneChildren';
+import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
 import compose from './helpers/compose';
 import warning from 'warning';
 
@@ -271,34 +271,15 @@ export default React.createClass({
     },
 
     render() {
-        // Define our helpers for cloneing our children
-        let childNames = [];
-        const cloneProps = child => {
-            warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
-            warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
-            childNames = childNames.concat(child.props.name);
-
-            return {
-                ref: child.ref || child.props.name,
-                onChange: compose(this.onChange, child.props.onChange || identity),
-                onSubmit: compose(this.onSubmit, child.props.onSubmit || identity),
-                errors: this.state.errors,
-                fieldErrors: child.props.fieldErrors || this.state.fieldErrors[child.props.name]
-            };
-        };
-
-        const errorRule = errorsRule(this.state);
-        const someRule = {
-            predicate: child => child.props && child.props.name, //same as fieldset isFormable
-            clone: cloneProps
-        };
+        const errorsRule = createErrorsRule(this.state);
+        const formableRule = createFormableRule(this.state);
 
         return <form {...this.props}
                     ref="form"
                     onSubmit={this.onSubmit}
                     onChange={function () {}}
                     onKeyDown={this.onKeyDown}>
-            {cloneChildren([errorRule, someRule], this.props.children)}
+            {cloneChildren([errorsRule, formableRule], this.props.children)}
         </form>;
     }
 });

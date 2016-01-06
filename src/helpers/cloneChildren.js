@@ -63,7 +63,7 @@ export function createErrorsRule({ errors = [], fieldErrors = {} }) {
 /*
  * Clone the properties of something we are interested in weaving in our magic
  */
-function cloneFormableComponentProperties(fieldErrors) {
+function cloneFormableComponentProperties(errors, fieldErrors) {
     let childNames = [];
 
     return (child) => {
@@ -73,21 +73,21 @@ function cloneFormableComponentProperties(fieldErrors) {
 
         return {
             ref: child.ref || child.props.name,
-            errors: this.props.errors,
-            fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name],
-            onChange: child.props.onChange || identity,
-            onSubmit: child.props.onSubmit || identity
+            onChange: child.props.onChange || identity, //TODO: balls
+            onSubmit: child.props.onSubmit || identity, //TODO: balls
+            errors: errors,
+            fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name]
         };
     }
 }
 
-export function createFormableRule(fieldErrors = {}) {
+export function createFormableRule({ errors = [], fieldErrors = {} }) {
     return {
         predicate: child => child.props && child.props.name,
         clone: child => {
             return React.cloneElement(
                 child,
-                cloneFormableComponentProperties(fieldErrors)(child),
+                cloneFormableComponentProperties(errors, fieldErrors)(child),
                 child.props && child.props.children
             );
         }
