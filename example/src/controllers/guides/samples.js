@@ -8,7 +8,8 @@ export const markdown = {
     fieldset: require('fs').readFileSync(__dirname + '/subsections/fieldset/description.md', 'utf8'),
     fieldlist: require('fs').readFileSync(__dirname + '/subsections/fieldlist/description.md', 'utf8'),
     'adding-validation': require('fs').readFileSync(__dirname + '/subsections/adding-validation/description.md', 'utf8'),
-    'displaying-errors': require('fs').readFileSync(__dirname + '/subsections/displaying-errors/description.md', 'utf8')
+    'displaying-errors': require('fs').readFileSync(__dirname + '/subsections/displaying-errors/description.md', 'utf8'),
+    'creating-inputs': require('fs').readFileSync(__dirname + '/subsections/creating-inputs/description.md', 'utf8')
 };
 
 const codeTextFiles = {
