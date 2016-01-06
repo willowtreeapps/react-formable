@@ -23,8 +23,8 @@ function defaultRecursiveCloneRule(rule) {
     }
 }
 
-function cloneChild(cloneRule) {
-    const rules = [leafCloneRule, cloneRule, defaultRecursiveCloneRule(cloneRule)];
+function cloneChild(cloneRules) {
+    const rules = [leafCloneRule, ...cloneRules, defaultRecursiveCloneRule(cloneRules)];
 
     return (child) => {
         const rule = rules.find(rule => rule.predicate(child));
@@ -37,15 +37,15 @@ function cloneChild(cloneRule) {
  * Clones a child subtree using the supplied rules which are composed of predicates
  * and clone instructions.
  *
- * @param  {Object} rule/clone fn for determining properties during clone
+ * @param  {array} rules any specific {pred/clone func} for bespoke children cloning
  * @param  {Function} children The children to iterate over
  * @return {Object} The cloned children
  */
-export default function cloneChildren(rule, children) {
+export default function cloneChildren(rules, children) {
     //TODO: feels like this should be able to go... and in turn collapse isLeaf:fn
     if (isLeaf(children)) {
         return children;
     }
 
-    return React.Children.map(children, cloneChild(rule));
+    return React.Children.map(children, cloneChild(rules));
 }

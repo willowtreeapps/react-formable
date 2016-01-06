@@ -34,13 +34,6 @@ export default React.createClass({
         let childNames = [];
 
         return (child) => {
-            if (child.type.displayName === 'Errors') {
-                return {
-                    errors: this.props.errors,
-                    fieldErrors: this.props.fieldErrors || {}
-                };
-            }
-
             warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
             warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
             childNames = childNames.concat(child.props.name);
@@ -57,7 +50,7 @@ export default React.createClass({
 
     getFormableComponentCloneRule(fieldErrors = {}) {
         return {
-            predicate: child => child.props && child.props.name || child.type.displayName === 'Errors',
+            predicate: child => child.props && child.props.name,
             clone: child => {
                 return React.cloneElement(
                     child,
@@ -68,11 +61,26 @@ export default React.createClass({
         }
     },
 
+    errorsRule: {
+        predicate: child => child.type && child.type.displayName === 'Errors',
+        clone: child => {
+            return React.cloneElement(
+                child,
+                {
+                    errors: this.props.errors,
+                    fieldErrors: this.props.fieldErrors || {}
+                },
+                child.props && child.props.children
+            );
+        }
+    },
+
     render() {
         warning( this.props.name, `Fieldset found without a name prop. The children of this component will behave eratically` );
+        const rules = [this.errorsRule, this.getFormableComponentCloneRule(this.props.fieldErrors)];
 
         return <div {...this.props}>
-            {cloneChildren(this.getFormableComponentCloneRule(this.props.fieldErrors), this.props.children)}
+            {cloneChildren(rules, this.props.children)}
         </div>;
     }
 });
