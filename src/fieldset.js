@@ -58,7 +58,13 @@ export default React.createClass({
     getFormableComponentCloneRule(fieldErrors = {}) {
         return {
             predicate: child => child.props && child.props.name || child.type.displayName === 'Errors',
-            clone: this.cloneFormableComponentProperties(fieldErrors)
+            clone: child => {
+                return React.cloneElement(
+                    child,
+                    this.cloneFormableComponentProperties(fieldErrors)(child),
+                    child.props && child.props.children
+                );
+            }
         }
     },
 
