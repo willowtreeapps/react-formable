@@ -1,6 +1,7 @@
 /*eslint func-style:0*/
 import React from 'react';
 import identity from './identity';
+import compose from './compose';
 import warning from 'warning';
 
 function isLeaf(element) {
@@ -9,19 +10,13 @@ function isLeaf(element) {
 
 const leafCloneRule = {
     predicate: isLeaf,
-    clone: child => child
+    clone: identity
 }
 
 function defaultRecursiveCloneRule(rule) {
     return {
         predicate: () => true,
-        clone: child => {
-            return React.cloneElement(
-                child,
-                {},
-                cloneChildren(rule, child.props && child.props.children)
-            )
-        }
+        clone: child => React.cloneElement(child, {}, cloneChildren(rule, child.props && child.props.children))
     }
 }
 
@@ -63,7 +58,7 @@ export function createErrorsRule({ errors = [], fieldErrors = {} }) {
 /*
  * Clone the properties of something we are interested in weaving in our magic
  */
-function cloneFormableComponentProperties(errors, fieldErrors) {
+function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange) {
     let childNames = [];
 
     return (child) => {
@@ -72,22 +67,24 @@ function cloneFormableComponentProperties(errors, fieldErrors) {
         childNames = childNames.concat(child.props.name);
 
         return {
-            ref: child.ref || child.props.name,
-            onChange: child.props.onChange || identity, //TODO: balls
-            onSubmit: child.props.onSubmit || identity, //TODO: balls
+            ref: child.ref || child.props.name,            
+            onChange: compose(onChange, child.props.onChange || identity),
+            onSubmit: compose(onSubmit, child.props.onSubmit || identity),
             errors: errors,
             fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name]
         };
     }
 }
 
-export function createFormableRule({ errors = [], fieldErrors = {} }) {
+export function createFormableRule({ errors = [], fieldErrors = {} },
+    onSubmit = identity,
+    onChange = identity) {
     return {
         predicate: child => child.props && child.props.name,
         clone: child => {
             return React.cloneElement(
                 child,
-                cloneFormableComponentProperties(errors, fieldErrors)(child),
+                cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)(child),
                 child.props && child.props.children
             );
         }
