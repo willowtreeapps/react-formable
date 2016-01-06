@@ -4,12 +4,8 @@ import identity from './identity';
 import compose from './compose';
 import warning from 'warning';
 
-function isLeaf(element) {
-    return typeof element !== 'object' || element === null;
-}
-
 const leafCloneRule = {
-    predicate: isLeaf,
+    predicate: (child) => typeof child !== 'object' || child === null,
     clone: identity
 }
 
@@ -65,7 +61,7 @@ function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChang
         warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
         warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
         childNames = childNames.concat(child.props.name);
-
+        
         return {
             ref: child.ref || child.props.name,
             onChange: compose(onChange, child.props.onChange || identity),
@@ -101,10 +97,7 @@ export function createFormableRule(
  * @return {Object} The cloned children
  */
 export default function cloneChildren(rules, children) {
-    //TODO: feels like this should be able to go... and in turn collapse isLeaf:fn
-    if (isLeaf(children)) {
-        return children;
+    if (children) {
+        return React.Children.map(children, cloneChild(rules));
     }
-
-    return React.Children.map(children, cloneChild(rules));
 }
