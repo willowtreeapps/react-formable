@@ -73,8 +73,8 @@ export default React.createClass({
 
                 <div className="app-content">
                     {React.cloneElement(this.props.children, {
-                         setSublinks: this.setSublinks,
-                         setActiveSublink: this.setActiveSublink
+                        setSublinks: this.setSublinks,
+                        setActiveSublink: this.setActiveSublink
                     })}
                 </div>
             </div>

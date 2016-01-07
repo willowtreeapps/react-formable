@@ -16,7 +16,6 @@ function scrollToId(id) {
 function renderSublinks(subLinks, activeSublink) {
     return <ul>
         {subLinks.map(({ title, link, subsections }) => {
-
             const formattedTitle = activeSublink === link ?
                                    <strong>{title}</strong> : title;
 
