@@ -1,6 +1,7 @@
 /*eslint func-style:0*/
 import React, { PropTypes } from 'react';
 import MD  from './md';
+import Waypoint from 'react-waypoint';
 
 /*
  * Represents some site content
@@ -14,6 +15,9 @@ export default function Subsection(props) {
     } = props;
 
     return <div id={link} className="subsection">
+
+        <Waypoint onEnter={() => setActiveSublink(link)} />
+
         {title && title.length && <h3>{title}</h3>}
 
         {content && content.map((Content, i) => {
