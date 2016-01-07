@@ -16,16 +16,6 @@ function defaultRecursiveCloneRule(rule) {
     }
 }
 
-function cloneChild(cloneRules) {
-    const rules = [leafCloneRule, ...cloneRules, defaultRecursiveCloneRule(cloneRules)];
-
-    return (child) => {
-        const rule = rules.find(rule => rule.predicate(child));
-
-        return rule.clone(child);
-    }
-}
-
 /**
  * A common function for cloning Errors element that takes care of injecting
  * required error data
@@ -53,6 +43,7 @@ export function createErrorsRule({ errors = [], fieldErrors = {} }) {
 
 /*
  * Clone the properties of something we are interested in weaving in our magic
+ * //TODO: childNames sucks
  */
 function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange, childNames) {
     return (child) => {
@@ -85,6 +76,22 @@ export function createFormableRule(
                 child.props && child.props.children
             );
         }
+    }
+}
+
+/**
+ * Clone an individual element.
+ *
+ * @param {array} rules for cloning
+ * @return {Object} cloned element
+ */
+function cloneChild(rules) {
+    const cloneRules = [leafCloneRule, ...cloneRules, defaultRecursiveCloneRule(rules)];
+
+    return (child) => {
+        const rule = cloneRules.find(rule => rule.predicate(child));
+
+        return rule.clone(child);
     }
 }
 
