@@ -21,4 +21,21 @@ describe('Fieldset', () => {
 
         expect(fieldsetNode.getAttribute('name')).toBe('pet');
     });
+
+    it('can get inputs', () => {
+        let fieldset = TestUtils.renderIntoDocument(
+            <Fieldset name="pet">
+                <label> Pet Name: <Input name="name" type="text"
+                    value="george" /> </label>
+                <label> Pet Type: <Input name="type" type="text"
+                    value="dog" /> </label>
+            </Fieldset>
+        );
+
+        const inputs = fieldset.getInputs();
+
+        expect(inputs.ref).toEqual(fieldset);
+        expect(inputs.refs['name'].ref.getValue()).toBe('george');
+        expect(inputs.refs['type'].ref.getValue()).toBe('dog');
+    });
 });
