@@ -1,9 +1,9 @@
 /*eslint func-style:0*/
 import React, { PropTypes } from 'react';
 import { Form, Input, Errors, Fieldset } from 'react-formable';
-const { required, equalsField } = require('react-formable').validators;
+const { required } = require('react-formable').validators;
 
-export default function SignupForm({ onChange }) {
+export default function FieldsetForm({ onChange }) {
     return <Form onChange={onChange}>
         <Errors className="formErrors" />
 
@@ -48,7 +48,7 @@ export default function SignupForm({ onChange }) {
     </Form>;
 }
 
-SignupForm.propTypes = {
+FieldsetForm.propTypes = {
     onChange: PropTypes.func
 };
 
