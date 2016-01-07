@@ -100,7 +100,7 @@ export function createFormableRule(
  * @return {Object} The cloned children
  */
 export default function cloneChildren(rules, children, childNames = []) {
-    return () => {
+    return function () {
         if (children) {
             const cloneRules = [leafRule, ...rules, createRecursiveRule(rules)];
 
