@@ -60,10 +60,6 @@ function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChang
         warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
         childNames.push(child.props.name);
 
-        // console.log('Adding ' + child.props.name);
-        // console.log('List ' + childNames);
-        // console.log('------------------');
-
         return {
             ref: child.ref || child.props.name,
             onChange: compose(onChange, child.props.onChange || identity),
