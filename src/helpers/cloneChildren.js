@@ -4,15 +4,24 @@ import identity from './identity';
 import compose from './compose';
 import warning from 'warning';
 
+/**
+ * Rule for cloning something at leaf level like some text
+ */
 const leafCloneRule = {
     predicate: (child) => typeof child !== 'object' || child === null,
     clone: identity
 }
 
-function defaultRecursiveCloneRule(rule) {
+/**
+ * Allows default recursion into an element that has children.
+ *
+ * @param {array} rules on how to clone individual elements
+ * @returns {Object} rule for cloning recursively
+ */
+function defaultRecursiveCloneRule(rules) {
     return {
         predicate: () => true,
-        clone: child => React.cloneElement(child, {}, cloneChildren(rule, child.props && child.props.children))
+        clone: child => React.cloneElement(child, {}, cloneChildren(rules, child.props && child.props.children))
     }
 }
 
@@ -40,7 +49,6 @@ export function createErrorsRule({ errors = [], fieldErrors = {} }) {
     }
 }
 
-
 /*
  * Clone the properties of something we are interested in weaving in our magic
  * //TODO: childNames sucks
@@ -61,6 +69,10 @@ function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChang
     }
 }
 
+/*
+ * Standard cloning rule for something react-formable
+ * //TODO: the signature kinda sucks
+ */
 export function createFormableRule(
     { errors = [], fieldErrors = {} },
     onSubmit = identity,
@@ -86,7 +98,7 @@ export function createFormableRule(
  * @return {Object} cloned element
  */
 function cloneChild(rules) {
-    const cloneRules = [leafCloneRule, ...cloneRules, defaultRecursiveCloneRule(rules)];
+    const cloneRules = [leafCloneRule, ...rules, defaultRecursiveCloneRule(rules)];
 
     // find first rule that passes and use it to clone
     return (child) => cloneRules.find(rule => rule.predicate(child)).clone(child);
