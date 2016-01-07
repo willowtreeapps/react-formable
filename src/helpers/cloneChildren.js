@@ -53,9 +53,9 @@ export function createErrorsRule({ errors = [], fieldErrors = {} }) {
 }
 
 /*
- * Clone the properties of something we are interested to weave our magic into
+ * Get extra properties for something we are going to weave our formable magic into.
  */
-function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange) {
+function getFormableComponentProperties(errors, fieldErrors, onSubmit, onChange) {
     return (child, childNames) => {
         warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
         warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
@@ -83,7 +83,7 @@ export function createFormableRule(
         clone: (child, childNames) => {
             return React.cloneElement(
                 child,
-                cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)(child, childNames),
+                getFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)(child, childNames),
                 child.props && child.props.children
             );
         }
