@@ -11,7 +11,8 @@ export default function Subsection(props) {
         title='',
         link,
         subsections=[],
-        content
+        content,
+        setActiveSublink
     } = props;
 
     return <div id={link} className="subsection">
@@ -29,7 +30,9 @@ export default function Subsection(props) {
             }
         })}
         {subsections.map((subsection) => {
-            return <Subsection key={subsection.link} {...subsection} />;
+            return <Subsection key={subsection.link}
+                               setActiveSublink={setActiveSublink}
+                               {...subsection} />;
         })}
     </div>;
 }
@@ -44,5 +47,6 @@ Subsection.propTypes = {
             PropTypes.string
         ])
     ),
-    subsections: PropTypes.array
+    subsections: PropTypes.array,
+    setActiveSublink: PropTypes.func
 };
