@@ -88,11 +88,8 @@ export function createFormableRule(
 function cloneChild(rules) {
     const cloneRules = [leafCloneRule, ...cloneRules, defaultRecursiveCloneRule(rules)];
 
-    return (child) => {
-        const rule = cloneRules.find(rule => rule.predicate(child));
-
-        return rule.clone(child);
-    }
+    // find first rule that passes and use it to clone
+    return (child) => cloneRules.find(rule => rule.predicate(child)).clone(child);
 }
 
 /**
