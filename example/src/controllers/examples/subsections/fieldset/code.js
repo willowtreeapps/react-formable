@@ -8,47 +8,38 @@ export default function SignupForm({ onChange }) {
         <Errors className="formErrors" />
 
         <label>
-            User name *
-            <Input name="username"
+            Name
+            <Input name="name"
                    type="text"
                    validators={[
-                       required('username is required')
+                       required('name is required')
                    ]} />
         </label>
 
-        <label>
-            Password *
-            <Input name="password"
-                   type="password"
-                   validators={[
-                       required('password is required')
-                   ]} />
-        </label>
-
-        <label>
-            Password Retype *
-            <Input name="password2"
-                   type="password"
-                   validators={[
-                       equalsField('password', 'passwords must match')
-                   ]} />
-        </label>
-
-        <Fieldset name="pet">
+        <h4>Address</h4>
+        <Fieldset name="address">
             <label>
-                Pet Name
-                <Input name="name"
+                Building
+                <Input name="building"
                        type="text"
                        validators={[
-                           required('pet name is required')
+                           required('building is required')
                        ]} />
             </label>
             <label>
-                Pet Color
-                <Input name="color"
+                Street
+                <Input name="street"
                        type="text"
                        validators={[
-                           required('pet color is required')
+                           required('street is required')
+                       ]} />
+            </label>
+            <label>
+                Zip
+                <Input name="zip"
+                       type="text"
+                       validators={[
+                           required('zip is required')
                        ]} />
             </label>
         </Fieldset>

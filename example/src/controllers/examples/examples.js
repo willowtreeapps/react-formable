@@ -2,12 +2,12 @@ import React, { PropTypes } from 'react';
 import Page from '../../components/page';
 import * as Basic from './subsections/basic';
 import * as Signup from './subsections/signup';
-import * as Delme from './subsections/delme';
+import * as Fieldset from './subsections/fieldset';
 
 const subsections = [
-    // Basic,
-    // Signup,
-    Delme
+    Basic,
+    Signup,
+    Fieldset
 ];
 
 export default React.createClass({
