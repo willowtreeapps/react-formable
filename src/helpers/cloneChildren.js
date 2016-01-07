@@ -92,28 +92,20 @@ export function createFormableRule(
 }
 
 /**
- * Clone an individual element.
- *
- * @param {array} rules for cloning
- * @return {Object} cloned element
- */
-function cloneChild(rules) {
-    const cloneRules = [leafRule, ...rules, createRecursiveRule(rules)];
-
-    // find first rule that passes and use it to clone
-    return (child) => cloneRules.find(rule => rule.predicate(child)).clone(child);
-}
-
-/**
  * Clones a child subtree using the supplied rules which are composed of predicates
  * and clone instructions.
  *
- * @param  {array} rules any specific {pred/clone func} for bespoke children cloning
+ * @param  {array} rules used to predicate and clone
  * @param  {Function} children The children to iterate over
  * @return {Object} The cloned children
  */
 export default function cloneChildren(rules, children) {
     if (children) {
-        return React.Children.map(children, cloneChild(rules));
+        const cloneRules = [leafRule, ...rules, createRecursiveRule(rules)];
+
+        return React.Children.map(children, (child) => {
+            // find first rule that passes and use it to clone
+            return cloneRules.find(rule => rule.predicate(child)).clone(child);
+        });
     }
 }
