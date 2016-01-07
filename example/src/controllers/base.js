@@ -24,7 +24,8 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            subLinks: []
+            subLinks: [],
+            activeSublink: ''
         };
     },
 
@@ -46,6 +47,10 @@ export default React.createClass({
         this.setState({ subLinks });
     },
 
+    setActiveSublink(activeSublink) {
+        this.setState({ activeSublink });
+    },
+
     render() {
         const scrollTop = window.pageYOffset;
         const totalHeight = documentHeight();
@@ -63,11 +68,13 @@ export default React.createClass({
 
             <div style={{ position: 'relative', minHeight: '100%' }}>
                 <Sidebar subLinks={this.state.subLinks} style={style}
-                    activePath={this.props.location.pathname} />
+                         activePath={this.props.location.pathname}
+                         activeSublink={this.state.activeSublink} />
 
                 <div className="app-content">
                     {React.cloneElement(this.props.children, {
-                        setSublinks: this.setSublinks
+                         setSublinks: this.setSublinks,
+                         setActiveSublink: this.setActiveSublink
                     })}
                 </div>
             </div>
