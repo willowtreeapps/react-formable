@@ -42,14 +42,6 @@ export default function FieldsetForm({ onChange }) {
                            required('zip is required')
                        ]} />
             </label>
-            <label>
-                Zip
-                <Input name="zip"
-                       type="text"
-                       validators={[
-                           required('zipper is required')
-                       ]} />
-            </label>
         </Fieldset>
 
         <input type="submit" value="Submit" />

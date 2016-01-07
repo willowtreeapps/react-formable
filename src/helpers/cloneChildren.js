@@ -21,7 +21,10 @@ const leafRule = {
 function createRecursiveRule(rules) {
     return {
         predicate: () => true,
-        clone: child => React.cloneElement(child, {}, cloneChildren(rules, child.props && child.props.children))
+        clone: (child, childNames) => {
+            return React.cloneElement(child, {},
+                cloneChildren(rules, child.props && child.props.children, childNames));
+        }
     }
 }
 
@@ -50,11 +53,10 @@ export function createErrorsRule({ errors = [], fieldErrors = {} }) {
 }
 
 /*
- * Clone the properties of something we are interested in weaving in our magic
- * //TODO: childNames sucks
+ * Clone the properties of something we are interested to weave our magic into
  */
-function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange, childNames) {
-    return (child) => {
+function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange) {
+    return (child, childNames) => {
         warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
         warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
         childNames.push(child.props.name);
@@ -71,20 +73,17 @@ function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChang
 
 /*
  * Standard cloning rule for something react-formable
- * //TODO: the signature kinda sucks
  */
 export function createFormableRule(
     { errors = [], fieldErrors = {} },
     onSubmit = identity,
     onChange = identity) {
-    let childNames = [];
-
     return {
         predicate: child => child.props && child.props.name,
-        clone: child => {
+        clone: (child, childNames) => {
             return React.cloneElement(
                 child,
-                cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange, childNames)(child),
+                cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)(child, childNames),
                 child.props && child.props.children
             );
         }
@@ -97,15 +96,18 @@ export function createFormableRule(
  *
  * @param  {array} rules used to predicate and clone
  * @param  {Function} children The children to iterate over
+ * @param  {array=} childNames optionally and ONLY supplied for internal recursion
  * @return {Object} The cloned children
  */
-export default function cloneChildren(rules, children) {
-    if (children) {
-        const cloneRules = [leafRule, ...rules, createRecursiveRule(rules)];
+export default function cloneChildren(rules, children, childNames = []) {
+    return () => {
+        if (children) {
+            const cloneRules = [leafRule, ...rules, createRecursiveRule(rules)];
 
-        return React.Children.map(children, (child) => {
-            // find first rule that passes and use it to clone
-            return cloneRules.find(rule => rule.predicate(child)).clone(child);
-        });
-    }
+            return React.Children.map(children, (child) => {
+                // find first rule that passes and use it to clone
+                return cloneRules.find(rule => rule.predicate(child)).clone(child, childNames);
+            });
+        }
+    }();
 }
