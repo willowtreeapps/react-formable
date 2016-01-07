@@ -13,20 +13,24 @@ function scrollToId(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
 
-function renderSublinks(subLinks) {
+function renderSublinks(subLinks, activeSublink) {
     return <ul>
         {subLinks.map(({ title, link, subsections }) => {
+
+            const formattedTitle = activeSublink === link ?
+                                   <strong>{title}</strong> : title;
+
             return <li key={link}>
                 <span className="a" onClick={scrollToId.bind(this, link)}>
-                    {title}
+                    {formattedTitle}
                 </span>
-                {subsections && renderSublinks(subsections)}
+                {subsections && renderSublinks(subsections, activeSublink)}
             </li>
         })}
     </ul>
 }
 
-export default function Sidebar({ subLinks=[], style, activePath }) {
+export default function Sidebar({ subLinks=[], style, activePath, activeSublink }) {
     activePath = activePath.split('/').pop();
 
     const navLinks = links.map(({ link, title }) =>
@@ -35,7 +39,7 @@ export default function Sidebar({ subLinks=[], style, activePath }) {
                 {title}
             </Link>
 
-            {activePath === link && renderSublinks(subLinks)}
+            {activePath === link && renderSublinks(subLinks, activeSublink)}
         </li>
     );
 
@@ -51,5 +55,6 @@ Sidebar.propTypes = {
         title: PropTypes.string,
         link: PropTypes.string
     })).isRequired,
-    style: PropTypes.object
+    style: PropTypes.object,
+    activeSublink: PropTypes.string
 };
