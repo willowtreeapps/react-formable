@@ -54,14 +54,16 @@ export function createErrorsRule({ errors = [], fieldErrors = {} }) {
 /*
  * Clone the properties of something we are interested in weaving in our magic
  */
-function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange) {
-    let childNames = [];
-
+function cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange, childNames) {
     return (child) => {
         warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
         warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
-        childNames = childNames.concat(child.props.name);
-        
+        childNames.push(child.props.name);
+
+        // console.log('Adding ' + child.props.name);
+        // console.log('List ' + childNames);
+        // console.log('------------------');
+
         return {
             ref: child.ref || child.props.name,
             onChange: compose(onChange, child.props.onChange || identity),
@@ -76,12 +78,14 @@ export function createFormableRule(
     { errors = [], fieldErrors = {} },
     onSubmit = identity,
     onChange = identity) {
+    let childNames = [];
+
     return {
         predicate: child => child.props && child.props.name,
         clone: child => {
             return React.cloneElement(
                 child,
-                cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)(child),
+                cloneFormableComponentProperties(errors, fieldErrors, onSubmit, onChange, childNames)(child),
                 child.props && child.props.children
             );
         }
