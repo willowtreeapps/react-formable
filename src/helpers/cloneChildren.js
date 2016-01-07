@@ -7,7 +7,7 @@ import warning from 'warning';
 /**
  * Rule for cloning something at leaf level like some text
  */
-const leafCloneRule = {
+const leafRule = {
     predicate: (child) => typeof child !== 'object' || child === null,
     clone: identity
 }
@@ -18,7 +18,7 @@ const leafCloneRule = {
  * @param {array} rules on how to clone individual elements
  * @returns {Object} rule for cloning recursively
  */
-function defaultRecursiveCloneRule(rules) {
+function createRecursiveRule(rules) {
     return {
         predicate: () => true,
         clone: child => React.cloneElement(child, {}, cloneChildren(rules, child.props && child.props.children))
@@ -98,7 +98,7 @@ export function createFormableRule(
  * @return {Object} cloned element
  */
 function cloneChild(rules) {
-    const cloneRules = [leafCloneRule, ...rules, defaultRecursiveCloneRule(rules)];
+    const cloneRules = [leafRule, ...rules, createRecursiveRule(rules)];
 
     // find first rule that passes and use it to clone
     return (child) => cloneRules.find(rule => rule.predicate(child)).clone(child);
