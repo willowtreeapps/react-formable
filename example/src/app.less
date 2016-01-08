@@ -261,3 +261,83 @@ ol {
     list-style: decimal;
     list-style-position: inside;
 }
+
+.mobile-nav {
+    display: none;
+    background: @color-off-white;
+    overflow: hidden;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+
+    a { color: @color-text; }
+
+    ul {
+        li {
+            display: inline;
+            padding: @padding-small;
+        }
+    }
+
+}
+
+@media only screen and (max-width : 992px) {
+    .app {
+        .sidebar {
+            width: 0;
+            padding: 0;
+            display: none;
+        }
+        .app-content {
+            margin-left: 0;
+        }
+        .header {
+            .logo {
+                width: 200px;
+                height: 31px;
+                margin: 20px;
+            }
+        }
+    }
+
+    .split {
+        flex-direction: column;
+        & > * {
+            width: 100%;
+        }
+    }
+
+    .mobile-nav {
+        display: block;
+    }
+}
+
+
+// Support smaller phones
+@media only screen and (max-width : 400px) {
+    .mobile-nav {
+        height: auto;
+        line-height: 25px;
+
+        ul {
+            li {
+                display: block;
+                padding: 5px;
+            }
+            padding: 0;
+            margin-bottom: 5px;
+        }
+    }
+
+    .app {
+        .header {
+            height: 50px;
+            nav { padding: @padding-small; }
+            .logo {
+                width: 150px;
+                height: 23px;
+                margin: 20px;
+            }
+        }
+    }
+}
