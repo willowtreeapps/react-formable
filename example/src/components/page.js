@@ -8,13 +8,17 @@ export default function Page(props) {
         title='',
         className='',
         description,
-        subsections=[]
+        subsections=[],
+        setActiveSublink
     } = props;
 
     return <div className={`${className} page`}>
         {title && title.length && <h1>{title}</h1>}
         {description && <MD text={description} />}
-        {subsections.map((subsection, i) => <Subsection key={i} {...subsection} />)}
+        {subsections.map((subsection, i) =>
+            <Subsection key={i} {...subsection}
+                        setActiveSublink={setActiveSublink}/>
+         )}
     </div>;
 }
 
@@ -30,5 +34,6 @@ Page.propTypes = {
                 PropTypes.string
             ])
         )
-    }))
+    })),
+    setActiveSublink: PropTypes.func
 };

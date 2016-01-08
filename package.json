@@ -24,6 +24,7 @@
     "url": "https://github.com/willowtreeapps/react-formable/issues"
   },
   "dependencies": {
+    "react-waypoint": "^1.2.0",
     "warning": "^2.1.0"
   },
   "devDependencies": {
