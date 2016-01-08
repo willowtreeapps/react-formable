@@ -71,7 +71,7 @@ export default React.createClass({
         if (footerVisible && !headerVisible) style.top = totalHeight - window.innerHeight - footerHeight - headerHeight;
 
         return <div className="app" onScroll={this.onScroll}>
-            <Header />
+            <Header links={links} />
 
             <div style={{ position: 'relative', minHeight: '100%' }}>
                 <Sidebar links={links}
