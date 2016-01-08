@@ -32,8 +32,8 @@ function createRecursiveRule(rules) {
  * A common function for cloning Errors element that takes care of injecting
  * required error data
  *
- * @param {Object} errors aaaaa
- * @param {Object} fieldErrors bbbb
+ * @param {array} errors of the form
+ * @param {Object} fieldErrors of the form
  * @return {Object} rule for cloning Errors element
  */
 export function createErrorsRule({ errors = [], fieldErrors = {} }) {
