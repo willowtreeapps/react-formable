@@ -1,8 +1,11 @@
 import React from 'react';
 jest.dontMock('../cloneChildren');
+jest.dontMock('../../errors');
 
 describe('cloneChildren', () => {
     const cloneChildren = require('../cloneChildren').default;
+    const createErrorsRule = require('../cloneChildren').createErrorsRule;
+    const Errors = require('../../errors').default;
 
     it('clones when predicate matches', () => {
         const rule = {
@@ -36,5 +39,20 @@ describe('cloneChildren', () => {
         clones.forEach((clone) => {
             expect(clone.props.color).toBe(undefined);
         });
+    });
+
+    it('clones Errrors and populates errors fields', () => {
+        const rule = createErrorsRule({
+            errors: ['Some bad error'],
+            fieldErrors: {
+                fieldname: 'Some bad error'
+            }
+        });
+
+        const children = [<Errors />];
+        const errorsClone = cloneChildren([rule], children)[0];
+
+        expect(errorsClone.props.fieldErrors.fieldname).toBe('Some bad error');
+        expect(errorsClone.props.errors[0]).toBe('Some bad error');
     });
 });
