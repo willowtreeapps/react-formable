@@ -2,9 +2,7 @@ import React, { PropTypes } from 'react';
 import uniq from './helpers/uniq';
 import values from './helpers/values';
 import identity from './helpers/identity';
-import cloneChildren from './helpers/cloneChildren';
-import compose from './helpers/compose';
-import warning from 'warning';
+import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
 
 export const getBlankForm =function getBlankForm() {
     return {
@@ -271,36 +269,15 @@ export default React.createClass({
     },
 
     render() {
-        // Define our helpers for cloneing our children
-        let childNames = [];
-        const clonePred = child => child.props && child.props.name || child.type.displayName === 'Errors';
-        const cloneProps = child => {
-            if (child.type.displayName === 'Errors') {
-                return {
-                    errors: this.state.errors,
-                    fieldErrors: this.state.fieldErrors
-                };
-            }
-
-            warning(!child.ref, `Attempting to attach ref "${child.ref}" to "${child.props.name}" will be bad for your health`);
-            warning(childNames.indexOf(child.props.name) === -1, `Duplicate name "${child.props.name}" found. Duplicate fields will be ignored`);
-            childNames = childNames.concat(child.props.name);
-
-            return {
-                ref: child.ref || child.props.name,
-                onChange: compose(this.onChange, child.props.onChange || identity),
-                onSubmit: compose(this.onSubmit, child.props.onSubmit || identity),
-                errors: this.state.errors,
-                fieldErrors: child.props.fieldErrors || this.state.fieldErrors[child.props.name]
-            };
-        };
+        const errorsRule = createErrorsRule(this.state);
+        const formableRule = createFormableRule(this.state, this.onSubmit, this.onChange);
 
         return <form {...this.props}
                     ref="form"
                     onSubmit={this.onSubmit}
                     onChange={function () {}}
                     onKeyDown={this.onKeyDown}>
-            {cloneChildren(clonePred, cloneProps, this.props.children)}
+            {cloneChildren([errorsRule, formableRule], this.props.children)}
         </form>;
     }
 });

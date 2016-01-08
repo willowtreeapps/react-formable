@@ -68,6 +68,7 @@
     "release": "NODE_ENV=production gulp release",
     "start": "gulp dev",
     "test": "jest",
+    "test:debug": "node-debug -p 12345 --nodejs --harmony ./node_modules/jest-cli/bin/jest.js --runInBand",
     "watch": "gulp watch:lib"
   },
   "jest": {
