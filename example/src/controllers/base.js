@@ -6,6 +6,13 @@ import Footer from './footer';
 const headerHeight = 88;
 const footerHeight = 160;
 
+const links = [
+    { link: 'getting-started', title: 'Getting Started' },
+    { link: 'guides', title: 'Guides' },
+    { link: 'examples', title: 'Examples' },
+    { link: 'api', title: 'API' }
+];
+
 const documentHeight = function documentHeight() {
     return Math.max(
         document.documentElement.clientHeight,
@@ -64,10 +71,11 @@ export default React.createClass({
         if (footerVisible && !headerVisible) style.top = totalHeight - window.innerHeight - footerHeight - headerHeight;
 
         return <div className="app" onScroll={this.onScroll}>
-            <Header />
+            <Header links={links} />
 
             <div style={{ position: 'relative', minHeight: '100%' }}>
-                <Sidebar subLinks={this.state.subLinks} style={style}
+                <Sidebar links={links}
+                         subLinks={this.state.subLinks} style={style}
                          activePath={this.props.location.pathname}
                          activeSublink={this.state.activeSublink} />
 
