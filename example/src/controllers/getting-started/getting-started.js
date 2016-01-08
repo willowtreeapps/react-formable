@@ -56,7 +56,8 @@ Now let's render a simple login form that will display errors.
 export default React.createClass({
     propTypes: {
         children: PropTypes.node,
-        setSublinks: PropTypes.func
+        setSublinks: PropTypes.func,
+        setActiveSublink: PropTypes.func
     },
 
     componentWillMount() {
@@ -68,6 +69,7 @@ export default React.createClass({
         return <Page title="Getting Started"
                      description={description}
                      className="getting-started"
-                     subsections={subsections} />
+                     subsections={subsections}
+                     setActiveSublink={this.props.setActiveSublink} />
     }
 });
