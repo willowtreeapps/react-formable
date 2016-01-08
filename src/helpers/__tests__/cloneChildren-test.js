@@ -5,7 +5,10 @@ jest.dontMock('../../errors');
 describe('cloneChildren', () => {
     const cloneChildren = require('../cloneChildren').default;
     const createErrorsRule = require('../cloneChildren').createErrorsRule;
+    const createFormableRule = require('../cloneChildren').createFormableRule;
+
     const Errors = require('../../errors').default;
+    const Input = require('../../inputs/input').default;
 
     it('clones when predicate matches', () => {
         const rule = {
@@ -61,5 +64,16 @@ describe('cloneChildren', () => {
         const pTagClone = cloneChildren([], children)[0];
 
         expect(pTagClone.props.children[0]).toBe('hello');
+    });
+
+    it('warns when children share same name', () => {
+        const rule = createFormableRule({})
+        const children = [
+            <Input name="color" type="text" />,
+            <Input name="color" type="text" />
+        ];
+        const clones = cloneChildren([rule], children);
+
+        expect(clones.length).toBe(2);
     });
 });
