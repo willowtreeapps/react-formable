@@ -55,4 +55,11 @@ describe('cloneChildren', () => {
         expect(errorsClone.props.fieldErrors.fieldname).toBe('Some bad error');
         expect(errorsClone.props.errors[0]).toBe('Some bad error');
     });
+
+    it('clones leaf nodes as expected', () => {
+        const children = [<p>hello</p>];
+        const pTagClone = cloneChildren([], children)[0];
+
+        expect(pTagClone.props.children[0]).toBe('hello');
+    });
 });
