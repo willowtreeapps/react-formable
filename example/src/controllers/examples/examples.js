@@ -11,7 +11,8 @@ const subsections = [
 export default React.createClass({
     propTypes: {
         children: PropTypes.node,
-        setSublinks: PropTypes.func
+        setSublinks: PropTypes.func,
+        setActiveSublink: PropTypes.func
     },
 
     componentWillMount() {
@@ -22,6 +23,7 @@ export default React.createClass({
     render() {
         return <Page title="Examples"
                      className="examples"
-                     subsections={subsections} />
+                     subsections={subsections}
+                     setActiveSublink={this.props.setActiveSublink} />
     }
 });
