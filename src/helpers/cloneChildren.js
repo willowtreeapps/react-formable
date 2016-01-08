@@ -32,8 +32,8 @@ function createRecursiveRule(rules) {
  * A common function for cloning Errors element that takes care of injecting
  * required error data
  *
- * @param {Object} errors aaaaa
- * @param {Object} fieldErrors bbbb
+ * @param {array} errors of the form
+ * @param {Object} fieldErrors of the form
  * @return {Object} rule for cloning Errors element
  */
 export function createErrorsRule({ errors = [], fieldErrors = {} }) {
@@ -99,7 +99,7 @@ export function createFormableRule(
  * @param  {array=} childNames optionally and ONLY supplied for internal recursion
  * @return {Object} The cloned children
  */
-export default function cloneChildren(rules, children, childNames = []) {    
+export default function cloneChildren(rules, children, childNames = []) {
     return function () {
         if (children) {
             const cloneRules = [leafRule, ...rules, createRecursiveRule(rules)];
