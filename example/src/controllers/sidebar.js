@@ -2,13 +2,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
-const links = [
-	{ link: 'getting-started', title: 'Getting Started' },
-	{ link: 'guides', title: 'Guides' },
-	{ link: 'examples', title: 'Examples' },
-	{ link: 'api', title: 'API' }
-];
-
 function scrollToId(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
@@ -29,7 +22,7 @@ function renderSublinks(subLinks, activeSublink) {
     </ul>
 }
 
-export default function Sidebar({ subLinks=[], style, activePath, activeSublink }) {
+export default function Sidebar({ links, subLinks=[], style, activePath, activeSublink }) {
     activePath = activePath.split('/').pop();
 
     const navLinks = links.map(({ link, title }) =>
@@ -50,6 +43,10 @@ export default function Sidebar({ subLinks=[], style, activePath, activeSublink 
 }
 
 Sidebar.propTypes = {
+    links: PropTypes.arrayOf(PropTypes.shape({
+        title: PropTypes.string,
+        link: PropTypes.string
+    })).isRequired,
     subLinks: PropTypes.arrayOf(PropTypes.shape({
         title: PropTypes.string,
         link: PropTypes.string
