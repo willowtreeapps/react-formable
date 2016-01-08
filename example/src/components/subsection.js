@@ -1,6 +1,7 @@
 /*eslint func-style:0*/
 import React, { PropTypes } from 'react';
 import MD  from './md';
+import Waypoint from 'react-waypoint';
 
 /*
  * Represents some site content
@@ -10,10 +11,14 @@ export default function Subsection(props) {
         title='',
         link,
         subsections=[],
-        content
+        content,
+        setActiveSublink
     } = props;
 
     return <div id={link} className="subsection">
+
+        <Waypoint onEnter={() => setActiveSublink(link)} />
+
         {title && title.length && <h3>{title}</h3>}
 
         {content && content.map((Content, i) => {
@@ -25,7 +30,9 @@ export default function Subsection(props) {
             }
         })}
         {subsections.map((subsection) => {
-            return <Subsection key={subsection.link} {...subsection} />;
+            return <Subsection key={subsection.link}
+                               setActiveSublink={setActiveSublink}
+                               {...subsection} />;
         })}
     </div>;
 }
@@ -40,5 +47,6 @@ Subsection.propTypes = {
             PropTypes.string
         ])
     ),
-    subsections: PropTypes.array
+    subsections: PropTypes.array,
+    setActiveSublink: PropTypes.func
 };
