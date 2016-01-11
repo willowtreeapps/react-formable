@@ -1,17 +1,19 @@
 jest.autoMockOff();
-import React from 'react';
 jest.mock('warning');
+const React = require('react');
+const Errors = require('../../errors').default;
+const Input = require('../../inputs/input').default;
+const Fieldset = require('../../fieldset').default;
+const cloneChildren = require('../cloneChildren').default;
 
 describe('cloneChildren', () => {
     it('clones when predicate matches', () => {
-        const cloneChildren = require('../cloneChildren').default;
         const rule = {
             predicate: () => true,
             clone: (child) => {
                 return React.cloneElement(child, { color: 'red' });
             }
         };
-
         const children = [<div></div>, <h4></h4>];
         const clones = cloneChildren([rule], children);
 
@@ -22,15 +24,12 @@ describe('cloneChildren', () => {
     });
 
     it('skips clone when predicate fails', () => {
-        const cloneChildren = require('../cloneChildren').default;
-
         const rule = {
             predicate: () => false,
             clone: (child) => {
                 return React.cloneElement(child, { color: 'red' });
             }
         };
-
         const children = [<div></div>, <h4></h4>];
         const clones = cloneChildren([rule], children);
 
@@ -41,14 +40,10 @@ describe('cloneChildren', () => {
     });
 
     it('clones Errrors and populates errors fields', () => {
-        const cloneChildren = require('../cloneChildren').default;
         const createErrorsRule = require('../cloneChildren').createErrorsRule;
-        const Errors = require('../../errors').default;
-
         const rule = createErrorsRule(['Some bad error'], {
             fieldname: 'Some bad error'
         });
-
         const children = [<Errors />];
         const errorsClone = cloneChildren([rule], children)[0];
 
@@ -57,7 +52,6 @@ describe('cloneChildren', () => {
     });
 
     it('clones leaf nodes as expected', () => {
-        const cloneChildren = require('../cloneChildren').default;
         const children = [<p>hello</p>];
         const pTagClone = cloneChildren([], children)[0];
 
@@ -66,9 +60,6 @@ describe('cloneChildren', () => {
 
     it('warns when children share same name', () => {
         const warning = require('warning');
-        const cloneChildren = require('../cloneChildren').default;
-        const Input = require('../../inputs/input').default;
-
         const rule = require('../cloneChildren').createFormableRule();
         const children = [
             <Input name="color" type="text" />,
@@ -81,12 +72,7 @@ describe('cloneChildren', () => {
 
     it('does not warn when children have different names', () => {
         const warning = require('warning');
-
-        const cloneChildren = require('../cloneChildren').default;
         const rule = require('../cloneChildren').createFormableRule();
-
-        const Input = require('../../inputs/input').default;
-
         const children = [
             <Input name="color" type="text" />,
             <Input name="shape" type="text" />
@@ -99,12 +85,7 @@ describe('cloneChildren', () => {
 
     it('does not warn when children have same names but are scoped', () => {
         const warning = require('warning');
-        const cloneChildren = require('../cloneChildren').default;
         const rule = require('../cloneChildren').createFormableRule();
-
-        const Fieldset = require('../../fieldset').default;
-        const Input = require('../../inputs/input').default;
-
         const children = [
             <Input name="color" type="text" />,
             <Fieldset name="pet">
@@ -118,11 +99,7 @@ describe('cloneChildren', () => {
 
     it.only('warns when children have same names using recursion (unscoped)', () => {
         const warning = require('warning');
-        const cloneChildren = require('../cloneChildren').default;
-        const createFormableRule = require('../cloneChildren').createFormableRule;
-        const rule = createFormableRule();
-
-        const Input = require('../../inputs/input').default;
+        const rule = require('../cloneChildren').createFormableRule();
 
         const children = [
             <Input name="color" type="text" />,
