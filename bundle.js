@@ -143,7 +143,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./helpers/flatten":8,"./helpers/identity":9,"./helpers/values":12,"react":undefined}],3:[function(require,module,exports){
+},{"./helpers/flatten":9,"./helpers/identity":10,"./helpers/values":13,"react":undefined}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -219,7 +219,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./fieldset":4,"./helpers/values":12,"react":undefined,"warning":1}],4:[function(require,module,exports){
+},{"./fieldset":4,"./helpers/values":13,"react":undefined,"warning":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -239,10 +239,6 @@ var _helpersCloneChildren2 = _interopRequireDefault(_helpersCloneChildren);
 var _helpersValues = require('./helpers/values');
 
 var _helpersValues2 = _interopRequireDefault(_helpersValues);
-
-var _helpersIdentity = require('./helpers/identity');
-
-var _helpersIdentity2 = _interopRequireDefault(_helpersIdentity);
 
 var _warning = require('warning');
 
@@ -273,47 +269,20 @@ exports['default'] = _react2['default'].createClass({
     },
 
     render: function render() {
-        var _this = this;
-
         (0, _warning2['default'])(this.props.name, 'Fieldset found without a name prop. The children of this component will behave eratically');
-
-        var fieldErrors = this.props.fieldErrors || {};
-        var childNames = [];
-
-        var clonePred = function clonePred(child) {
-            return child.props && child.props.name || child.type.displayName === 'Errors';
-        };
-        var cloneProps = function cloneProps(child) {
-            if (child.type.displayName === 'Errors') {
-                return {
-                    errors: _this.props.errors,
-                    fieldErrors: _this.props.fieldErrors || {}
-                };
-            }
-
-            (0, _warning2['default'])(!child.ref, 'Attempting to attach ref "' + child.ref + '" to "' + child.props.name + '" will be bad for your health');
-            (0, _warning2['default'])(childNames.indexOf(child.props.name) === -1, 'Duplicate name "' + child.props.name + '" found. Duplicate fields will be ignored');
-            childNames = childNames.concat(child.props.name);
-
-            return {
-                ref: child.ref || child.props.name,
-                errors: _this.props.errors,
-                fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name],
-                onChange: child.props.onChange || _helpersIdentity2['default'],
-                onSubmit: child.props.onSubmit || _helpersIdentity2['default']
-            };
-        };
+        var errorsRule = (0, _helpersCloneChildren.createErrorsRule)(this.props);
+        var formableRule = (0, _helpersCloneChildren.createFormableRule)(this.props);
 
         return _react2['default'].createElement(
             'div',
             this.props,
-            (0, _helpersCloneChildren2['default'])(clonePred, cloneProps, this.props.children)
+            (0, _helpersCloneChildren2['default'])([errorsRule, formableRule], this.props.children)
         );
     }
 });
 module.exports = exports['default'];
 
-},{"./helpers/cloneChildren":6,"./helpers/identity":9,"./helpers/values":12,"react":undefined,"warning":1}],5:[function(require,module,exports){
+},{"./helpers/cloneChildren":6,"./helpers/values":13,"react":undefined,"warning":1}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -343,14 +312,6 @@ var _helpersIdentity2 = _interopRequireDefault(_helpersIdentity);
 var _helpersCloneChildren = require('./helpers/cloneChildren');
 
 var _helpersCloneChildren2 = _interopRequireDefault(_helpersCloneChildren);
-
-var _helpersCompose = require('./helpers/compose');
-
-var _helpersCompose2 = _interopRequireDefault(_helpersCompose);
-
-var _warning = require('warning');
-
-var _warning2 = _interopRequireDefault(_warning);
 
 var getBlankForm = function getBlankForm() {
     return {
@@ -628,33 +589,8 @@ exports['default'] = _react2['default'].createClass({
     },
 
     render: function render() {
-        var _this = this;
-
-        // Define our helpers for cloneing our children
-        var childNames = [];
-        var clonePred = function clonePred(child) {
-            return child.props && child.props.name || child.type.displayName === 'Errors';
-        };
-        var cloneProps = function cloneProps(child) {
-            if (child.type.displayName === 'Errors') {
-                return {
-                    errors: _this.state.errors,
-                    fieldErrors: _this.state.fieldErrors
-                };
-            }
-
-            (0, _warning2['default'])(!child.ref, 'Attempting to attach ref "' + child.ref + '" to "' + child.props.name + '" will be bad for your health');
-            (0, _warning2['default'])(childNames.indexOf(child.props.name) === -1, 'Duplicate name "' + child.props.name + '" found. Duplicate fields will be ignored');
-            childNames = childNames.concat(child.props.name);
-
-            return {
-                ref: child.ref || child.props.name,
-                onChange: (0, _helpersCompose2['default'])(_this.onChange, child.props.onChange || _helpersIdentity2['default']),
-                onSubmit: (0, _helpersCompose2['default'])(_this.onSubmit, child.props.onSubmit || _helpersIdentity2['default']),
-                errors: _this.state.errors,
-                fieldErrors: child.props.fieldErrors || _this.state.fieldErrors[child.props.name]
-            };
-        };
+        var errorsRule = (0, _helpersCloneChildren.createErrorsRule)(this.state);
+        var formableRule = (0, _helpersCloneChildren.createFormableRule)(this.state, this.onSubmit, this.onChange);
 
         return _react2['default'].createElement(
             'form',
@@ -663,58 +599,170 @@ exports['default'] = _react2['default'].createClass({
                 onSubmit: this.onSubmit,
                 onChange: function () {},
                 onKeyDown: this.onKeyDown }),
-            (0, _helpersCloneChildren2['default'])(clonePred, cloneProps, this.props.children)
+            (0, _helpersCloneChildren2['default'])([errorsRule, formableRule], this.props.children)
         );
     }
 });
 
-},{"./helpers/cloneChildren":6,"./helpers/compose":7,"./helpers/identity":9,"./helpers/uniq":11,"./helpers/values":12,"react":undefined,"warning":1}],6:[function(require,module,exports){
+},{"./helpers/cloneChildren":6,"./helpers/identity":10,"./helpers/uniq":12,"./helpers/values":13,"react":undefined}],6:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
+exports.createErrorsRule = createErrorsRule;
+exports.createFormableRule = createFormableRule;
 exports['default'] = cloneChildren;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _identity = require('./identity');
+
+var _identity2 = _interopRequireDefault(_identity);
+
+var _compose = require('./compose');
+
+var _compose2 = _interopRequireDefault(_compose);
+
+var _warning = require('warning');
+
+var _warning2 = _interopRequireDefault(_warning);
+
 /**
- * Clones a child subtree, when we encounter a component that passes our
- * predicate pass it down additional props.
+ * Rule for cloning something at leaf level like some text
+ */
+var leafRule = {
+    predicate: function predicate(child) {
+        return typeof child !== 'object' || child === null;
+    },
+    clone: _identity2['default']
+};
+
+/**
+ * Allows default recursion into an element that has children.
  *
- * @param  {Function} predicate A predicate function which recives the child
- * @param  {Function} getProps  A function which recives the component and
- * returns an object which gets merged into the props of the component
+ * @param {array} rules on how to clone individual elements
+ * @returns {Object} rule for cloning recursively
+ */
+function createRecursiveRule(rules) {
+    return {
+        predicate: function predicate() {
+            return true;
+        },
+        clone: function clone(child, childNames) {
+            return _react2['default'].cloneElement(child, {}, cloneChildren(rules, child.props && child.props.children, childNames));
+        }
+    };
+}
+
+/**
+ * A common function for cloning Errors element that takes care of injecting
+ * required error data
+ *
+ * @param {array} errors of the form
+ * @param {Object} fieldErrors of the form
+ * @return {Object} rule for cloning Errors element
+ */
+
+function createErrorsRule(_ref) {
+    var _ref$errors = _ref.errors;
+    var errors = _ref$errors === undefined ? [] : _ref$errors;
+    var _ref$fieldErrors = _ref.fieldErrors;
+    var fieldErrors = _ref$fieldErrors === undefined ? {} : _ref$fieldErrors;
+
+    return {
+        predicate: function predicate(child) {
+            return child.type && child.type.displayName === 'Errors';
+        },
+        clone: function clone(child) {
+            return _react2['default'].cloneElement(child, {
+                errors: errors,
+                fieldErrors: fieldErrors
+            }, child.props && child.props.children);
+        }
+    };
+}
+
+/*
+ * Get extra properties for something we are going to weave our formable magic into.
+ */
+function getFormableComponentProperties(errors, fieldErrors, onSubmit, onChange) {
+    return function (child, childNames) {
+        (0, _warning2['default'])(!child.ref, 'Attempting to attach ref "' + child.ref + '" to "' + child.props.name + '" will be bad for your health');
+        (0, _warning2['default'])(childNames.indexOf(child.props.name) === -1, 'Duplicate name "' + child.props.name + '" found. Duplicate fields will be ignored');
+        childNames.push(child.props.name);
+
+        return {
+            ref: child.ref || child.props.name,
+            onChange: (0, _compose2['default'])(onChange, child.props.onChange || _identity2['default']),
+            onSubmit: (0, _compose2['default'])(onSubmit, child.props.onSubmit || _identity2['default']),
+            errors: errors,
+            fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name]
+        };
+    };
+}
+
+/*
+ * Standard cloning rule for something react-formable
+ */
+
+function createFormableRule(_ref2) {
+    var onSubmit = arguments.length <= 1 || arguments[1] === undefined ? _identity2['default'] : arguments[1];
+    var _ref2$errors = _ref2.errors;
+    var errors = _ref2$errors === undefined ? [] : _ref2$errors;
+    var _ref2$fieldErrors = _ref2.fieldErrors;
+    var fieldErrors = _ref2$fieldErrors === undefined ? {} : _ref2$fieldErrors;
+    var onChange = arguments.length <= 2 || arguments[2] === undefined ? _identity2['default'] : arguments[2];
+
+    return {
+        predicate: function predicate(child) {
+            return child.props && child.props.name;
+        },
+        clone: function clone(child, childNames) {
+            return _react2['default'].cloneElement(child, getFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)(child, childNames), child.props && child.props.children);
+        }
+    };
+}
+
+/**
+ * Clones a child subtree using the supplied rules which are composed of predicates
+ * and clone instructions.
+ *
+ * @param  {array} rules used to predicate and clone
  * @param  {Function} children The children to iterate over
+ * @param  {array=} childNames optionally and ONLY supplied for internal recursion
  * @return {Object} The cloned children
  */
 
-function cloneChildren(predicate, getProps, children) {
-    if (typeof children !== 'object' || children === null) {
-        return children;
+function cloneChildren(rules, children) {
+    var childNames = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+
+    if (children) {
+        var _ret = (function () {
+            var cloneRules = [leafRule].concat(_toConsumableArray(rules), [createRecursiveRule(rules)]);
+
+            return {
+                v: _react2['default'].Children.map(children, function (child) {
+                    // find first rule that passes and use it to clone
+                    return cloneRules.find(function (rule) {
+                        return rule.predicate(child);
+                    }).clone(child, childNames);
+                })
+            };
+        })();
+
+        if (typeof _ret === 'object') return _ret.v;
     }
-
-    return _react2['default'].Children.map(children, function (child) {
-        if (typeof child !== 'object' || child === null) {
-            return child;
-        }
-
-        if (predicate(child)) {
-            return _react2['default'].cloneElement(child, getProps(child), child.props && child.props.children);
-        }
-
-        return _react2['default'].cloneElement(child, {}, cloneChildren(predicate, getProps, child.props && child.props.children));
-    });
 }
 
-module.exports = exports['default'];
-
-},{"react":undefined}],7:[function(require,module,exports){
+},{"./compose":7,"./identity":10,"react":undefined,"warning":1}],7:[function(require,module,exports){
 /*eslint func-style:0*/
 
 "use strict";
@@ -734,6 +782,31 @@ module.exports = exports["default"];
 
 },{}],8:[function(require,module,exports){
 /*eslint func-style:0*/
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports['default'] = deepFind;
+
+function deepFind(obj, path) {
+    var paths = path.split('.');
+    var current = obj,
+        i = undefined;
+
+    for (i = 0; i < paths.length; ++i) {
+        if (current[paths[i]] == undefined) {
+            return undefined;
+        }
+        current = current[paths[i]];
+    }
+    return current;
+}
+
+module.exports = exports['default'];
+
+},{}],9:[function(require,module,exports){
+/*eslint func-style:0*/
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -747,7 +820,7 @@ function flatten(arr) {
 
 module.exports = exports["default"];
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -762,7 +835,7 @@ function identity(x) {
 
 module.exports = exports["default"];
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -777,7 +850,7 @@ function isNil(x) {
 
 module.exports = exports["default"];
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -794,7 +867,7 @@ function uniq(arr) {
 
 module.exports = exports["default"];
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -814,7 +887,7 @@ function values(obj) {
 
 module.exports = exports["default"];
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -881,7 +954,33 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"react":undefined}],14:[function(require,module,exports){
+},{"react":undefined}],15:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports['default'] = required;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _helpersDeepFind = require('../helpers/deepFind');
+
+var _helpersDeepFind2 = _interopRequireDefault(_helpersDeepFind);
+
+/*eslint func-style:0*/
+
+function required(equalsField, errorMessage) {
+    return function (value, fieldValues) {
+        if ((0, _helpersDeepFind2['default'])(fieldValues, equalsField) !== value) {
+            return errorMessage;
+        }
+    };
+}
+
+module.exports = exports['default'];
+
+},{"../helpers/deepFind":8}],16:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -900,7 +999,7 @@ function greaterThan(greaterThanValue, errorMessage) {
 
 module.exports = exports["default"];
 
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -919,7 +1018,7 @@ function lessThan(lessThanValue, errorMessage) {
 
 module.exports = exports["default"];
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -945,7 +1044,7 @@ function maxLength(maxLength, errorMessage) {
 
 module.exports = exports['default'];
 
-},{"../helpers/isNil":10}],17:[function(require,module,exports){
+},{"../helpers/isNil":11}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -971,7 +1070,7 @@ function minLength(minLength, errorMessage) {
 
 module.exports = exports['default'];
 
-},{"../helpers/isNil":10}],18:[function(require,module,exports){
+},{"../helpers/isNil":11}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1010,7 +1109,7 @@ function required(errorMessage) {
 
 module.exports = exports['default'];
 
-},{"../helpers/isNil":10}],19:[function(require,module,exports){
+},{"../helpers/isNil":11}],21:[function(require,module,exports){
 /*eslint func-style:0*/
 "use strict";
 
@@ -1087,7 +1186,11 @@ var _validatorsTest = require('./validators/test');
 
 var _validatorsTest2 = _interopRequireDefault(_validatorsTest);
 
-var validators = { required: _validatorsRequired2['default'], greaterThan: _validatorsGreaterThan2['default'], lessThan: _validatorsLessThan2['default'], maxLength: _validatorsMaxLength2['default'], minLength: _validatorsMinLength2['default'], test: _validatorsTest2['default'] };
+var _validatorsEqualsField = require('./validators/equalsField');
+
+var _validatorsEqualsField2 = _interopRequireDefault(_validatorsEqualsField);
+
+var validators = { required: _validatorsRequired2['default'], greaterThan: _validatorsGreaterThan2['default'], lessThan: _validatorsLessThan2['default'], maxLength: _validatorsMaxLength2['default'], minLength: _validatorsMinLength2['default'], test: _validatorsTest2['default'], equalsField: _validatorsEqualsField2['default'] };
 
 exports.Form = _form2['default'];
 exports.getBlankForm = _form.getBlankForm;
@@ -1098,4 +1201,4 @@ exports.Errors = _errors2['default'];
 exports.validators = validators;
 exports['default'] = _form2['default'];
 
-},{"./errors":2,"./fieldlist":3,"./fieldset":4,"./form":5,"./inputs/input":13,"./validators/greaterThan":14,"./validators/lessThan":15,"./validators/maxLength":16,"./validators/minLength":17,"./validators/required":18,"./validators/test":19}]},{},[]);
+},{"./errors":2,"./fieldlist":3,"./fieldset":4,"./form":5,"./inputs/input":14,"./validators/equalsField":15,"./validators/greaterThan":16,"./validators/lessThan":17,"./validators/maxLength":18,"./validators/minLength":19,"./validators/required":20,"./validators/test":21}]},{},[]);

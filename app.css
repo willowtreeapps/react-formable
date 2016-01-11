@@ -242,6 +242,7 @@ code {
   background-color: #F5F5F5;
 }
 pre {
+  overflow-x: scroll;
   padding: 12px;
   border: 1px solid #DBDBDB;
   border-radius: 3px;
@@ -300,6 +301,7 @@ body {
 .app .header ul,
 .app .footer ul {
   margin: 0;
+  list-style: none;
 }
 .app .header a,
 .app .footer a {
@@ -353,6 +355,9 @@ body {
 }
 .app .sidebar a {
   color: #4A4A4A;
+}
+.app .sidebar ul {
+  list-style: none;
 }
 .app .sidebar li ul {
   margin-left: 10px;
@@ -419,4 +424,76 @@ table tbody tr:nth-child(even) {
 }
 label {
   display: block;
+}
+ul {
+  list-style: disc;
+  list-style-position: inside;
+}
+ol {
+  list-style: decimal;
+  list-style-position: inside;
+}
+.mobile-nav {
+  display: none;
+  background: #F7F7F7;
+  overflow: hidden;
+  text-align: center;
+  height: 50px;
+  line-height: 50px;
+}
+.mobile-nav a {
+  color: #4A4A4A;
+}
+.mobile-nav ul li {
+  display: inline;
+  padding: 12px;
+}
+@media only screen and (max-width: 992px) {
+  .app .sidebar {
+    width: 0;
+    padding: 0;
+    display: none;
+  }
+  .app .app-content {
+    margin-left: 0;
+  }
+  .app .header .logo {
+    width: 200px;
+    height: 31px;
+    margin: 20px;
+  }
+  .split {
+    flex-direction: column;
+  }
+  .split > * {
+    width: 100%;
+  }
+  .mobile-nav {
+    display: block;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .mobile-nav {
+    height: auto;
+    line-height: 25px;
+  }
+  .mobile-nav ul {
+    padding: 0;
+    margin-bottom: 5px;
+  }
+  .mobile-nav ul li {
+    display: block;
+    padding: 5px;
+  }
+  .app .header {
+    height: 50px;
+  }
+  .app .header nav {
+    padding: 12px;
+  }
+  .app .header .logo {
+    width: 150px;
+    height: 23px;
+    margin: 20px;
+  }
 }

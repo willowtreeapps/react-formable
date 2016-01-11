@@ -29,7 +29,7 @@ var history = (0, _historyLibCreateHashHistory2['default'])({
     _routes2['default']
 ), document.getElementById('app'));
 
-},{"./routes":44,"history/lib/createHashHistory":54,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
+},{"./routes":47,"history/lib/createHashHistory":57,"react":undefined,"react-dom":undefined,"react-router":undefined}],2:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -120,7 +120,8 @@ exports['default'] = _react2['default'].createClass({
     propTypes: {
         code: _react.PropTypes.string.isRequired,
         example: _react.PropTypes.func.isRequired,
-        className: _react.PropTypes.string
+        className: _react.PropTypes.string,
+        showCodeByDefault: _react.PropTypes.bool
     },
 
     getDefaultProps: function getDefaultProps() {
@@ -131,7 +132,7 @@ exports['default'] = _react2['default'].createClass({
 
     getInitialState: function getInitialState() {
         return {
-            showCode: false,
+            showCode: this.props.showCodeByDefault || false,
             form: (0, _reactFormable.getBlankForm)()
         };
     },
@@ -149,7 +150,7 @@ exports['default'] = _react2['default'].createClass({
                 { className: 'a', onClick: function () {
                         return _this.setState({ showCode: !_this.state.showCode });
                     } },
-                this.state.showCode ? 'Hide Code' : 'Show Code'
+                this.state.showCode ? 'Show Result' : 'Show Code'
             ),
             this.state.showCode && _react2['default'].createElement(
                 _code2['default'],
@@ -245,7 +246,7 @@ MarkdownViewer.propTypes = {
 };
 module.exports = exports['default'];
 
-},{"marked":62,"react":undefined}],7:[function(require,module,exports){
+},{"marked":65,"react":undefined}],7:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -279,6 +280,7 @@ function Page(props) {
     var description = props.description;
     var _props$subsections = props.subsections;
     var subsections = _props$subsections === undefined ? [] : _props$subsections;
+    var setActiveSublink = props.setActiveSublink;
 
     return _react2['default'].createElement(
         'div',
@@ -290,7 +292,8 @@ function Page(props) {
         ),
         description && _react2['default'].createElement(_md2['default'], { text: description }),
         subsections.map(function (subsection, i) {
-            return _react2['default'].createElement(_subsection2['default'], _extends({ key: i }, subsection));
+            return _react2['default'].createElement(_subsection2['default'], _extends({ key: i }, subsection, {
+                setActiveSublink: setActiveSublink }));
         })
     );
 }
@@ -301,9 +304,9 @@ Page.propTypes = {
     description: _react.PropTypes.string,
     subsections: _react.PropTypes.arrayOf(_react.PropTypes.shape({
         title: _react.PropTypes.string,
-        markdown: _react.PropTypes.string,
-        code: _react.PropTypes.oneOfType([_react.PropTypes.node, _react.PropTypes.func])
-    }))
+        content: _react.PropTypes.arrayOf(_react.PropTypes.oneOfType([_react.PropTypes.func, _react.PropTypes.string]))
+    })),
+    setActiveSublink: _react.PropTypes.func
 };
 module.exports = exports['default'];
 
@@ -329,27 +332,46 @@ var _md = require('./md');
 
 var _md2 = _interopRequireDefault(_md);
 
+var _reactWaypoint = require('react-waypoint');
+
+var _reactWaypoint2 = _interopRequireDefault(_reactWaypoint);
+
+/*
+ * Represents some site content
+ */
+
 function Subsection(props) {
     var _props$title = props.title;
     var title = _props$title === undefined ? '' : _props$title;
-    var markdown = props.markdown;
     var link = props.link;
-    var _props$subSections = props.subSections;
-    var subSections = _props$subSections === undefined ? [] : _props$subSections;
-    var Code = props.code;
+    var _props$subsections = props.subsections;
+    var subsections = _props$subsections === undefined ? [] : _props$subsections;
+    var content = props.content;
+    var setActiveSublink = props.setActiveSublink;
 
     return _react2['default'].createElement(
         'div',
         { id: link, className: 'subsection' },
+        _react2['default'].createElement(_reactWaypoint2['default'], { onEnter: function () {
+                return setActiveSublink(link);
+            } }),
         title && title.length && _react2['default'].createElement(
-            'h2',
+            'h3',
             null,
             title
         ),
-        markdown && _react2['default'].createElement(_md2['default'], { text: markdown }),
-        Code && _react2['default'].createElement(Code, null),
-        subSections.map(function (subSection) {
-            return _react2['default'].createElement(Subsection, _extends({ key: subSection.link }, subSection));
+        content && content.map(function (Content, i) {
+            if (typeof Content === 'string') {
+                return _react2['default'].createElement(_md2['default'], { key: i, text: Content });
+            }
+            if (typeof Content === 'function') {
+                return _react2['default'].createElement(Content, { key: i });
+            }
+        }),
+        subsections.map(function (subsection) {
+            return _react2['default'].createElement(Subsection, _extends({ key: subsection.link,
+                setActiveSublink: setActiveSublink
+            }, subsection));
         })
     );
 }
@@ -358,13 +380,13 @@ Subsection.propTypes = {
     title: _react.PropTypes.string,
     id: _react.PropTypes.string,
     link: _react.PropTypes.string,
-    markdown: _react.PropTypes.string,
-    code: _react.PropTypes.oneOfType([_react.PropTypes.node, _react.PropTypes.func]),
-    subSections: _react.PropTypes.array
+    content: _react.PropTypes.arrayOf(_react.PropTypes.oneOfType([_react.PropTypes.func, _react.PropTypes.string])),
+    subsections: _react.PropTypes.array,
+    setActiveSublink: _react.PropTypes.func
 };
 module.exports = exports['default'];
 
-},{"./md":6,"react":undefined}],9:[function(require,module,exports){
+},{"./md":6,"react":undefined,"react-waypoint":67}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -478,7 +500,8 @@ exports['default'] = _react2['default'].createClass({
 
     propTypes: {
         children: _react.PropTypes.node,
-        setSublinks: _react.PropTypes.func
+        setSublinks: _react.PropTypes.func,
+        setActiveSublink: _react.PropTypes.func
     },
 
     componentWillMount: function componentWillMount() {
@@ -489,24 +512,26 @@ exports['default'] = _react2['default'].createClass({
     render: function render() {
         return _react2['default'].createElement(_componentsPage2['default'], { title: 'API',
             className: 'api',
-            subsections: subsections });
+            subsections: subsections,
+            setActiveSublink: this.props.setActiveSublink });
     }
 });
 module.exports = exports['default'];
 
-},{"../../components/page":7,"./subsections/errors":12,"./subsections/fieldlist":13,"./subsections/fieldset":14,"./subsections/form":15,"./subsections/input":16,"./subsections/validators/validators":23,"react":undefined}],12:[function(require,module,exports){
+},{"../../components/page":7,"./subsections/errors":12,"./subsections/fieldlist":13,"./subsections/fieldset":14,"./subsections/form":15,"./subsections/input":16,"./subsections/validators/validators":24,"react":undefined}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+var markdown = '\nA component which soaks up and displays form errors. You can think of `Errors` like it is a placeholder. Wherever you place it, errors will be rendered there.\n\n**NB**: Make sure to place this component *within* the `Form` tag.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| scoped | boolean | false | **EXPERIMENTAL:** Only displays form errors in relation to the elements nearest parent. |\n| additionalErrors | array[string] | [] | Any additional errors you would want to render to the screen can be passed down as an array of strings. |\n| renderError | function(error) => node | identity | If you want to overwrite how errors are rendered, you can do so by providing a callback to errors. This function will receive each error and will return what you want to be rendered as your error. |\n';
+
+var content = [markdown];
+exports.content = content;
 var title = 'Errors';
 exports.title = title;
 var link = 'errors';
-
 exports.link = link;
-var markdown = '\nA component which soaks up and displays form errors. You can think of `Errors` like it is a placeholder. Wherever you place it, errors will be rendered there.\n\n**NB**: Make sure to place this component *within* the `Form` tag.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| scoped | boolean | false | **EXPERIMENTAL:** Only displays form errors in relation to the elements nearest parent |\n| additionalErrors | array[string] | [] | Any additional errors you would want to render to the screen can be passed down as an array of strings. |\n| renderError | function(error) => node | identity | If you want to overwrite how errors are rendered, you can do so by providing a callback to errors. This function will receive each error and will return what you want to be rendered as your error. |\n';
-exports.markdown = markdown;
 
 },{}],13:[function(require,module,exports){
 'use strict';
@@ -514,13 +539,14 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+var markdown = '\n`Fieldlist` uses `Fieldset` under the hood to render each *direct* child it owns. This means if you nest `Fieldset`s within a `Fieldlist`, you will get some extra objects floating around. Similarly to `Fieldset`, validators return the subtree that the `Fieldlist` represents.\n\n| Property | Type | Default| Description |\n| :------- | :--- | :----- | :---------- |\n| validators | array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input. |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n';
+
+var content = [markdown];
+exports.content = content;
 var title = 'Fieldlist';
 exports.title = title;
 var link = 'fieldlist';
-
 exports.link = link;
-var markdown = '\n`Fieldlist` uses `Fieldset` under the hood to render each *direct* child it owns. This means if you nest `Fieldset`s within a `Fieldlist`, you will get some extra objects floating around. Similarly to `Fieldset`, validators return the subtree that the `Fieldlist` represents.\n\n| Property | Type | Default| Description |\n| :------- | :--- | :----- | :---------- |\n| validators | array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n';
-exports.markdown = markdown;
 
 },{}],14:[function(require,module,exports){
 'use strict';
@@ -528,13 +554,14 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+var markdown = '\n`Fieldset`s are where most of the magic happens. They let us group together similar fields into smaller bite-sized objects. We can use these within individual forms, or make reusable form components and use them all over the place.\n\nOne important thing to understand: `Fieldset`s will always make an object with the `name` provided. If you use a `Fieldset` within a `Fieldlist`, you will have a nested object with the name of the `Fieldset`.\n\nOne last thing to keep in mind: you can attach validators to `Fieldset`s. Instead of a primitive passed down as the first param, it will be the subtree that the `Fieldset` represents. Any errors returned from a `Fieldset`s validators will skip `fieldErrors` and go directly to `errors`.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input. |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n\n';
+
+var content = [markdown];
+exports.content = content;
 var title = 'Fieldset';
 exports.title = title;
 var link = 'fieldset';
-
 exports.link = link;
-var markdown = '\n`Fieldset`s are where most of the magic happens. They let us group together similar fields into smaller bite-sized objects. We can use these within individual forms, or make reusable form components and use them all over the place.\n\nOne important thing to understand: `Fieldset`s will always make an object with the `name` provided. If you use a `Fieldset` within a `Fieldlist`, you will have a nested object with the name of the `Fieldset`.\n\nOne last thing to keep in mind: you can attach validators to `Fieldset`s. Instead of a primitive passed down as the first param, it will be the subtree that the `Fieldset` represents. Any errors returned from a `Fieldset`s validators will skip `fieldErrors` and go directly to `errors`.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n\n';
-exports.markdown = markdown;
 
 },{}],15:[function(require,module,exports){
 'use strict';
@@ -542,13 +569,14 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+var markdown = '\nThe top level `Form` component is what serializes your data.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| onChange| function(form) | undefined | A callback which will be called whenever any child input changes. Receives the serialized form object. |\n| onSubmit | function(form) | undefined | A callback which will be called whenever the form is submitted. Receives the serialized form object. |\n| showErrorsOnSubmit | boolean | true | A boolean to decide if errors should be shown on submit. |\n| showErrorsOnChange | boolean(form) | false | A boolean to decide if errors should be shown on change. |\n| validators | array[function(form)] | [] | An array of validators to run over the form. Useful to capture business logic. Not automatically bound to the form. |\n\n\nThere are a handful of methods on the `Form` component which are useful. To access these, attach a `ref` to the `Form` and call them via `this.refs.refName.methodName();`.\n\n| Method | Params | Description |\n| :----- | :----- | :---------- |\n| serialize | | Returns the serialized form object. |\n| showFieldErrors | | Passes down errors to inputs within the form. |\n| clearFieldErrors | | Clears errors passed down to inputs within the form. |\n';
+
+var content = [markdown];
+exports.content = content;
 var title = 'Form';
 exports.title = title;
 var link = 'form';
-
 exports.link = link;
-var markdown = '\nThe top level `Form` component is what serializes your data.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| onChange| function(form) | undefined | A callback which will be called whenever any child input changes. Receives the serialized form object |\n| onSubmit | function(form) | undefined | A callback which will be called whenever the form is submitted. Receives the serialized form object |\n| showErrorsOnSubmit | boolean | true | A boolean to decide if errors should be shown on submit |\n| showErrorsOnChange | boolean(form) | false | A boolean to decide if errors should be shown on change |\n| validators | array[function(form)] | [] | An array of validators to run over the form. Usefull to capture business logic. Not automatically bound to the form. |\n\n\nThere are a handful of methods on the `Form` component which are useful. To access these, attach a `ref` to the `Form` and call them via `this.refs.refName.methodName();`.\n\n| Method | Params | Description |\n| :----- | :----- | :---------- |\n| serialize | | Returns the serialized form object |\n| showFieldErrors | | Passes down errors to inputs within the form |\n| clearFieldErrors | | Clears errors passed down to inputs within the form |\n';
-exports.markdown = markdown;
 
 },{}],16:[function(require,module,exports){
 'use strict';
@@ -556,13 +584,14 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+var markdown = '\nTo integrate inputs with `Form`s, you need to ensure two things.\n\n1. The input has a `getValue` method. This method returns the current value of the input.\n2. The input has to be able to work with your `refs`. cUnfortunately, this means nostateless components.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| value | string | undefined | The value of the field. |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input. |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n| fieldErrors | array[string] | [] | An array of string errors to pass down to the input. This is automatically filled via the form. You can overwrite this field if you want to manually show an error on an input. |\n| validateOnBlur | boolean | false | A boolean which forces the field to wait until it fires a blur event to trigger form validation. |\n';
+
+var content = [markdown];
+exports.content = content;
 var title = 'Input';
 exports.title = title;
 var link = 'input';
-
 exports.link = link;
-var markdown = '\nTo integrate inputs with `Form`s, you need to ensure two things.\n\n1. The input has a `getValue` method. This method returns the current value of the input.\n2. The input has to be able to work with your `refs`. This unfortunately means no stateless components.\n\n| Property | Type | Default | Description |\n| :------- | :--- | :------ | :---------- |\n| value | string | undefined | The value of the field |\n| validators |array[function(value, fieldValues, fieldErrors, subtreeErrors)] | [] | An array of validators to run over the input |\n| name | string | undefined | The name of the field which will get serialized. This will get copied over as `ref`. This means `name` _must be unique_, otherwise you will run into collisions. |\n| fieldErrors | array[string] | [] | An array of string errors to pass down to the input. This is automatically filled via the form. You can overwrite this field if you want to manually show an error on an input |\n| validateOnBlur | boolean | false | A boolean which forces the field to wait until it fires a blur event to trigger form validation |\n';
-exports.markdown = markdown;
 
 },{}],17:[function(require,module,exports){
 'use strict';
@@ -570,13 +599,14 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-var title = 'Greater Than';
-exports.title = title;
-var link = 'Greater Than';
+var markdown = '\nA validator that ensures an input value is equal to another field in the form.\n\n```js\nconst { equalsField } = require(\'react-formable\').validators;\n<Input name=\'password\' validators={equalsField(\'password2\', \'passwords must match\')} ... />\n```\n\n| Parameter | Type | Description |\n| :------- | :--- | :---------- |\n| Field Name | string | name of another field value that this value must match (nesting available using dot notation). |\n| Error message | string | The error message returned is the supplied value does not match. |\n\n';
 
+var content = [markdown];
+exports.content = content;
+var title = 'Equals Field';
+exports.title = title;
+var link = 'Equals Field';
 exports.link = link;
-var markdown = '\nA validator that ensures an input value is greater than specified number.\n';
-exports.markdown = markdown;
 
 },{}],18:[function(require,module,exports){
 'use strict';
@@ -584,13 +614,14 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-var title = 'Less Than';
-exports.title = title;
-var link = 'Less Than';
+var markdown = '\nA validator that ensures an input value is greater than pre-specified number.\n\n```js\nconst { greaterThan } = require(\'react-formable\').validators;\n<Input validators={greaterThan(5, \'value must be greater than 5\')} ... />\n```\n\n| Parameter | Type | Description |\n| :------- | :--- | :---------- |\n| floor | number | The number that values must be greater than. |\n| Error message | string | The error message returned is the supplied value is too small. |\n\n';
 
+var content = [markdown];
+exports.content = content;
+var title = 'Greater Than';
+exports.title = title;
+var link = 'Greater Than';
 exports.link = link;
-var markdown = '\nA validator that ensures an input value is less than specified number.\n';
-exports.markdown = markdown;
 
 },{}],19:[function(require,module,exports){
 'use strict';
@@ -598,13 +629,14 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-var title = 'Maximum Length';
-exports.title = title;
-var link = 'Maximum Length';
+var markdown = '\nA validator that ensures an input value is less than a pre-specified number.\n\n```js\nconst { lessThan } = require(\'react-formable\').validators;\n<Input validators={lessThan(5, \'value must be less than 5\')} ... />\n```\n\n| Parameter | Type | Description |\n| :------- | :--- | :---------- |\n| ceiling | number | The number that values must be less than. |\n| Error message | string | The error message returned is the supplied value is too big. |\n\n';
 
+var content = [markdown];
+exports.content = content;
+var title = 'Less Than';
+exports.title = title;
+var link = 'Less Than';
 exports.link = link;
-var markdown = '\nA validator that ensures maximum legnth.\n';
-exports.markdown = markdown;
 
 },{}],20:[function(require,module,exports){
 'use strict';
@@ -612,13 +644,14 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-var title = 'Minimum Length';
-exports.title = title;
-var link = 'Minimum Length';
+var markdown = '\nA validator that ensures maximum legnth of a supplied value.\n\n```js\nconst { maxLength } = require(\'react-formable\').validators;\n<Input validators={maxLength(12, \'password must be at most 12 characters\')} ... />\n```\n\n| Parameter | Type | Description |\n| :------- | :--- | :---------- |\n| Maximum Length | number | The maximum possible length of the value. |\n| Error message | string | The error message returned is the supplied value is too long. |\n\n';
 
+var content = [markdown];
+exports.content = content;
+var title = 'Maximum Length';
+exports.title = title;
+var link = 'Maximum Length';
 exports.link = link;
-var markdown = '\nA validator that ensures minimum legnth.\n';
-exports.markdown = markdown;
 
 },{}],21:[function(require,module,exports){
 'use strict';
@@ -626,13 +659,14 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-var title = 'Required';
-exports.title = title;
-var link = 'Required';
+var markdown = '\nA validator that ensures minimum legnth of a supplied value.\n\n```js\nconst { minLength } = require(\'react-formable\').validators;\n<Input validators={minLength(8, \'password must be at least 8 characters\')} ... />\n```\n\n| Parameter | Type | Description |\n| :------- | :--- | :---------- |\n| Minimum Length | number | The minimum possible length of the value. |\n| Error message | string | The error message returned is the supplied value is too short. |\n\n';
 
+var content = [markdown];
+exports.content = content;
+var title = 'Minimum Length';
+exports.title = title;
+var link = 'Minimum Length';
 exports.link = link;
-var markdown = '\nA validator that ensures an input value is present. Non null, undefined, empty string or empty object `{}`\n';
-exports.markdown = markdown;
 
 },{}],22:[function(require,module,exports){
 'use strict';
@@ -640,15 +674,31 @@ exports.markdown = markdown;
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+var markdown = '\nA validator that ensures an input value is supplied. Null, undefined, empty string (whitespace) or empty object `{}` are all considered missing.\n\n```js\nconst { required } = require(\'react-formable\').validators;\n<Input validators={required(\'field is required\')} ... />\n```\n\n| Parameter | Type | Description |\n| :------- | :--- | :---------- |\n| Error message | string | The error message to be returned is the supplied value is missing. |\n\n';
+
+var content = [markdown];
+exports.content = content;
+var title = 'Required';
+exports.title = title;
+var link = 'Required';
+exports.link = link;
+
+},{}],23:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+var markdown = '\nA validator that ensures the input value meets the specified regex.\n\n```js\nconst { test } = require(\'react-formable\').validators;\n<Input validators={test(/(^d{5}$)/, \'must supply zip code\')} ... />\n```\n\n| Parameter | Type | Description |\n| :------- | :--- | :---------- |\n| Regexp | string/regex | The regex that the value must match. |\n| Error message | string | The error message to be returned is the supplied value is missing. |\n\n';
+
+var content = [markdown];
+exports.content = content;
 var title = 'Regex';
 exports.title = title;
 var link = 'Regex';
-
 exports.link = link;
-var markdown = '\nA validator that ensures the input value meets the specified regex\n';
-exports.markdown = markdown;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -681,15 +731,23 @@ var _subsectionsMaxLength = require('./subsections/maxLength');
 
 var MaxLength = _interopRequireWildcard(_subsectionsMaxLength);
 
-var subSections = [Required, Test, LessThan, GreaterThan, MinLength, MaxLength];
+var _subsectionsEqualsField = require('./subsections/equalsField');
 
-exports.subSections = subSections;
+var EqualsField = _interopRequireWildcard(_subsectionsEqualsField);
+
+var subsections = [Required, Test, LessThan, GreaterThan, MinLength, MaxLength, EqualsField];
+
+exports.subsections = subsections;
+var markdown = '\nA validator is a function that can be supplied to a `<Input />`, `<Fieldset />` `<Fieldlist />` or a `<Form />`. These validators will run against with the supplied form value(s) to determine the validity of the component.\n\nA validator is supplied via the property `validators` which expects an array of functions like the one below which checks the user has typed `red`.\n\n```js\n<Input name="red" type="text"\n       validators={[\n           (value) => {\n               if (value === \'red\') {\n                   return \'Hosuton we have a problem\';\n               }\n           }\n       ]} />\n```\n\nReturning a message from a validator indicates a fail. Returning nothing indicates a pass.\n\n`react-formable` supplies some common use-case stock validators which you can import and use list below.\n';
+
+var content = [markdown];
+exports.content = content;
 var title = 'Validators';
 exports.title = title;
 var link = 'Validators';
 exports.link = link;
 
-},{"./subsections/greaterThan":17,"./subsections/lessThan":18,"./subsections/maxLength":19,"./subsections/minLength":20,"./subsections/required":21,"./subsections/test":22}],24:[function(require,module,exports){
+},{"./subsections/equalsField":17,"./subsections/greaterThan":18,"./subsections/lessThan":19,"./subsections/maxLength":20,"./subsections/minLength":21,"./subsections/required":22,"./subsections/test":23}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -717,6 +775,8 @@ var _footer2 = _interopRequireDefault(_footer);
 var headerHeight = 88;
 var footerHeight = 160;
 
+var links = [{ link: 'getting-started', title: 'Getting Started' }, { link: 'guides', title: 'Guides' }, { link: 'examples', title: 'Examples' }, { link: 'api', title: 'API' }];
+
 var documentHeight = function documentHeight() {
     return Math.max(document.documentElement.clientHeight, document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight);
 };
@@ -731,7 +791,8 @@ exports['default'] = _react2['default'].createClass({
 
     getInitialState: function getInitialState() {
         return {
-            subLinks: []
+            subLinks: [],
+            activeSublink: ''
         };
     },
 
@@ -765,6 +826,10 @@ exports['default'] = _react2['default'].createClass({
         this.setState({ subLinks: subLinks });
     },
 
+    setActiveSublink: function setActiveSublink(activeSublink) {
+        this.setState({ activeSublink: activeSublink });
+    },
+
     render: function render() {
         var scrollTop = window.pageYOffset;
         var totalHeight = documentHeight();
@@ -780,17 +845,20 @@ exports['default'] = _react2['default'].createClass({
         return _react2['default'].createElement(
             'div',
             { className: 'app', onScroll: this.onScroll },
-            _react2['default'].createElement(_header2['default'], null),
+            _react2['default'].createElement(_header2['default'], { links: links }),
             _react2['default'].createElement(
                 'div',
                 { style: { position: 'relative', minHeight: '100%' } },
-                _react2['default'].createElement(_sidebar2['default'], { subLinks: this.state.subLinks, style: style,
-                    activePath: this.props.location.pathname }),
+                _react2['default'].createElement(_sidebar2['default'], { links: links,
+                    subLinks: this.state.subLinks, style: style,
+                    activePath: this.props.location.pathname,
+                    activeSublink: this.state.activeSublink }),
                 _react2['default'].createElement(
                     'div',
                     { className: 'app-content' },
                     _react2['default'].cloneElement(this.props.children, {
-                        setSublinks: this.setSublinks
+                        setSublinks: this.setSublinks,
+                        setActiveSublink: this.setActiveSublink
                     })
                 )
             ),
@@ -800,7 +868,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./footer":29,"./header":41,"./sidebar":43,"react":undefined}],25:[function(require,module,exports){
+},{"./footer":33,"./header":44,"./sidebar":46,"react":undefined}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -823,14 +891,23 @@ var _subsectionsBasic = require('./subsections/basic');
 
 var Basic = _interopRequireWildcard(_subsectionsBasic);
 
-var subsections = [Basic];
+var _subsectionsSignup = require('./subsections/signup');
+
+var Signup = _interopRequireWildcard(_subsectionsSignup);
+
+var _subsectionsFieldset = require('./subsections/fieldset');
+
+var Fieldset = _interopRequireWildcard(_subsectionsFieldset);
+
+var subsections = [Basic, Signup, Fieldset];
 
 exports['default'] = _react2['default'].createClass({
     displayName: 'examples',
 
     propTypes: {
         children: _react.PropTypes.node,
-        setSublinks: _react.PropTypes.func
+        setSublinks: _react.PropTypes.func,
+        setActiveSublink: _react.PropTypes.func
     },
 
     componentWillMount: function componentWillMount() {
@@ -841,58 +918,14 @@ exports['default'] = _react2['default'].createClass({
     render: function render() {
         return _react2['default'].createElement(_componentsPage2['default'], { title: 'Examples',
             className: 'examples',
-            subsections: subsections });
+            subsections: subsections,
+            setActiveSublink: this.props.setActiveSublink });
     }
 });
 module.exports = exports['default'];
 
-},{"../../components/page":7,"./subsections/basic":28,"react":undefined}],26:[function(require,module,exports){
-/*eslint prefer-template:0*/
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _componentsFormExample = require('../../components/formExample');
-
-var _componentsFormExample2 = _interopRequireDefault(_componentsFormExample);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _srcHelpersMapObj = require('../../../../src/helpers/mapObj');
-
-var _srcHelpersMapObj2 = _interopRequireDefault(_srcHelpersMapObj);
-
-var codeTextFiles = {
-    basic: "/*eslint func-style:0*/\n\nimport React, { PropTypes } from 'react';\nimport { Form, Input, Errors } from 'react-formable';\nconst { required } = require('react-formable').validators;\n\nexport default function BasicForm({ onChange }) {\n    return <Form onChange={onChange}>\n        <Errors className=\"formErrors\" />\n\n        <label>\n            First name *\n            <Input name=\"firstname\"\n                   type=\"text\"\n                   validators={[\n                       required('First name is required')\n                   ]} />\n        </label>\n\n        <label>\n            Last name *\n            <Input name=\"lastname\"\n                   type=\"text\"\n                   validators={[\n                       required('Last name is required')\n                   ]} />\n        </label>\n\n        <label>\n            Phone number\n            <Input name=\"phone\" type=\"text\" />\n        </label>\n\n        <input type=\"submit\" value=\"Submit\" />\n    </Form>;\n}\n\nBasicForm.propTypes = {\n    onChange: PropTypes.func\n};\n"
-};
-
-var codeComponents = {
-    basic: require('./subsections/basic/code')
-};
-
-var markdown = {
-    basic: "Here is a simple form. It's got a couple of fields and a bit of validation, easy right?\n\nSooooo easy.\n"
-};
-
-exports.markdown = markdown;
-// Map over each of our codeX imports and make a FormExample for it. The
-// values here are just statles functions
-var code = (0, _srcHelpersMapObj2['default'])(function (value, key) {
-    return function () {
-        return _react2['default'].createElement(_componentsFormExample2['default'], { code: codeTextFiles[key], example: codeComponents[key] });
-    };
-}, codeTextFiles);
-exports.code = code;
-
-},{"../../../../src/helpers/mapObj":65,"../../components/formExample":4,"./subsections/basic/code":27,"react":undefined}],27:[function(require,module,exports){
+},{"../../components/page":7,"./subsections/basic":28,"./subsections/fieldset":30,"./subsections/signup":32,"react":undefined}],27:[function(require,module,exports){
 /*eslint func-style:0*/
-
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -946,24 +979,255 @@ function BasicForm(_ref) {
 BasicForm.propTypes = {
     onChange: _react.PropTypes.func
 };
-module.exports = exports['default'];
+
+var source = "/*eslint func-style:0*/\nimport React, { PropTypes } from 'react';\nimport { Form, Input, Errors } from 'react-formable';\nconst { required } = require('react-formable').validators;\n\nexport default function BasicForm({ onChange }) {\n    return <Form onChange={onChange}>\n        <Errors className=\"formErrors\" />\n\n        <label>\n            First name *\n            <Input name=\"firstname\"\n                   type=\"text\"\n                   validators={[\n                       required('First name is required')\n                   ]} />\n        </label>\n\n        <label>\n            Last name *\n            <Input name=\"lastname\"\n                   type=\"text\"\n                   validators={[\n                       required('Last name is required')\n                   ]} />\n        </label>\n\n        <label>\n            Phone number\n            <Input name=\"phone\" type=\"text\" />\n        </label>\n\n        <input type=\"submit\" value=\"Submit\" />\n    </Form>;\n}\n\nBasicForm.propTypes = {\n    onChange: PropTypes.func\n};\n\nexport const source = require('fs').readFileSync(__filename, 'utf8');\n";
+exports.source = source;
 
 },{"react":undefined,"react-formable":undefined}],28:[function(require,module,exports){
+/*eslint prefer-template:0*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _componentsFormExample = require('../../../../components/formExample');
+
+var _componentsFormExample2 = _interopRequireDefault(_componentsFormExample);
+
+var _code = require('./code');
+
+var _code2 = _interopRequireDefault(_code);
+
+var code = function code() {
+  return _react2['default'].createElement(_componentsFormExample2['default'], { example: _code2['default'], code: _code.source });
+};
+var markdown = "Here is a simple form. It's got a couple of fields and a bit of validation, easy right?\n\nSooooo easy.\n";
+
+var content = [markdown, code];
+exports.content = content;
 var title = 'Basic';
 exports.title = title;
 var link = 'basic';
 exports.link = link;
-var markdown = require('../../samples').markdown.basic;
-exports.markdown = markdown;
-var code = require('../../samples').code.basic;
-exports.code = code;
 
-},{"../../samples":26}],29:[function(require,module,exports){
+},{"../../../../components/formExample":4,"./code":27,"react":undefined}],29:[function(require,module,exports){
+/*eslint func-style:0*/
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports['default'] = FieldsetForm;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactFormable = require('react-formable');
+
+var required = require('react-formable').validators.required;
+
+function FieldsetForm(_ref) {
+    var onChange = _ref.onChange;
+
+    return _react2['default'].createElement(
+        _reactFormable.Form,
+        { onChange: onChange },
+        _react2['default'].createElement(_reactFormable.Errors, { className: 'formErrors' }),
+        _react2['default'].createElement(
+            'label',
+            null,
+            'Name',
+            _react2['default'].createElement(_reactFormable.Input, { name: 'name',
+                type: 'text',
+                validators: [required('name is required')] })
+        ),
+        _react2['default'].createElement(
+            'h4',
+            null,
+            'Address'
+        ),
+        _react2['default'].createElement(
+            _reactFormable.Fieldset,
+            { name: 'address' },
+            _react2['default'].createElement(
+                'label',
+                null,
+                'Building',
+                _react2['default'].createElement(_reactFormable.Input, { name: 'building',
+                    type: 'text',
+                    validators: [required('building is required')] })
+            ),
+            _react2['default'].createElement(
+                'label',
+                null,
+                'Street',
+                _react2['default'].createElement(_reactFormable.Input, { name: 'street',
+                    type: 'text',
+                    validators: [required('street is required')] })
+            ),
+            _react2['default'].createElement(
+                'label',
+                null,
+                'Zip',
+                _react2['default'].createElement(_reactFormable.Input, { name: 'zip',
+                    type: 'text',
+                    validators: [required('zip is required')] })
+            )
+        ),
+        _react2['default'].createElement('input', { type: 'submit', value: 'Submit' })
+    );
+}
+
+FieldsetForm.propTypes = {
+    onChange: _react.PropTypes.func
+};
+
+var source = "/*eslint func-style:0*/\nimport React, { PropTypes } from 'react';\nimport { Form, Input, Errors, Fieldset } from 'react-formable';\nconst { required } = require('react-formable').validators;\n\nexport default function FieldsetForm({ onChange }) {\n    return <Form onChange={onChange}>\n        <Errors className=\"formErrors\" />\n\n        <label>\n            Name\n            <Input name=\"name\"\n                   type=\"text\"\n                   validators={[\n                       required('name is required')\n                   ]} />\n        </label>\n\n        <h4>Address</h4>\n        <Fieldset name=\"address\">\n            <label>\n                Building\n                <Input name=\"building\"\n                       type=\"text\"\n                       validators={[\n                           required('building is required')\n                       ]} />\n            </label>\n            <label>\n                Street\n                <Input name=\"street\"\n                       type=\"text\"\n                       validators={[\n                           required('street is required')\n                       ]} />\n            </label>\n            <label>\n                Zip\n                <Input name=\"zip\"\n                       type=\"text\"\n                       validators={[\n                           required('zip is required')\n                       ]} />\n            </label>\n        </Fieldset>\n\n        <input type=\"submit\" value=\"Submit\" />\n    </Form>;\n}\n\nFieldsetForm.propTypes = {\n    onChange: PropTypes.func\n};\n\nexport const source = require('fs').readFileSync(__filename, 'utf8');\n";
+exports.source = source;
+
+},{"react":undefined,"react-formable":undefined}],30:[function(require,module,exports){
+/*eslint prefer-template:0*/
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _componentsFormExample = require('../../../../components/formExample');
+
+var _componentsFormExample2 = _interopRequireDefault(_componentsFormExample);
+
+var _code = require('./code');
+
+var _code2 = _interopRequireDefault(_code);
+
+var code = function code() {
+  return _react2['default'].createElement(_componentsFormExample2['default'], { example: _code2['default'], code: _code.source });
+};
+var markdown = "A simple example that includes a `<Fieldset />`.\n";
+
+var content = [markdown, code];
+exports.content = content;
+var title = 'Fieldset';
+exports.title = title;
+var link = 'Fieldset';
+exports.link = link;
+
+},{"../../../../components/formExample":4,"./code":29,"react":undefined}],31:[function(require,module,exports){
+/*eslint func-style:0*/
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+exports['default'] = SignupForm;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactFormable = require('react-formable');
+
+var _require$validators = require('react-formable').validators;
+
+var required = _require$validators.required;
+var equalsField = _require$validators.equalsField;
+
+function SignupForm(_ref) {
+    var onChange = _ref.onChange;
+
+    return _react2['default'].createElement(
+        _reactFormable.Form,
+        { onChange: onChange },
+        _react2['default'].createElement(_reactFormable.Errors, { className: 'formErrors' }),
+        _react2['default'].createElement(
+            'label',
+            null,
+            'User name *',
+            _react2['default'].createElement(_reactFormable.Input, { name: 'username',
+                type: 'text',
+                validators: [required('username is required')] })
+        ),
+        _react2['default'].createElement(
+            'label',
+            null,
+            'Password *',
+            _react2['default'].createElement(_reactFormable.Input, { name: 'password',
+                type: 'password',
+                validators: [required('password is required')] })
+        ),
+        _react2['default'].createElement(
+            'label',
+            null,
+            'Password Retype *',
+            _react2['default'].createElement(_reactFormable.Input, { name: 'password2',
+                type: 'password',
+                validators: [equalsField('password', 'passwords must match')] })
+        ),
+        _react2['default'].createElement('input', { type: 'submit', value: 'Submit' })
+    );
+}
+
+SignupForm.propTypes = {
+    onChange: _react.PropTypes.func
+};
+
+var source = "/*eslint func-style:0*/\nimport React, { PropTypes } from 'react';\nimport { Form, Input, Errors } from 'react-formable';\nconst { required, equalsField } = require('react-formable').validators;\n\nexport default function SignupForm({ onChange }) {\n    return <Form onChange={onChange}>\n        <Errors className=\"formErrors\" />\n\n        <label>\n            User name *\n            <Input name=\"username\"\n                   type=\"text\"\n                   validators={[\n                       required('username is required')\n                   ]} />\n        </label>\n\n        <label>\n            Password *\n            <Input name=\"password\"\n                   type=\"password\"\n                   validators={[\n                       required('password is required')\n                   ]} />\n        </label>\n\n        <label>\n            Password Retype *\n            <Input name=\"password2\"\n                   type=\"password\"\n                   validators={[\n                       equalsField('password', 'passwords must match')\n                   ]} />\n        </label>\n\n        <input type=\"submit\" value=\"Submit\" />\n    </Form>;\n}\n\nSignupForm.propTypes = {\n    onChange: PropTypes.func\n};\n\nexport const source = require('fs').readFileSync(__filename, 'utf8');\n";
+exports.source = source;
+
+},{"react":undefined,"react-formable":undefined}],32:[function(require,module,exports){
+/*eslint prefer-template:0*/
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _componentsFormExample = require('../../../../components/formExample');
+
+var _componentsFormExample2 = _interopRequireDefault(_componentsFormExample);
+
+var _code = require('./code');
+
+var _code2 = _interopRequireDefault(_code);
+
+var code = function code() {
+  return _react2['default'].createElement(_componentsFormExample2['default'], { example: _code2['default'], code: _code.source });
+};
+var markdown = "Signup form with password matching validation? No problemo.\n";
+
+var content = [markdown, code];
+exports.content = content;
+var title = 'Signup';
+exports.title = title;
+var link = 'Signup';
+exports.link = link;
+
+},{"../../../../components/formExample":4,"./code":31,"react":undefined}],33:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -1008,7 +1272,7 @@ function Footer() {
 
 module.exports = exports['default'];
 
-},{"../components/ghLogo":5,"../components/wtLogo":10,"react":undefined}],30:[function(require,module,exports){
+},{"../components/ghLogo":5,"../components/wtLogo":10,"react":undefined}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1033,14 +1297,15 @@ var subsections = [
     // Advanced
 ];
 
-var description = '\nLooking to get started with react-formable? Awesome!\n\n## Installation\n\n**NPM**\n\n    npm install react-formable --save\n\n**Bower**\n\n    bower install react-formable --save\n\n## Quickstart\n\n    // ES6 Imports\n    import Form, { Input, Errors } from \'react-formable\';\n\n    // require\n    var Formable = require(\'react-formable\');\n    var Form = Formable.Form;\n    var Input = Formable.Input;\n    var Errors = Formable.Errors;\n\n    // require with de-structuring\n    var { Form, Input, Errors } = require(\'react-formable\');\n\nNow lets render a simple login form that will display errors.\n\n    const LoginForm = React.createClass({\n        onSubmit(form) {\n            console.log(form);\n        },\n\n        render() {\n            return <Form onSubmit={this.onSubmit}>\n                <Input name="username" type="text" />\n                <Input name="password" type="password" />\n                <button>Login</button>\n                <Errors />\n            </Form>;\n        }\n    });\n';
+var description = '\nLooking to get started with react-formable? Awesome!\n\n## Installation\n\n**NPM**\n\n    npm install react-formable --save\n\n**Bower**\n\n    bower install react-formable --save\n\n## Quickstart\n\n    // ES6 Imports\n    import Form, { Input, Errors } from \'react-formable\';\n\n    // require\n    var Formable = require(\'react-formable\');\n    var Form = Formable.Form;\n    var Input = Formable.Input;\n    var Errors = Formable.Errors;\n\n    // require with de-structuring\n    var { Form, Input, Errors } = require(\'react-formable\');\n\nNow let\'s render a simple login form that will display errors.\n\n    const LoginForm = React.createClass({\n        onSubmit(form) {\n            console.log(form);\n        },\n\n        render() {\n            return <Form onSubmit={this.onSubmit}>\n                <Input name="username" type="text" />\n                <Input name="password" type="password" />\n                <button>Login</button>\n                <Errors />\n            </Form>;\n        }\n    });\n';
 
 exports['default'] = _react2['default'].createClass({
     displayName: 'getting-started',
 
     propTypes: {
         children: _react.PropTypes.node,
-        setSublinks: _react.PropTypes.func
+        setSublinks: _react.PropTypes.func,
+        setActiveSublink: _react.PropTypes.func
     },
 
     componentWillMount: function componentWillMount() {
@@ -1052,12 +1317,13 @@ exports['default'] = _react2['default'].createClass({
         return _react2['default'].createElement(_componentsPage2['default'], { title: 'Getting Started',
             description: description,
             className: 'getting-started',
-            subsections: subsections });
+            subsections: subsections,
+            setActiveSublink: this.props.setActiveSublink });
     }
 });
 module.exports = exports['default'];
 
-},{"../../components/page":7,"react":undefined}],31:[function(require,module,exports){
+},{"../../components/page":7,"react":undefined}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1115,7 +1381,8 @@ exports['default'] = _react2['default'].createClass({
 
     propTypes: {
         children: _react.PropTypes.node,
-        setSublinks: _react.PropTypes.func
+        setSublinks: _react.PropTypes.func,
+        setActiveSublink: _react.PropTypes.func
     },
 
     componentWillMount: function componentWillMount() {
@@ -1125,12 +1392,27 @@ exports['default'] = _react2['default'].createClass({
 
     render: function render() {
         return _react2['default'].createElement(_componentsPage2['default'], { className: 'guides',
-            subsections: subsections });
+            subsections: subsections,
+            setActiveSublink: this.props.setActiveSublink });
     }
 });
 module.exports = exports['default'];
 
-},{"../../components/page":7,"./subsections/adding-validation":33,"./subsections/creating-inputs":34,"./subsections/displaying-errors":35,"./subsections/fieldlist":36,"./subsections/fieldset":37,"./subsections/form-walk-through":38,"./subsections/highorder-forms":39,"./subsections/reusable-form-sections":40,"react":undefined}],32:[function(require,module,exports){
+},{"../../components/page":7,"./subsections/adding-validation":36,"./subsections/creating-inputs":37,"./subsections/displaying-errors":38,"./subsections/fieldlist":39,"./subsections/fieldset":40,"./subsections/form-walk-through":41,"./subsections/highorder-forms":42,"./subsections/reusable-form-sections":43,"react":undefined}],36:[function(require,module,exports){
+/*eslint prefer-template:0*/
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+var title = 'Adding Validation';
+exports.title = title;
+var link = 'adding-validation';
+exports.link = link;
+var content = ["In a perfect world, our beautiful `PersonForm` will always have proper information. Users will know exactly which fields are required and which ones are not. _Just in case_, we should probably do some validation to make sure things are all good.\n\nWith react-formable, you can validate any type of input, `Fieldset`, `Fieldlist`, and the `Form` itself. Each of these components takes in an array of validator functions. These validator functions are pure functions that take in params and return a string if errors are found. This string will then be inserted into our `fieldErrors` object and subsequently our `errors` array.\n\nEach validator takes the following three parameters:\n\n- `value`: The current value of the object. For inputs, it will be the value of the inputs. For `Form`s, `Fieldset`s, and `Fieldlist`s it will be an object or array of all the fields underneath it.\n- `fieldValues`: All the `fieldValues` for the form.\n- `fieldErrors`: All the `fieldErrors` for the form.\n\n**NB:** `fieldValues` and `fieldErrors` in our validators params are the same values we receive in `onSubmit` and `onSuccess`.\n\nNow we can use this to make a `required` validator for `PersonForm`.\n\n```js\nfunction required(value, fieldValues, fieldErrors) {\n\tif (!value || !value.length) {\n\t\treturn 'Missing required field!';\n\t}\n};\n```\n\nNow, let's use it! _(To keep things manageable, we will go back to a simpler person form)_.\n\n```js\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label>\n\t\t\tName:\n\t\t\t<Input name=\"name\"\n\t\t\t\t   type=\"text\"\n\t\t\t\t   validators={[\n\t\t\t\t\t   required\n\t\t\t\t   ]}/>\n\t\t</label>\n\t\t<label>\n\t\t\tAge:\n\t\t\t<Input name=\"age\"\n\t\t\t\t   type=\"text\"\n\t\t\t\t   validators={[\n\t\t\t\t\t   required\n\t\t\t\t   ]}/>\n\t\t</label>\n\t</Form>;\n}\n```\n\nNotice here we are passing in our newly created `required` function to the array supplied to the `validators` prop. In this manner, you can chain as many validators as you want together. What does this result in?\n\n```json\n{\n\t\"valid\": false,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\"\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [\"Missing required field!\"],\n\t\t\"age\": [\"Missing required field!\"]\n\t},\n\t\"errors\": [\"Missing required field!\"]\n}\n```\n\nWe see here that in `fieldErrors` both `name` and `age` have the the error message. `errors` only has one copy of the two messages. This is due to `errors` always compacting the strings to unique values.\n\nMoving forward, how can we write our `required` validator to display custom error messages? We can do this by making it a higher order (or curried) function.\n\n```js\nfunction required(errorMessage) {\n\treturn function (value, fieldValues, fieldErrors)\n\t\tif (!value || !value.length) {\n\t\t\treturn 'Missing required field!';\n\t\t}\n\t};\n};\n```\n\nNow we have a function that takes in an error message and returns a validator which will display the error message if our field is not present. In use, our form looks very similar.\n\n```js\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label>\n\t\t\tName:\n\t\t\t<Input name=\"name\"\n\t\t\t\t   type=\"text\"\n\t\t\t\t   validators={[\n\t\t\t\t\t   required('Please supply a name.')\n\t\t\t\t   ]}/>\n\t\t</label>\n\t\t<label>\n\t\t\tAge:\n\t\t\t<Input name=\"age\"\n\t\t\t\t   type=\"text\"\n\t\t\t\t   validators={[\n\t\t\t\t\t   required('Please supply an age')\n\t\t\t\t   ]}/>\n\t\t</label>\n\t</Form>;\n}\n```\n\nValidating `Fieldset`s, `Fieldlist`s, and `Form`s are all similar. The only difference is the `value` property supplied to the validator is the value of all its subfields. With `Fieldlist`, it is an array of objects, `Fieldset` and `Form` receive an object.\n"];
+exports.content = content;
+
+},{}],37:[function(require,module,exports){
 /*eslint prefer-template:0*/
 
 'use strict';
@@ -1138,95 +1420,71 @@ module.exports = exports['default'];
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
-var markdown = {
-    'form-walk-through': "react-formable gives you a handful of components that allow you to compose abstract forms to your hearts content. To demonstrate this, we will build a \"person\" form. We want the ability to add people with a name, age, and a pet. To start, we will only need two components, `Form` and `Input`.\n\n```js\nimport Form, { Input } from 'react-formable';\n\nfunction onSubmit(form) {\n\tconsole.log(form);\n}\n\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t<label> Age: <Input name=\"age\" type=\"text\" /> </label>\n\t\t<label> Pet: <Input name=\"pet\" type=\"text\" /> </label>\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n\nThis simple example brings to light a few design decisions of react-formable.\n\n1. There is no need for rigid markup or schemas. You can structure your markup however you want.\n2. To make an input visible to the `Form` component, you must supply a `name` property which is unique.\n\nWith this in mind, what is actually happening here? We have created a [stateless component](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) which renders a `Form` to the screen. Our component logs out the value of the form whenever it is submitted either via the html buttons default click functionality or pressing enter within an input. All in all, not too exciting. Let's take a peak at the data that gets logged to the console.\n\n### Form return value\n\n```json\n{\n\t\"valid\": true,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\",\n\t\t\"pet\": \"\"\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [],\n\t\t\"age\": [],\n\t\t\"pet\": []\n\t},\n\t\"errors\": []\n}\n```\n\nNow this is more exciting to look at. At the core of this data structure is `fieldValues` and `fieldErrors`. These two objects mirror the structure of your form. `fieldValues`, as the name implies, is a key value object where the key is the name of your input and the value is its value.  `fieldErrors` is similar, however the values in this object are arrays of string representing errors.\n\nThe remaining fields, `valid` and `errors`, are computed properties. `errors` is a flattened down and compacted array of all the errors found in `fieldErrors`. This means if multiple fields have errors of the message `\"required\"` then the `errors` array will only contain a single string, `\"required\"`. We can use this array for easily keeping track of errors as our forms grow in complexity. `valid` is a simple boolean which tells us if our form is valid. It does this by checking the length of the `errors` property.\n",
-    fieldset: "Suddenly, our requirements change! Now we want to know more information about our person's pet. We want to know its `name` and `type`. Our server expects a `Pet` model to be an object with `name` and `type` as fields, how can we accommodate this?\n\nreact-formable comes with a `Fieldset` component which does exactly this. `Fieldset` takes in a `name` property and groups inputs within its scope.\n\n```js\nimport Form, { Input, Fieldset } from 'react-formable';\n\nfunction onSubmit(form) {\n\tconsole.log(form);\n}\n\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t<label> Age: <Input name=\"age\" type=\"text\" /> </label>\n\t\t<Fieldset name=\"pet\">\n\t\t\t<label> Pet Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t\t<label> Pet Type: <Input name=\"type\" type=\"text\" /> </label>\n\t\t</Fieldset>\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n\nNot too much has changed. We wrapped our two pet fields within a `Fieldset` named `pet`. One interesting thing to note is we now have two inputs in our form with a name of `name`. Normally, `Form` would warn you that your inputs must have unique names. `Fieldset`s (and `Fieldlist`s) get around this limitation by scoping fields. To better understand this, here is the result of serializing the form.\n\n```json\n{\n\t\"valid\": true,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\",\n\t\t\"pet\": {\n\t\t\t\"name\": \"\",\n\t\t\t\"type\": \"\"\n\t\t}\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [],\n\t\t\"age\": [],\n\t\t\"pet\": {\n\t\t\t\"name\": [],\n\t\t\t\"type\": []\n\t\t}\n\t},\n\t\"errors\": []\n}\n```\n\nAs we can see, our `fieldValues` and `fieldList` properties have a new `pet` object that has child properties of `name` and `type`. Similarly, our `fieldErrors` property has nested arrays that match up with our `fieldValues`.\n",
-    fieldlist: "What? _Another_ requirement change? As it turns out, people typically have more than one pet. How can we have lists of pets within our form? Simply, we can use the `Fieldlist` component to group together lists of values.\n\n```js\nimport Form, { Input, Fieldlist } from 'react-formable';\n\nfunction onSubmit(form) {\n\tconsole.log(form);\n}\n\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t<label> Age: <Input name=\"age\" type=\"text\" /> </label>\n\t\t<Fieldlist name=\"pets\">\n\t\t\t<div>\n\t\t\t\t<label> Pet Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t\t\t<label> Pet Type: <Input name=\"type\" type=\"text\" /> </label>\n\t\t\t</div>\n\t\t\t{/* more pets here... */}\n\t\t</Fieldlist>\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n\nSimilar to `Fieldset`, `Fieldlist` accepts a `name` property which it nests all its children under. Internally, `Fieldlist` works by taking each direct child it owns and wrapping it in a `Fieldset`. This is why we don't need to use `Fieldset` within `Fieldlists`. If we did, we would have an extra object with the name of the `Fieldset` within our form data.\n\nAs we would expect, our `Fieldlist` has a value of an array of objects which we see in its returned value.\n\n```json\n{\n\t\"valid\": true,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\",\n\t\t\"pets\": [\n\t\t\t{\n\t\t\t\t\"name\": \"\",\n\t\t\t\t\"type\": \"\"\n\t\t\t}\n\t\t]\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [],\n\t\t\"age\": [],\n\t\t\"pets\": [\n\t\t\t{\n\t\t\t\t\"name\": [],\n\t\t\t\t\"type\": []\n\t\t\t}\n\t\t]\n\t},\n\t\"errors\": []\n}\n```\n"
-};
-exports.markdown = markdown;
-
-},{}],33:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-var title = 'Adding Validation';
-exports.title = title;
-var link = 'adding-validation';
-
-exports.link = link;
-var markdown = '\n';
-exports.markdown = markdown;
-
-},{}],34:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
 var title = 'Creating Inputs';
 exports.title = title;
 var link = 'creating-inputs';
 
 exports.link = link;
-var markdown = '\n';
-exports.markdown = markdown;
+var content = ["react-formable only ships with one lightweight `Input` component. Chances are you will want to create your own fields and it really can't be any simpler. To integrate a custom field with the `Form`, you need to do the following things:\n\n- Have a `getValue` method which returns the value of the field\n- Trigger the `onChange` event when the field changes\n- Trigger the `onSubmit` event when the field wants to submit the form (optional)\n- Not be a stateless component\n\nTo illustrate this we will create our own custom field that displays errors inline next to the field. To start off, let's examine what props the `Form` component provides to fields:\n\n- `fieldErrors`: An array of strings representing errors\n- `onChange` and `onSubmit` callbacks\n\nSimple right? Now to build the field! We will be building a field from scratch, however if you wanted to just wrap the existing `Input` component, that would work too.\n\n```js\nimport React from 'react';\n\nconst ErrorField = React.createClass({\n\tgetValue() {\n\t\treturn this.refs.input.value;\n\t},\n\n    render() {\n\t\tlet errors;\n        let { fieldErrors = [], className = '' } = this.props;\n\n\t\tif (fieldErrors.length) {\n\t\t\tclassName += 'error';\n\n\t\t\terrors = <ul className=\"errors\">\n\t\t\t\t{fieldErrors.map((error) => <li key={error}>{error}</li>)}\n\t\t\t</ul>;\n\t\t}\n\n\t\treturn <label className={className}>\n\t\t\t<input {...this.props} ref=\"input\" />\n\t\t\t{errors}\n\t\t</label>;\n    }\n});\n```\n\nThere is a bit going on here, so let's break it down.\n\nThe most important piece is our `getValue` method. This is the only necessary method your field needs to implement in order to work with react-formable. The implementation here is simple, just reach into `refs` and get the value of the input.\n\nThe `render` method also has some interesting interesting things to note. The most obvious is optionally rendering a list of errors and modifying the `className` of the `label`. As we mentioned before, every component receives `fieldErrors` as a prop. We can then use this as a means to render our errors.\n\nThe second thing to point out is the use of splatting our props to our input. The most important thing this accomplishes is binding our `onChange` and `onSubmit` callbacks to our input. Recall our 3 requirements? Implement `getValue` and bind `onChange` and `onSubmit`. Our `Form` passes down the callbacks to our component which then forwards those callbacks to the input. HTML inputs automatically triggers these callbacks when the user interacts with them. If we wrote a custom input that did not use native HTML inputs, we would need to trigger these callbacks manually.\n"];
+exports.content = content;
 
-},{}],35:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
+/*eslint prefer-template:0*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
-  value: true
+    value: true
 });
 var title = 'Displaying Errors';
 exports.title = title;
-var link = 'displaying-errors';
-
+var link = 'display-errors';
 exports.link = link;
-var markdown = '\n';
-exports.markdown = markdown;
+var content = ["We now know how to validate fields but how do we show these error messages to the screen? With react-formable, there are numerous ways we can display errors.\n\n### Inline errors\n\nIt is pretty standard to draw attention to fields when they have errors. This could mean outlining the field in red, putting an asterisks next to it, or perhaps even a tooltip. To accomplish this, the `Form` component passes down an array of strings called `fieldErrors` to each named input (or an object / array for `Fieldset` / `Fieldlist`). It is then up to the component to decide what to do with these errors.\n\nThe `Input` component bundled with react-formable appends a className of `\"error\"` to the component when errors are present. This can be used to style the input accordingly. If you want to display errors next to fields making a new input is as simple as can be. We will detail that later in this guide.\n\nForms by default show field level errors whenever the form is submitted. This can be toggled on and off via the `showErrorsOnSubmit` which defaults to `true`. There is also a prop `showErrorsOnChange` to control if field errors should be passed down `onChange`.\n\n### Lists of errors\n\nMore common perhaps is to show a unified list of errors near the submit button of the form. If we wanted to do this by hand, we would have to have some state on our component which keeps track of the errors output by the form. When we submit the form, we set the state and re-render the view with the errors. In practice, this happens in nearly every form you will make. To DRY up our code, there is an `<Errors />` component that does this for us.\n\n```js\nimport Form, { Input, Errors } from 'react-formable';\n\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label>\n\t\t\tName:\n\t\t\t<Input name=\"name\"\n\t\t\t\t   type=\"text\"\n\t\t\t\t   validators={[\n\t\t\t\t\t   required('Please supply a name.')\n\t\t\t\t   ]}/>\n\t\t</label>\n\t\t<label>\n\t\t\tAge:\n\t\t\t<Input name=\"age\"\n\t\t\t\t   type=\"text\"\n\t\t\t\t   validators={[\n\t\t\t\t\t   required('Please supply an age')\n\t\t\t\t   ]}/>\n\t\t</label>\n\t\t<Errors />\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n\nWe can think of `<Errors />` as a placeholder. The component will render a list of errors wherever we place it. We can control how they render via its `renderError` prop. This prop takes in a function with a parameter of a string. Whatever we return from this function will be rendered in our list.\n\nWhat about server errors? We can pass down `additionalErrors` to the component to render arbitrary errors. For example:\n\n\n```js\nimport Form, { Input, Errors } from 'react-formable';\n\nconst ErrorForm = React.createClass({\n\tgetInitialState() {\n\t\treturn { errors: [] };\n\t},\n\n\tonSubmit(form) {\n\t\tif (!form.valid) return;\n\t\tajax.get('/api/users', form.fieldValues)\n\t\t\t.then((data) => /* process the data */)\n\t\t\t.catch((errors) => this.setState({ errors }));\n\t},\n\n\trender() {\n\t\treturn <Form onSubmit={this.onSubmit}>\n\t\t\t<Input name=\"username\"\n\t\t\t\t   type=\"text\"\n\t\t\t\t   validators={[\n\t\t\t\t\t   required('Please supply a username.')\n\t\t\t\t   ]}/>\n\t\t\t<Errors additionalErrors={this.state.errors} />\n\t\t\t<button>Submit</button>\n\t\t</Form>;\n\t}\n});\n```\n"];
+exports.content = content;
 
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
+/*eslint prefer-template:0*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
-  value: true
+    value: true
 });
 var title = 'Grouping Inputs: Fieldlist';
 exports.title = title;
 var link = 'grouping-inputs-fieldlist';
 exports.link = link;
-var markdown = require('../../samples').markdown['fieldlist'];
-exports.markdown = markdown;
+var content = ["What? _Another_ requirement change? As it turns out, people typically have more than one pet. How can we have lists of pets within our form? Simply, we can use the `Fieldlist` component to group together lists of values.\n\n```js\nimport Form, { Input, Fieldlist } from 'react-formable';\n\nfunction onSubmit(form) {\n\tconsole.log(form);\n}\n\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t<label> Age: <Input name=\"age\" type=\"text\" /> </label>\n\t\t<Fieldlist name=\"pets\">\n\t\t\t<div>\n\t\t\t\t<label> Pet Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t\t\t<label> Pet Type: <Input name=\"type\" type=\"text\" /> </label>\n\t\t\t</div>\n\t\t\t{/* more pets here... */}\n\t\t</Fieldlist>\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n\nSimilar to `Fieldset`, `Fieldlist` accepts a `name` property which it nests all its children under. Internally, `Fieldlist` works by taking each direct child it owns and wrapping it in a `Fieldset`. This is why we don't need to use `Fieldset` within `Fieldlists`. If we did, we would have an extra object with the name of the `Fieldset` within our form data.\n\nAs we would expect, our `Fieldlist` has a value of an array of objects which we see in its returned value.\n\n```json\n{\n\t\"valid\": true,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\",\n\t\t\"pets\": [\n\t\t\t{\n\t\t\t\t\"name\": \"\",\n\t\t\t\t\"type\": \"\"\n\t\t\t}\n\t\t]\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [],\n\t\t\"age\": [],\n\t\t\"pets\": [\n\t\t\t{\n\t\t\t\t\"name\": [],\n\t\t\t\t\"type\": []\n\t\t\t}\n\t\t]\n\t},\n\t\"errors\": []\n}\n```\n\nWith this in mind, we could easily make a `Fieldlist` with only inputs in it. For example, a form with just names of people.\n\n```js\nimport Form, { Input, Fieldlist } from 'react-formable';\n\nfunction PeopleNameForm(props) {\n\treturn <Form>\n\t\t<Fieldlist name=\"people\">\n\t\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t</Fieldlist>\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n"];
+exports.content = content;
 
-},{"../../samples":32}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
+/*eslint prefer-template:0*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
-  value: true
+    value: true
 });
 var title = 'Grouping Inputs: Fieldset';
 exports.title = title;
 var link = 'grouping-inputs-fieldset';
 exports.link = link;
-var markdown = require('../../samples').markdown['fieldset'];
-exports.markdown = markdown;
+var content = ["Suddenly, our requirements change! Now we want to know more information about our person's pet. We want to know its `name` and `type`. Our server expects a `Pet` model to be an object with `name` and `type` as fields, how can we accommodate this?\n\nreact-formable comes with a `Fieldset` component which does exactly this. `Fieldset` takes in a `name` property and groups inputs within its scope.\n\n```js\nimport Form, { Input, Fieldset } from 'react-formable';\n\nfunction onSubmit(form) {\n\tconsole.log(form);\n}\n\nfunction PersonForm(props) {\n\treturn <Form onSubmit={onSubmit}>\n\t\t<label> Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t<label> Age: <Input name=\"age\" type=\"text\" /> </label>\n\t\t<Fieldset name=\"pet\">\n\t\t\t<label> Pet Name: <Input name=\"name\" type=\"text\" /> </label>\n\t\t\t<label> Pet Type: <Input name=\"type\" type=\"text\" /> </label>\n\t\t</Fieldset>\n\t\t<button>Submit</button>\n\t</Form>;\n}\n```\n\nNot too much has changed. We wrapped our two pet fields within a `Fieldset` named `pet`. One interesting thing to note is we now have two inputs in our form with a name of `name`. Normally, `Form` would warn you that your inputs must have unique names. `Fieldset`s (and `Fieldlist`s) get around this limitation by scoping fields. To better understand this, here is the result of serializing the form.\n\n```json\n{\n\t\"valid\": true,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\",\n\t\t\"pet\": {\n\t\t\t\"name\": \"\",\n\t\t\t\"type\": \"\"\n\t\t}\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [],\n\t\t\"age\": [],\n\t\t\"pet\": {\n\t\t\t\"name\": [],\n\t\t\t\"type\": []\n\t\t}\n\t},\n\t\"errors\": []\n}\n```\n\nAs we can see, our `fieldValues` and `fieldList` properties have a new `pet` object that has child properties of `name` and `type`. Similarly, our `fieldErrors` property has nested arrays that match up with our `fieldValues`.\n"];
+exports.content = content;
 
-},{"../../samples":32}],38:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
+/*eslint prefer-template:0*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
-  value: true
+    value: true
 });
 var title = 'Form Walk Through';
 exports.title = title;
 var link = 'form-walk-through';
 exports.link = link;
-var markdown = require('../../samples').markdown['form-walk-through'];
-exports.markdown = markdown;
+var content = ["react-formable gives you a handful of components that allow you to compose abstract forms to your hearts content. To demonstrate this, we will build a \"person\" form. We want the ability to add people with a name, age, and a pet. To start, we will only need two components, `Form` and `Input`.\n\nThis simple example brings to light a few design decisions of react-formable.\n\n- There is no need for rigid markup or schemas. You can structure your markup however you want.\n- To make an input visible to the `Form` component, you must supply a `name` property which is unique.\n\nWith this in mind, what is actually happening here? We have created a [stateless component](https://facebook.github.io/react/docs/reusable-components.html#stateless-functions) which renders a `Form` to the screen. Our component logs out the value of the form whenever it is submitted either via the html buttons default click functionality or pressing enter within an input. All in all, not too exciting. Let's take a peak at the data that gets logged to the console.\n\n```js\nimport React from 'react';\nimport Form, { Input } from 'react-formable';\n\nexport default function PersonForm({ onChange }) {\n    return <Form onChange={onChange}>\n        <label> Name: <Input name=\"name\" type=\"text\" /> </label>\n        <label> Age: <Input name=\"age\" type=\"text\" /> </label>\n        <label> Pet: <Input name=\"pet\" type=\"text\" /> </label>\n        <button>Submit</button>\n    </Form>;\n}\n```\n\n### Form return value\n\nNow this is more exciting to look at. At the core of this data structure is `fieldValues` and `fieldErrors`. These two objects mirror the structure of your form. `fieldValues`, as the name implies, is a key value object where the key is the name of your input and the value is its value.  `fieldErrors` is similar, however the values in this object are arrays of string representing errors.\n\nThe remaining fields, `valid` and `errors`, are computed properties. `errors` is a flattened down and compacted array of all the errors found in `fieldErrors`. This means if multiple fields have errors of the message `\"required\"` then the `errors` array will only contain a single string, `\"required\"`. We can use this array for easily keeping track of errors as our forms grow in complexity. `valid` is a simple boolean which tells us if our form is valid. It does this by checking the length of the `errors` property.\n\n```json\n{\n\t\"valid\": true,\n\t\"fieldValues\": {\n\t\t\"name\": \"\",\n\t\t\"age\": \"\",\n\t\t\"pet\": \"\"\n\t},\n\t\"fieldErrors\": {\n\t\t\"name\": [],\n\t\t\"age\": [],\n\t\t\"pet\": []\n\t},\n\t\"errors\": []\n}\n```\n"];
+exports.content = content;
 
-},{"../../samples":32}],39:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1240,7 +1498,7 @@ exports.link = link;
 var markdown = '\n';
 exports.markdown = markdown;
 
-},{}],40:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1254,12 +1512,12 @@ exports.link = link;
 var markdown = '\n';
 exports.markdown = markdown;
 
-},{}],41:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
-	value: true
+    value: true
 });
 exports['default'] = Header;
 
@@ -1275,34 +1533,67 @@ var _componentsGhLogo = require('../components/ghLogo');
 
 var _componentsGhLogo2 = _interopRequireDefault(_componentsGhLogo);
 
-function Header() {
-	return _react2['default'].createElement(
-		'header',
-		{ className: 'header' },
-		_react2['default'].createElement(
-			_reactRouter.Link,
-			{ to: '/home' },
-			_react2['default'].createElement('img', { className: 'logo', src: './imgs/logo@2x.png' })
-		),
-		_react2['default'].createElement(
-			'nav',
-			null,
-			_react2['default'].createElement(
-				'ul',
-				null,
-				_react2['default'].createElement(
-					'li',
-					null,
-					_react2['default'].createElement(_componentsGhLogo2['default'], null)
-				)
-			)
-		)
-	);
+function Header(_ref) {
+    var links = _ref.links;
+
+    var navLinks = links.map(function (_ref2) {
+        var link = _ref2.link;
+        var title = _ref2.title;
+        return _react2['default'].createElement(
+            'li',
+            { key: link },
+            _react2['default'].createElement(
+                _reactRouter.Link,
+                { to: '/' + link, activeClassName: 'active' },
+                title
+            )
+        );
+    });
+
+    return _react2['default'].createElement(
+        'div',
+        null,
+        _react2['default'].createElement(
+            'div',
+            null,
+            _react2['default'].createElement(
+                'header',
+                { className: 'header' },
+                _react2['default'].createElement(
+                    _reactRouter.Link,
+                    { to: '/home' },
+                    _react2['default'].createElement('img', { className: 'logo', src: './imgs/logo@2x.png' })
+                ),
+                _react2['default'].createElement(
+                    'nav',
+                    null,
+                    _react2['default'].createElement(
+                        'ul',
+                        null,
+                        _react2['default'].createElement(
+                            'li',
+                            null,
+                            _react2['default'].createElement(_componentsGhLogo2['default'], null)
+                        )
+                    )
+                )
+            )
+        ),
+        _react2['default'].createElement(
+            'div',
+            { className: 'mobile-nav' },
+            _react2['default'].createElement(
+                'ul',
+                null,
+                navLinks
+            )
+        )
+    );
 }
 
 module.exports = exports['default'];
 
-},{"../components/ghLogo":5,"react":undefined,"react-router":undefined}],42:[function(require,module,exports){
+},{"../components/ghLogo":5,"react":undefined,"react-router":undefined}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1350,7 +1641,7 @@ exports['default'] = _react2['default'].createClass({
             _react2['default'].createElement(
                 'p',
                 null,
-                'Inspiried by functional libraries such as ',
+                'Inspired by functional libraries such as ',
                 _react2['default'].createElement(
                     'a',
                     { href: 'http://ramdajs.com/', target: '_blank' },
@@ -1367,13 +1658,13 @@ exports['default'] = _react2['default'].createClass({
                     { to: '/getting-started' },
                     'getting started'
                 ),
-                ' page for installation help. Looking for proof why its so cool? Head on over to our ',
+                ' page for installation help. Looking for proof why it\'s so cool? Head on over to our ',
                 _react2['default'].createElement(
                     _reactRouter.Link,
                     { to: '/examples' },
                     'examples'
                 ),
-                ' to see whats up!'
+                ' to see what\'s up!'
             ),
             _react2['default'].createElement(
                 _componentsWell2['default'],
@@ -1399,7 +1690,7 @@ exports['default'] = _react2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../components/well":9,"react":undefined,"react-router":undefined}],43:[function(require,module,exports){
+},{"../../components/well":9,"react":undefined,"react-router":undefined}],46:[function(require,module,exports){
 /*eslint func-style:0*/
 'use strict';
 
@@ -1416,13 +1707,11 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
 
-var links = [{ link: 'getting-started', title: 'Getting Started' }, { link: 'guides', title: 'Guides' }, { link: 'examples', title: 'Examples' }, { link: 'api', title: 'API' }];
-
 function scrollToId(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
 
-function renderSublinks(subLinks) {
+function renderSublinks(subLinks, activeSublink) {
     var _this = this;
 
     return _react2['default'].createElement(
@@ -1431,7 +1720,13 @@ function renderSublinks(subLinks) {
         subLinks.map(function (_ref) {
             var title = _ref.title;
             var link = _ref.link;
-            var subSections = _ref.subSections;
+            var subsections = _ref.subsections;
+
+            var formattedTitle = activeSublink === link ? _react2['default'].createElement(
+                'strong',
+                null,
+                title
+            ) : title;
 
             return _react2['default'].createElement(
                 'li',
@@ -1439,19 +1734,21 @@ function renderSublinks(subLinks) {
                 _react2['default'].createElement(
                     'span',
                     { className: 'a', onClick: scrollToId.bind(_this, link) },
-                    title
+                    formattedTitle
                 ),
-                subSections && renderSublinks(subSections)
+                subsections && renderSublinks(subsections, activeSublink)
             );
         })
     );
 }
 
 function Sidebar(_ref2) {
+    var links = _ref2.links;
     var _ref2$subLinks = _ref2.subLinks;
     var subLinks = _ref2$subLinks === undefined ? [] : _ref2$subLinks;
     var style = _ref2.style;
     var activePath = _ref2.activePath;
+    var activeSublink = _ref2.activeSublink;
 
     activePath = activePath.split('/').pop();
 
@@ -1466,7 +1763,7 @@ function Sidebar(_ref2) {
                 { to: '/' + link, activeClassName: 'active' },
                 title
             ),
-            activePath === link && renderSublinks(subLinks)
+            activePath === link && renderSublinks(subLinks, activeSublink)
         );
     });
 
@@ -1482,15 +1779,20 @@ function Sidebar(_ref2) {
 }
 
 Sidebar.propTypes = {
+    links: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+        title: _react.PropTypes.string,
+        link: _react.PropTypes.string
+    })).isRequired,
     subLinks: _react.PropTypes.arrayOf(_react.PropTypes.shape({
         title: _react.PropTypes.string,
         link: _react.PropTypes.string
     })).isRequired,
-    style: _react.PropTypes.object
+    style: _react.PropTypes.object,
+    activeSublink: _react.PropTypes.string
 };
 module.exports = exports['default'];
 
-},{"react":undefined,"react-router":undefined}],44:[function(require,module,exports){
+},{"react":undefined,"react-router":undefined}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1541,7 +1843,7 @@ exports['default'] = _react2['default'].createElement(
 );
 module.exports = exports['default'];
 
-},{"./controllers/api/api":11,"./controllers/base":24,"./controllers/examples/examples":25,"./controllers/getting-started/getting-started":30,"./controllers/guides/guides":31,"./controllers/home/home":42,"react":undefined,"react-router":undefined}],45:[function(require,module,exports){
+},{"./controllers/api/api":11,"./controllers/base":25,"./controllers/examples/examples":26,"./controllers/getting-started/getting-started":34,"./controllers/guides/guides":35,"./controllers/home/home":45,"react":undefined,"react-router":undefined}],48:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -1637,7 +1939,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":46,"./lib/keys.js":47}],46:[function(require,module,exports){
+},{"./lib/is_arguments.js":49,"./lib/keys.js":50}],49:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -1659,7 +1961,7 @@ function unsupported(object){
     false;
 };
 
-},{}],47:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -1670,7 +1972,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],48:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -1702,7 +2004,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],49:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1729,7 +2031,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],50:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -1800,7 +2102,7 @@ function readState(key) {
   return null;
 }
 }).call(this,require('_process'))
-},{"_process":63,"warning":64}],51:[function(require,module,exports){
+},{"_process":66,"warning":68}],54:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1881,13 +2183,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],52:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],53:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1930,7 +2232,7 @@ function createDOMHistory(options) {
 exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./DOMUtils":51,"./ExecutionEnvironment":52,"./createHistory":55,"_process":63,"invariant":61}],54:[function(require,module,exports){
+},{"./DOMUtils":54,"./ExecutionEnvironment":55,"./createHistory":58,"_process":66,"invariant":64}],57:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2181,7 +2483,7 @@ function createHashHistory() {
 exports['default'] = createHashHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":48,"./DOMStateStorage":50,"./DOMUtils":51,"./ExecutionEnvironment":52,"./createDOMHistory":53,"./parsePath":59,"_process":63,"invariant":61,"warning":64}],55:[function(require,module,exports){
+},{"./Actions":51,"./DOMStateStorage":53,"./DOMUtils":54,"./ExecutionEnvironment":55,"./createDOMHistory":56,"./parsePath":62,"_process":66,"invariant":64,"warning":68}],58:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2473,7 +2775,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":48,"./AsyncUtils":49,"./createLocation":56,"./deprecate":57,"./parsePath":59,"./runTransitionHook":60,"deep-equal":45}],56:[function(require,module,exports){
+},{"./Actions":51,"./AsyncUtils":52,"./createLocation":59,"./deprecate":60,"./parsePath":62,"./runTransitionHook":63,"deep-equal":48}],59:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2528,7 +2830,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":48,"./parsePath":59}],57:[function(require,module,exports){
+},{"./Actions":51,"./parsePath":62}],60:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -2544,7 +2846,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],58:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2558,7 +2860,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],59:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2605,7 +2907,7 @@ function parsePath(path) {
 exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./extractPath":58,"_process":63,"warning":64}],60:[function(require,module,exports){
+},{"./extractPath":61,"_process":66,"warning":68}],63:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2632,7 +2934,7 @@ function runTransitionHook(hook, location, callback) {
 exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":63,"warning":64}],61:[function(require,module,exports){
+},{"_process":66,"warning":68}],64:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -2685,7 +2987,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 
-},{}],62:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
@@ -3974,7 +4276,7 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],63:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -4067,7 +4369,253 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],64:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var POSITIONS = {
+  above: 'above',
+  inside: 'inside',
+  below: 'below'
+};
+
+var propTypes = {
+  // threshold is percentage of the height of the visible part of the
+  // scrollable ancestor (e.g. 0.1)
+  threshold: _react.PropTypes.number,
+  onEnter: _react.PropTypes.func,
+  onLeave: _react.PropTypes.func
+};
+
+var defaultProps = {
+  threshold: 0,
+  onEnter: function onEnter() {},
+  onLeave: function onLeave() {}
+};
+
+/**
+ * Calls a function when you scroll to the element.
+ */
+
+var Waypoint = (function (_React$Component) {
+  _inherits(Waypoint, _React$Component);
+
+  function Waypoint() {
+    _classCallCheck(this, Waypoint);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(Waypoint).apply(this, arguments));
+  }
+
+  _createClass(Waypoint, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this._handleScroll = this._handleScroll.bind(this);
+
+      this.scrollableAncestor = this._findScrollableAncestor();
+      this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
+      window.addEventListener('resize', this._handleScroll);
+      this._handleScroll(null);
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      // The element may have moved.
+      this._handleScroll(null);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      if (this.scrollableAncestor) {
+        // At the time of unmounting, the scrollable ancestor might no longer
+        // exist. Guarding against this prevents the following error:
+        //
+        //   Cannot read property 'removeEventListener' of undefined
+        this.scrollableAncestor.removeEventListener('scroll', this._handleScroll);
+      }
+      window.removeEventListener('resize', this._handleScroll);
+    }
+
+    /**
+     * Traverses up the DOM to find an ancestor container which has an overflow
+     * style that allows for scrolling.
+     *
+     * @return {Object} the closest ancestor element with an overflow style that
+     *   allows for scrolling. If none is found, the `window` object is returned
+     *   as a fallback.
+     */
+
+  }, {
+    key: '_findScrollableAncestor',
+    value: function _findScrollableAncestor() {
+      var node = _reactDom2.default.findDOMNode(this);
+
+      while (node.parentNode) {
+        node = node.parentNode;
+
+        if (node === document) {
+          // This particular node does not have a computed style.
+          continue;
+        }
+
+        if (node === document.documentElement) {
+          // This particular node does not have a scroll bar, it uses the window.
+          continue;
+        }
+
+        var style = window.getComputedStyle(node);
+        var overflowY = style.getPropertyValue('overflow-y') || style.getPropertyValue('overflow');
+
+        if (overflowY === 'auto' || overflowY === 'scroll') {
+          return node;
+        }
+      }
+
+      // A scrollable ancestor element was not found, which means that we need to
+      // do stuff on window.
+      return window;
+    }
+
+    /**
+     * @param {Object} event the native scroll event coming from the scrollable
+     *   ancestor, or resize event coming from the window. Will be undefined if
+     *   called by a React lifecyle method
+     */
+
+  }, {
+    key: '_handleScroll',
+    value: function _handleScroll(event) {
+      var currentPosition = this._currentPosition();
+      var previousPosition = this._previousPosition || null;
+
+      // Save previous position as early as possible to prevent cycles
+      this._previousPosition = currentPosition;
+
+      if (previousPosition === currentPosition) {
+        // No change since last trigger
+        return;
+      }
+
+      if (currentPosition === POSITIONS.inside) {
+        this.props.onEnter.call(this, event, previousPosition);
+      } else if (previousPosition === POSITIONS.inside) {
+        this.props.onLeave.call(this, event, currentPosition);
+      }
+
+      var isRapidScrollDown = previousPosition === POSITIONS.below && currentPosition === POSITIONS.above;
+      var isRapidScrollUp = previousPosition === POSITIONS.above && currentPosition === POSITIONS.below;
+      if (isRapidScrollDown || isRapidScrollUp) {
+        // If the scroll event isn't fired often enough to occur while the
+        // waypoint was visible, we trigger both callbacks anyway.
+        this.props.onEnter.call(this, event, previousPosition);
+        this.props.onLeave.call(this, event, currentPosition);
+      }
+    }
+
+    /**
+     * @param {Object} node
+     * @return {Number}
+     */
+
+  }, {
+    key: '_distanceToTopOfScrollableAncestor',
+    value: function _distanceToTopOfScrollableAncestor(node) {
+      if (this.scrollableAncestor !== window && !node.offsetParent) {
+        throw new Error('The scrollable ancestor of Waypoint needs to have positioning to ' + 'properly determine position of Waypoint (e.g. `position: relative;`)');
+      }
+
+      if (this.scrollableAncestor === window) {
+        var rect = node.getBoundingClientRect();
+        return rect.top + window.pageYOffset - document.documentElement.clientTop;
+      }
+
+      if (node.offsetParent === this.scrollableAncestor || !node.offsetParent) {
+        return node.offsetTop;
+      } else {
+        return node.offsetTop + this._distanceToTopOfScrollableAncestor(node.offsetParent);
+      }
+    }
+
+    /**
+     * @return {boolean} true if scrolled down almost to the end of the scrollable
+     *   ancestor element.
+     */
+
+  }, {
+    key: '_currentPosition',
+    value: function _currentPosition() {
+      var waypointTop = this._distanceToTopOfScrollableAncestor(_reactDom2.default.findDOMNode(this));
+      var contextHeight = undefined;
+      var contextScrollTop = undefined;
+
+      if (this.scrollableAncestor === window) {
+        contextHeight = window.innerHeight;
+        contextScrollTop = window.pageYOffset;
+      } else {
+        contextHeight = this.scrollableAncestor.offsetHeight;
+        contextScrollTop = this.scrollableAncestor.scrollTop;
+      }
+
+      var thresholdPx = contextHeight * this.props.threshold;
+
+      var isBelowTop = contextScrollTop <= waypointTop + thresholdPx;
+      if (!isBelowTop) {
+        return POSITIONS.above;
+      }
+
+      var contextBottom = contextScrollTop + contextHeight;
+      var isAboveBottom = contextBottom >= waypointTop - thresholdPx;
+      if (!isAboveBottom) {
+        return POSITIONS.below;
+      }
+
+      return POSITIONS.inside;
+    }
+
+    /**
+     * @return {Object}
+     */
+
+  }, {
+    key: 'render',
+    value: function render() {
+      // We need an element that we can locate in the DOM to determine where it is
+      // rendered relative to the top of its context.
+      return _react2.default.createElement('span', { style: { fontSize: 0 } });
+    }
+  }]);
+
+  return Waypoint;
+})(_react2.default.Component);
+
+exports.default = Waypoint;
+
+Waypoint.propTypes = propTypes;
+Waypoint.above = POSITIONS.above;
+Waypoint.below = POSITIONS.below;
+Waypoint.defaultProps = defaultProps;
+
+},{"react":undefined,"react-dom":undefined}],68:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -4128,25 +4676,5 @@ if ("production" !== 'production') {
 }
 
 module.exports = warning;
-
-},{}],65:[function(require,module,exports){
-/*eslint func-style:0*/
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = mapObj;
-
-function mapObj(fn, obj) {
-    var ret = {};
-
-    for (var key in obj) {
-        ret[key] = fn(obj[key], key);
-    }
-    return ret;
-}
-
-module.exports = exports["default"];
 
 },{}]},{},[1]);
