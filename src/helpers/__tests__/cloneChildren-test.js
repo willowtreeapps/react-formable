@@ -65,7 +65,7 @@ describe('cloneChildren', () => {
 
     it('warns when children share same name', () => {
         const createFormableRule = require('../cloneChildren').createFormableRule;
-        const rule = createFormableRule({})
+        const rule = createFormableRule()
         const children = [
             <Input name="color" type="text" />,
             <Input name="color" type="text" />
@@ -78,7 +78,7 @@ describe('cloneChildren', () => {
 
     it('does not warn when children have different names', () => {
         const createFormableRule = require('../cloneChildren').createFormableRule;
-        const rule = createFormableRule({})
+        const rule = createFormableRule()
         const children = [
             <Input name="color" type="text" />,
             <Input name="shape" type="text" />
