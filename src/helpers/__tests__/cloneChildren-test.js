@@ -1,11 +1,11 @@
 import React from 'react';
 jest.dontMock('../cloneChildren');
 jest.dontMock('../../errors');
+jest.mock('warning');
 
 describe('cloneChildren', () => {
     const cloneChildren = require('../cloneChildren').default;
     const createErrorsRule = require('../cloneChildren').createErrorsRule;
-    const createFormableRule = require('../cloneChildren').createFormableRule;
 
     const Errors = require('../../errors').default;
     const Input = require('../../inputs/input').default;
@@ -67,13 +67,29 @@ describe('cloneChildren', () => {
     });
 
     it('warns when children share same name', () => {
+        const createFormableRule = require('../cloneChildren').createFormableRule;
         const rule = createFormableRule({})
         const children = [
             <Input name="color" type="text" />,
             <Input name="color" type="text" />
         ];
-        const clones = cloneChildren([rule], children);
+        const warning = require('warning');
 
-        expect(clones.length).toBe(2);
+        cloneChildren([rule], children);
+        expect(warning).toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
+    });
+
+    it('does not warn when children have different names', () => {
+        const createFormableRule = require('../cloneChildren').createFormableRule;
+        const rule = createFormableRule({})
+        const children = [
+            <Input name="color" type="text" />,
+            <Input name="shape" type="text" />
+        ];
+        const warning = require('warning');
+
+        cloneChildren([rule], children);
+        expect(warning).not.toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
+        expect(warning).not.toBeCalledWith(false, 'Duplicate name "shape" found. Duplicate fields will be ignored');
     });
 });
