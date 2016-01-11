@@ -97,7 +97,7 @@ describe('cloneChildren', () => {
         expect(warning).not.toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
     });
 
-    it.only('warns when children have same names using recursion (unscoped)', () => {
+    it('warns when children have same names using recursion (unscoped)', () => {
         const warning = require('warning');
         const rule = require('../cloneChildren').createFormableRule();
 
