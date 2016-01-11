@@ -45,11 +45,8 @@ describe('cloneChildren', () => {
     });
 
     it('clones Errrors and populates errors fields', () => {
-        const rule = createErrorsRule({
-            errors: ['Some bad error'],
-            fieldErrors: {
-                fieldname: 'Some bad error'
-            }
+        const rule = createErrorsRule(['Some bad error'], {
+            fieldname: 'Some bad error'
         });
 
         const children = [<Errors />];

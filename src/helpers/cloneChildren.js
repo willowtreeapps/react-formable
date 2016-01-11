@@ -36,7 +36,7 @@ function createRecursiveRule(rules) {
  * @param {Object} fieldErrors of the form
  * @return {Object} rule for cloning Errors element
  */
-export function createErrorsRule({ errors = [], fieldErrors = {} }) {
+export function createErrorsRule(errors = [], fieldErrors = {}) {
     return {
         predicate: child => child.type && child.type.displayName === 'Errors',
         clone: child => {
