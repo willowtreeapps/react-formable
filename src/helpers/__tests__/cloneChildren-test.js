@@ -1,6 +1,7 @@
 import React from 'react';
 jest.dontMock('../cloneChildren');
 jest.dontMock('../../errors');
+jest.dontMock('../../fieldset');
 jest.mock('warning');
 
 describe('cloneChildren', () => {
@@ -8,6 +9,7 @@ describe('cloneChildren', () => {
     const createErrorsRule = require('../cloneChildren').createErrorsRule;
 
     const Errors = require('../../errors').default;
+    const Fieldset = require('../../fieldset').default;
     const Input = require('../../inputs/input').default;
 
     it('clones when predicate matches', () => {
@@ -88,5 +90,20 @@ describe('cloneChildren', () => {
         cloneChildren([rule], children);
         expect(warning).not.toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
         expect(warning).not.toBeCalledWith(false, 'Duplicate name "shape" found. Duplicate fields will be ignored');
+    });
+
+    it('does not warn when children have same names but are scoped', () => {
+        const createFormableRule = require('../cloneChildren').createFormableRule;
+        const rule = createFormableRule()
+        const children = [
+            <Input name="color" type="text" />,
+            <Fieldset name="pet">
+                <Input name="color" type="text" />
+            </Fieldset>
+        ];
+        const warning = require('warning');
+
+        cloneChildren([rule], children);
+        expect(warning).not.toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
     });
 });
