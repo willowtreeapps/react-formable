@@ -1,18 +1,10 @@
+jest.autoMockOff();
 import React from 'react';
-jest.dontMock('../cloneChildren');
-jest.dontMock('../../errors');
-jest.dontMock('../../fieldset');
 jest.mock('warning');
 
 describe('cloneChildren', () => {
-    const cloneChildren = require('../cloneChildren').default;
-    const createErrorsRule = require('../cloneChildren').createErrorsRule;
-
-    const Errors = require('../../errors').default;
-    const Fieldset = require('../../fieldset').default;
-    const Input = require('../../inputs/input').default;
-
     it('clones when predicate matches', () => {
+        const cloneChildren = require('../cloneChildren').default;
         const rule = {
             predicate: () => true,
             clone: (child) => {
@@ -30,6 +22,8 @@ describe('cloneChildren', () => {
     });
 
     it('skips clone when predicate fails', () => {
+        const cloneChildren = require('../cloneChildren').default;
+
         const rule = {
             predicate: () => false,
             clone: (child) => {
@@ -47,6 +41,10 @@ describe('cloneChildren', () => {
     });
 
     it('clones Errrors and populates errors fields', () => {
+        const cloneChildren = require('../cloneChildren').default;
+        const createErrorsRule = require('../cloneChildren').createErrorsRule;
+        const Errors = require('../../errors').default;
+
         const rule = createErrorsRule(['Some bad error'], {
             fieldname: 'Some bad error'
         });
@@ -59,6 +57,7 @@ describe('cloneChildren', () => {
     });
 
     it('clones leaf nodes as expected', () => {
+        const cloneChildren = require('../cloneChildren').default;
         const children = [<p>hello</p>];
         const pTagClone = cloneChildren([], children)[0];
 
@@ -66,26 +65,32 @@ describe('cloneChildren', () => {
     });
 
     it('warns when children share same name', () => {
-        const createFormableRule = require('../cloneChildren').createFormableRule;
-        const rule = createFormableRule()
+        const warning = require('warning');
+        const cloneChildren = require('../cloneChildren').default;
+        const Input = require('../../inputs/input').default;
+
+        const rule = require('../cloneChildren').createFormableRule();
         const children = [
             <Input name="color" type="text" />,
             <Input name="color" type="text" />
         ];
-        const warning = require('warning');
 
         cloneChildren([rule], children);
         expect(warning).toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
     });
 
     it('does not warn when children have different names', () => {
-        const createFormableRule = require('../cloneChildren').createFormableRule;
-        const rule = createFormableRule()
+        const warning = require('warning');
+
+        const cloneChildren = require('../cloneChildren').default;
+        const rule = require('../cloneChildren').createFormableRule();
+
+        const Input = require('../../inputs/input').default;
+
         const children = [
             <Input name="color" type="text" />,
             <Input name="shape" type="text" />
         ];
-        const warning = require('warning');
 
         cloneChildren([rule], children);
         expect(warning).not.toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
@@ -93,30 +98,38 @@ describe('cloneChildren', () => {
     });
 
     it('does not warn when children have same names but are scoped', () => {
-        const createFormableRule = require('../cloneChildren').createFormableRule;
-        const rule = createFormableRule()
+        const warning = require('warning');
+        const cloneChildren = require('../cloneChildren').default;
+        const rule = require('../cloneChildren').createFormableRule();
+
+        const Fieldset = require('../../fieldset').default;
+        const Input = require('../../inputs/input').default;
+
         const children = [
             <Input name="color" type="text" />,
             <Fieldset name="pet">
                 <Input name="color" type="text" />
             </Fieldset>
         ];
-        const warning = require('warning');
 
         cloneChildren([rule], children);
         expect(warning).not.toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
     });
 
-    it('does warn when children have same names using recursion (unscoped)', () => {
+    it.only('warns when children have same names using recursion (unscoped)', () => {
+        const warning = require('warning');
+        const cloneChildren = require('../cloneChildren').default;
         const createFormableRule = require('../cloneChildren').createFormableRule;
-        const rule = createFormableRule()
+        const rule = createFormableRule();
+
+        const Input = require('../../inputs/input').default;
+
         const children = [
             <Input name="color" type="text" />,
             <div>
                 <Input name="color" type="text" />
             </div>
         ];
-        const warning = require('warning');
 
         cloneChildren([rule], children);
         expect(warning).toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
