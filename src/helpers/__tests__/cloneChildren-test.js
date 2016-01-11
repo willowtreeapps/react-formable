@@ -106,4 +106,19 @@ describe('cloneChildren', () => {
         cloneChildren([rule], children);
         expect(warning).not.toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
     });
+
+    it('does warn when children have same names using recursion (unscoped)', () => {
+        const createFormableRule = require('../cloneChildren').createFormableRule;
+        const rule = createFormableRule()
+        const children = [
+            <Input name="color" type="text" />,
+            <div>
+                <Input name="color" type="text" />
+            </div>
+        ];
+        const warning = require('warning');
+
+        cloneChildren([rule], children);
+        expect(warning).toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
+    });
 });
