@@ -44,7 +44,7 @@ describe('cloneChildren', () => {
         });
     });
 
-    it('clones Errrors and populates errors fields', () => {
+    it('clones Errors and populates errors fields', () => {
         const rule = createErrorsRule({
             errors: ['Some bad error'],
             fieldErrors: {
@@ -53,7 +53,7 @@ describe('cloneChildren', () => {
         });
 
         const children = [<Errors />];
-        const errorsClone = cloneChildren([rule], children)[0];
+        const errorsClone = cloneChildren([rule], children);
 
         expect(errorsClone.props.fieldErrors.fieldname).toBe('Some bad error');
         expect(errorsClone.props.errors[0]).toBe('Some bad error');
@@ -61,9 +61,9 @@ describe('cloneChildren', () => {
 
     it('clones leaf nodes as expected', () => {
         const children = [<p>hello</p>];
-        const pTagClone = cloneChildren([], children)[0];
+        const pTagClone = cloneChildren([], children);
 
-        expect(pTagClone.props.children[0]).toBe('hello');
+        expect(pTagClone.props.children).toBe('hello');
     });
 
     it('warns when children share same name', () => {

@@ -102,10 +102,11 @@ export function createFormableRule(
 export default function cloneChildren(rules, children, childNames = []) {
     if (children) {
         const cloneRules = [leafRule, ...rules, createRecursiveRule(rules)];
-
-        return React.Children.map(children, (child) => {
+        const clones = React.Children.map(children, (child) => {
             // find first rule that passes and use it to clone
             return cloneRules.find(rule => rule.predicate(child)).clone(child, childNames);
         });
+
+        return React.Children.count(clones) == 1 ? clones[0] : clones;
     }
 }
