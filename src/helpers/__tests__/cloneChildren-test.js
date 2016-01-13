@@ -92,4 +92,13 @@ describe('cloneChildren', () => {
         expect(warning).not.toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
         expect(warning).not.toBeCalledWith(false, 'Duplicate name "shape" found. Duplicate fields will be ignored');
     });
+
+    it('returns a single child (not an array of one) when cloning a single child', () => {
+        const createFormableRule = require('../cloneChildren').createFormableRule;
+        const rule = createFormableRule({})
+        const children = <p>some sub element</p>;
+        const clone = cloneChildren([rule], children);
+
+        expect(React.Children.only(clone)).toBe(clone);
+    })
 });
