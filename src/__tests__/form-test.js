@@ -2,7 +2,6 @@ jest.dontMock('../form');
 jest.dontMock('../inputs/input');
 
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import TestUtils from 'react-addons-test-utils';
 
 const Form = require('../form').default;
