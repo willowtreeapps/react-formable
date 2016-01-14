@@ -20,14 +20,14 @@ describe('Form', () => {
 
         const inputNode = TestUtils.findRenderedDOMComponentWithClass(form, 'petname');
 
-        inputNode.value = 'giraffe'
+        inputNode.value = 'george'
         TestUtils.Simulate.change(inputNode);
         TestUtils.Simulate.keyDown(inputNode, { key: 'Enter',
             keyCode: 13, which: 13 });
 
         expect(onSubmit).toBeCalled();
         expect(onSubmit.mock.calls[0][0].fieldValues).toEqual({
-            petname: 'giraffe'
+            petname: 'george'
         });
     });
 });
