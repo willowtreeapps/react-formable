@@ -12,12 +12,10 @@ describe('Form', () => {
         const onSubmit = jest.genMockFn();
         let form = TestUtils.renderIntoDocument(
             <Form onSubmit={onSubmit}>
-                <label> Pet Name: <Input className="petname" name="petname"
-                type="text" /> </label>
+                <label> Pet Name: <Input name="petname" type="text" /> </label>
             </Form>
         );
-
-        const inputNode = TestUtils.findRenderedDOMComponentWithClass(form, 'petname');
+        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
         inputNode.value = 'george'
         TestUtils.Simulate.change(inputNode);
@@ -27,6 +25,24 @@ describe('Form', () => {
         expect(onSubmit).toBeCalled();
         expect(onSubmit.mock.calls[0][0].fieldValues).toEqual({
             petname: 'george'
+        });
+    });
+
+    it('triggers change if the form changes', () => {
+        const onChange = jest.genMockFn();
+        let form = TestUtils.renderIntoDocument(
+            <Form onChange={onChange}>
+                <label> Pet Name: <Input name="color" type="text" /> </label>
+            </Form>
+        );
+        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+
+        inputNode.value = 'red'
+        TestUtils.Simulate.change(inputNode);
+
+        expect(onChange).toBeCalled();
+        expect(onChange.mock.calls[0][0].fieldValues).toEqual({
+            color: 'red'
         });
     });
 });
