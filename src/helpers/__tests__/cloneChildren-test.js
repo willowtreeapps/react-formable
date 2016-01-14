@@ -39,13 +39,13 @@ describe('cloneChildren', () => {
         });
     });
 
-    it('clones Errrors and populates errors fields', () => {
+    it('clones Errors and populates errors fields', () => {
         const createErrorsRule = require('../cloneChildren').createErrorsRule;
         const rule = createErrorsRule(['Some bad error'], {
             fieldname: 'Some bad error'
         });
         const children = [<Errors />];
-        const errorsClone = cloneChildren([rule], children)[0];
+        const errorsClone = cloneChildren([rule], children);
 
         expect(errorsClone.props.fieldErrors.fieldname).toBe('Some bad error');
         expect(errorsClone.props.errors[0]).toBe('Some bad error');
@@ -53,9 +53,9 @@ describe('cloneChildren', () => {
 
     it('clones leaf nodes as expected', () => {
         const children = [<p>hello</p>];
-        const pTagClone = cloneChildren([], children)[0];
+        const pTagClone = cloneChildren([], children);
 
-        expect(pTagClone.props.children[0]).toBe('hello');
+        expect(pTagClone.props.children).toBe('hello');
     });
 
     it('warns when children share same name', () => {
@@ -111,4 +111,13 @@ describe('cloneChildren', () => {
         cloneChildren([rule], children);
         expect(warning).toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
     });
+
+    it('returns a single child (not an array of one) when cloning a single child', () => {
+        const createFormableRule = require('../cloneChildren').createFormableRule;
+        const rule = createFormableRule({})
+        const children = <p>some sub element</p>;
+        const clone = cloneChildren([rule], children);
+
+        expect(React.Children.only(clone)).toBe(clone);
+    })
 });
