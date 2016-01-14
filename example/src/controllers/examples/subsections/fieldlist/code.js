@@ -20,7 +20,7 @@ const FieldlistForm = React.createClass({
         const pets = this.state.pets.slice().filter((petId) =>
             tagId !== petId);
 
-        this.setState({ pets });
+        this.setState({ pets }, () => this.refs.form.onChange());
     },
 
     adoptPet() {
@@ -28,7 +28,8 @@ const FieldlistForm = React.createClass({
         const pets = this.state.pets.slice();
 
         pets.push(tagId);
-        this.setState({ pets, uniqueTagId: tagId + 1 });
+        this.setState({ pets, uniqueTagId: tagId + 1 }, () =>
+            this.refs.form.onChange());
     },
 
     render() {
@@ -45,7 +46,7 @@ const FieldlistForm = React.createClass({
                 </label>
             </div>);
 
-        return <Form onChange={this.props.onChange}>
+        return <Form ref="form" onChange={this.props.onChange}>
                 <Errors className="formErrors" />
                 <Input type="button"
                        value="Adopt Pet"
