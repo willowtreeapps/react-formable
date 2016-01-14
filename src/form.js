@@ -269,8 +269,8 @@ export default React.createClass({
     },
 
     render() {
-        const errorsRule = createErrorsRule(this.state);
-        const formableRule = createFormableRule(this.state, this.onSubmit, this.onChange);
+        const errorsRule = createErrorsRule(this.state.errors, this.state.fieldErrors);
+        const formableRule = createFormableRule(this.state.errors, this.state.fieldErrors, this.onSubmit, this.onChange);
 
         return <form {...this.props}
                     ref="form"
