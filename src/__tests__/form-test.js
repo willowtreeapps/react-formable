@@ -32,17 +32,44 @@ describe('Form', () => {
         const onChange = jest.genMockFn();
         let form = TestUtils.renderIntoDocument(
             <Form onChange={onChange}>
-                <label> Pet Name: <Input name="color" type="text" /> </label>
+                <label> Favorite color: <Input name="color" type="text" /> </label>
             </Form>
         );
         const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
-        inputNode.value = 'red'
+        inputNode.value = 'red';
         TestUtils.Simulate.change(inputNode);
 
         expect(onChange).toBeCalled();
         expect(onChange.mock.calls[0][0].fieldValues).toEqual({
             color: 'red'
         });
+    });
+
+    it('can be validated and pass', () => {
+        const validator = jest.genMockFn();
+        let form = TestUtils.renderIntoDocument(
+            <Form validators={[validator]}>
+                <label>Age: <Input name="age" type="text" /> </label>
+            </Form>
+        );
+        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+
+        inputNode.value = '30';
+        expect(form.serialize().valid).toBe(true);
+    });
+
+    it('can be validated and fail', () => {
+        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
+        let form = TestUtils.renderIntoDocument(
+            <Form validators={[validator]}>
+                <label>Age: <Input name="age" type="text" /> </label>
+            </Form>
+        );
+        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+
+        inputNode.value = '30';
+        expect(form.serialize().valid).toBe(false);
+        expect(form.serialize().errors).toEqual(['kaboom']);
     });
 });
