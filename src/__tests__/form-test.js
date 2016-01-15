@@ -1,10 +1,12 @@
 jest.dontMock('../form');
+jest.dontMock('../errors');
 jest.dontMock('../inputs/input');
 
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 
 const Form = require('../form').default;
+const Errors = require('../errors').default;
 const Input = require('../inputs/input').default;
 
 describe('Form', () => {
@@ -71,5 +73,37 @@ describe('Form', () => {
         inputNode.value = '30';
         expect(form.serialize().valid).toBe(false);
         expect(form.serialize().errors).toEqual(['kaboom']);
+    });
+
+    it('can show errors on change', () => {
+        let errorsComponent;
+        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
+        let form = TestUtils.renderIntoDocument(
+            <Form validators={[validator]} showErrorsOnChange={true}>
+                <Errors ref={(ref) => errorsComponent = ref} />
+                <label>Age: <Input name="age" type="text" /> </label>
+            </Form>
+        );
+        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+
+        inputNode.value = '30';
+        TestUtils.Simulate.change(inputNode);
+        expect(errorsComponent.props.errors).toEqual(['kaboom']);
+    });
+
+    it('does not show errors on change by default', () => {
+        let errorsComponent;
+        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
+        let form = TestUtils.renderIntoDocument(
+            <Form validators={[validator]}>
+                <Errors ref={(ref) => errorsComponent = ref} />
+                <label>Age: <Input name="age" type="text" /> </label>
+            </Form>
+        );
+        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+
+        inputNode.value = '30';
+        TestUtils.Simulate.change(inputNode);
+        expect(errorsComponent.props.errors).not.toEqual(['kaboom']);
     });
 });
