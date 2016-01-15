@@ -106,4 +106,42 @@ describe('Form', () => {
         TestUtils.Simulate.change(inputNode);
         expect(errorsComponent.props.errors).not.toEqual(['kaboom']);
     });
+
+    it('can prevent showing errors on submit', () => {
+        let errorsComponent;
+        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
+        let form = TestUtils.renderIntoDocument(
+            <Form validators={[validator]} showErrorsOnSubmit={false}>
+                <Errors ref={(ref) => errorsComponent = ref} />
+                <label>Age: <Input name="age" type="text" /> </label>
+            </Form>
+        );
+        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+
+        inputNode.value = '30';
+        TestUtils.Simulate.change(inputNode);
+        TestUtils.Simulate.keyDown(inputNode, { key: 'Enter',
+            keyCode: 13, which: 13 });
+
+        expect(errorsComponent.props.errors).not.toEqual(['kaboom']);
+    });
+
+    it('does show errors on submit by default', () => {
+        let errorsComponent;
+        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
+        let form = TestUtils.renderIntoDocument(
+            <Form validators={[validator]}>
+                <Errors ref={(ref) => errorsComponent = ref} />
+                <label>Age: <Input name="age" type="text" /> </label>
+            </Form>
+        );
+        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+
+        inputNode.value = '30';
+        TestUtils.Simulate.change(inputNode);
+        TestUtils.Simulate.keyDown(inputNode, { key: 'Enter',
+            keyCode: 13, which: 13 });
+
+        expect(errorsComponent.props.errors).toEqual(['kaboom']);
+    });
 });
