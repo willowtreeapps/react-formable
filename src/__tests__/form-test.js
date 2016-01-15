@@ -118,8 +118,6 @@ describe('Form', () => {
         );
         const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
-        inputNode.value = '30';
-        TestUtils.Simulate.change(inputNode);
         TestUtils.Simulate.keyDown(inputNode, { key: 'Enter',
             keyCode: 13, which: 13 });
 
@@ -137,8 +135,6 @@ describe('Form', () => {
         );
         const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
-        inputNode.value = '30';
-        TestUtils.Simulate.change(inputNode);
         TestUtils.Simulate.keyDown(inputNode, { key: 'Enter',
             keyCode: 13, which: 13 });
 
