@@ -1,5 +1,6 @@
 jest.dontMock('../form');
 jest.dontMock('../errors');
+jest.dontMock('../fieldset');
 jest.dontMock('../inputs/input');
 
 import React from 'react';
@@ -8,6 +9,7 @@ import TestUtils from 'react-addons-test-utils';
 const Form = require('../form').default;
 const Errors = require('../errors').default;
 const Input = require('../inputs/input').default;
+const Fieldset = require('../fieldset').default;
 
 describe('Form', () => {
     it('submits if the user hits enter', () => {
@@ -139,5 +141,39 @@ describe('Form', () => {
             keyCode: 13, which: 13 });
 
         expect(errorsComponent.props.errors).toEqual(['kaboom']);
+    });
+
+    it('can serialize the form', () => {
+        const form = TestUtils.renderIntoDocument(
+            <Form>
+                <label>First name: <Input name="firstname" type="text" /> </label>
+                <label>Last name: <Input name="lastname" type="text" /> </label>
+                <Fieldset name="address">
+                    <label>building: <Input name="building" type="text" /> </label>
+                    <label>zip: <Input name="zip" type="text" /> </label>
+                </Fieldset>
+            </Form>
+        );
+
+        expect(form.serialize()).toEqual({
+            valid: true,
+            fieldValues: {
+                address: {
+                    building: '',
+                    zip: ''
+                },
+                firstname: '',
+                lastname: ''
+            },
+            fieldErrors: {
+                address: {
+                    building: [],
+                    zip: []
+                },
+                firstname: [],
+                lastname: []
+            },
+            errors: []
+        });
     });
 });
