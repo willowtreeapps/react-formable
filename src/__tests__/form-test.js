@@ -176,4 +176,41 @@ describe('Form', () => {
             errors: []
         });
     });
+
+    it('can serialize the form with validators', () => {
+        const failVal = jest.genMockFunction().mockImplementation(() => 'kaboom');
+        const form = TestUtils.renderIntoDocument(
+            <Form>
+                <label>First name: <Input name="firstname" type="text" /> </label>
+                <label>Last name: <Input name="lastname" type="text" /> </label>
+                <Fieldset name="address">
+                    <label>building: <Input name="building" type="text"
+                        value="Empire State" /> </label>
+                    <label>zip: <Input name="zip" type="text"
+                        validators={[failVal]} /> </label>
+                </Fieldset>
+            </Form>
+        );
+
+        expect(form.serialize()).toEqual({
+            valid: false,
+            fieldValues: {
+                address: {
+                    building: 'Empire State',
+                    zip: ''
+                },
+                firstname: '',
+                lastname: ''
+            },
+            fieldErrors: {
+                address: {
+                    building: [],
+                    zip: ['kaboom']
+                },
+                firstname: [],
+                lastname: []
+            },
+            errors: ['kaboom']
+        });
+    });
 });
