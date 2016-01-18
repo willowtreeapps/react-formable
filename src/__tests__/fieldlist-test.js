@@ -80,4 +80,31 @@ describe('Fieldlist', () => {
             ]
         });
     });
+
+    it('handles field errors appropriately', () => {
+        const items = [1, 2, 3];
+        let form = TestUtils.renderIntoDocument(
+            <Form>
+                <Fieldlist name="pets">
+                    {items.map((i) => {
+                        return <div key={i}>
+                            <label> Pet Name: <Input name="name" type="text"
+                                validators={[required(`name${i} is required`)]} /> </label>
+                        </div>
+                    })};
+                </Fieldlist>
+            </Form>
+        );
+        const inputs = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input');
+
+        TestUtils.Simulate.change(inputs[0]);
+
+        expect(form.serialize().fieldErrors).toEqual({
+            pets: [
+                { name: ['name1 is required'] },
+                { name: ['name2 is required'] },
+                { name: ['name3 is required'] }
+            ]
+        });
+    });
 });
