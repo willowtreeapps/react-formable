@@ -12,7 +12,7 @@ const Fieldlist = require('../fieldlist').default;
 const Input = require('../inputs/input').default;
 
 describe('Fieldlist', () => {
-    it('write test', () => {
+    it('serializes each list item appropriately', () => {
         const items = [1, 2, 3];
         let form = TestUtils.renderIntoDocument(
             <Form>
