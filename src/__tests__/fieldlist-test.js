@@ -61,22 +61,9 @@ describe('Fieldlist', () => {
         TestUtils.Simulate.change(inputs[0]);
 
         expect(form.serialize().fieldErrors).toEqual({
-            pets: [
-                {
-                  'name': [
-                    'name1 is required'
-                  ]
-                },
-                {
-                  'name': [
-                    'name2 is required'
-                  ]
-                },
-                {
-                  'name': [
-                    'name3 is required'
-                  ]
-                }
+            pets: [{ name: ['name1 is required'] },
+                { name: ['name2 is required'] },
+                { name: ['name3 is required'] }
             ]
         });
     });
