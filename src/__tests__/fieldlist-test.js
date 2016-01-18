@@ -68,7 +68,7 @@ describe('Fieldlist', () => {
         });
     });
 
-    it('handles field errors appropriately', () => {
+    it('handles errors appropriately', () => {
         const items = [1, 2, 3];
         let form = TestUtils.renderIntoDocument(
             <Form>
@@ -86,12 +86,7 @@ describe('Fieldlist', () => {
 
         TestUtils.Simulate.change(inputs[0]);
 
-        expect(form.serialize().fieldErrors).toEqual({
-            pets: [
-                { name: ['name1 is required'] },
-                { name: ['name2 is required'] },
-                { name: ['name3 is required'] }
-            ]
-        });
+        expect(form.serialize().errors).toEqual(['name1 is required',
+            'name2 is required', 'name3 is required']);
     });
 });
