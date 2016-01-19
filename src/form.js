@@ -29,7 +29,7 @@ export default React.createClass({
     displayName: 'Form',
 
     propTypes: {
-        circular: PropTypes.bool,
+        addValidationFieldErrors: PropTypes.bool,
 
         // Handlers for your form callbacks. These will be called with the
         // current serialization of the form
@@ -118,7 +118,7 @@ export default React.createClass({
         // explicit dependencies. We fake dependencies by making
         // an eventually stable tree.
         } while(
-            this.props.circular &&
+            this.props.addValidationFieldErrors &&
             iteration < refLength &&
             JSON.stringify(form) !== JSON.stringify(oldForm)
         );
