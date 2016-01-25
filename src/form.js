@@ -102,7 +102,9 @@ export default React.createClass({
                     const fieldValues = form.fieldValues;
                     const fieldErrors = this.props.addValidationFieldErrors ? oldForm.fieldErrors : null;
 
-                    return validators.map(fn => fn(value, fieldValues, fieldErrors));
+                    return validators
+                            .map(fn => fn(value, fieldValues, fieldErrors))
+                            .filter(identity);
                 });
 
             form.fieldErrors = formTreeErrors.extract()
