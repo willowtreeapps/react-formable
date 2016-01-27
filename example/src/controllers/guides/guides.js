@@ -4,8 +4,6 @@ import * as FormWalkThrough from './subsections/form-walk-through';
 import * as AddingValidation from './subsections/adding-validation';
 import * as DisplayErrors from './subsections/displaying-errors';
 import * as CreatignInputs from './subsections/creating-inputs';
-import * as ReusableFormSections from './subsections/reusable-form-sections';
-import * as HighorderForms from './subsections/highorder-forms';
 import * as Fieldset from './subsections/fieldset';
 import * as Fieldlist from './subsections/fieldlist';
 
@@ -15,9 +13,7 @@ const subsections = [
     Fieldlist,
     AddingValidation,
     DisplayErrors,
-    CreatignInputs,
-    ReusableFormSections,
-    HighorderForms
+    CreatignInputs
 ];
 
 export default React.createClass({
