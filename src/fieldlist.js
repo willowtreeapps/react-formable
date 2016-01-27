@@ -17,7 +17,7 @@ export default React.createClass({
         return {
             ref: this,
             refs: values(this.refs.fieldset.getInputs().refs)
-                    .filter(node => node.refs && values(node.refs).length)
+                    .filter(node => node.children && values(node.children).length)
         };
     },
 

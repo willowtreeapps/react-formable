@@ -22,7 +22,7 @@ export default React.createClass({
                     .map(ref => ref.getInputs ? ref.getInputs() : { ref })
                     .map(x => tree(x.ref, x.refs))
                     .reduce((memo, node) => {
-                        memo[node.ref.props.name] = node;
+                        memo[node.value.props.name] = node;
                         return memo;
                     }, {})
         };
