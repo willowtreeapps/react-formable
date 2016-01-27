@@ -40,7 +40,7 @@
     "marked": "^0.3.5",
     "react": "^0.14.0",
     "react-addons-test-utils": "^0.14.3",
-    "react-component-gulp-tasks": "^0.7.7",
+    "react-component-gulp-tasks": "github:kaw2k/react-component-gulp-tasks",
     "react-dom": "^0.14.0",
     "react-router": "^1.0.2"
   },
