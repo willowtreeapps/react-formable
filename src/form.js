@@ -15,7 +15,7 @@ export const getBlankForm =function getBlankForm() {
 };
 
 const treeValue = function treeValue(tree) {
-    return tree.map(ref => ref.getValue && ref.getValue()).extract();
+    return tree.map(value => value.getValue && value.getValue()).extract();
 };
 
 const getValidators = function getValidators(ref) {
@@ -66,14 +66,14 @@ export default React.createClass({
         const refs = values(this.refs || {})
                 .filter(ref => (ref.getInputs || ref.getValue))
                 .map(ref => ref.getInputs ? ref.getInputs() : { ref })
-                .map(tree)
+                .map(x => tree(x.ref, x.refs))
                 .reduce((memo, node) => {
-                    memo[node.ref.props.name] = node;
+                    memo[node.value.props.name] = node;
                     return memo;
                 }, {});
 
         // Make our tree which we will use for serialization and validation
-        const formTree = tree({ ref: this, refs });
+        const formTree = tree(this, refs);
 
         // Calculate how many times we should serialize in the case of
         // cycles when addValidationFieldErrors is true. We do this by
@@ -97,8 +97,8 @@ export default React.createClass({
             // into an array (errors)
             const formTreeErrors = formTree
                 .extend(tree => {
-                    const validators = getValidators(tree.ref);
-                    const value = tree.ref.getValue ? tree.ref.getValue() : treeValue(tree);
+                    const validators = getValidators(tree.value);
+                    const value = tree.value.getValue ? tree.value.getValue() : treeValue(tree);
                     const fieldValues = form.fieldValues;
                     const fieldErrors = this.props.addValidationFieldErrors ? oldForm.fieldErrors : null;
 

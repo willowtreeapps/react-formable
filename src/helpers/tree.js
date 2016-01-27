@@ -27,34 +27,34 @@ function map(fn) {
     }
 }
 
-export default function tree({ ref, refs }) {
+export default function tree(value, children) {
     return {
         // The children of the tree
-        refs,
+        value,
 
         // The value which we will map over
-        ref,
+        children,
 
-        // Map over each ref in the tree reciving and modifying ref
-        map: fn => tree({ ref: fn(ref), refs: map(map(fn))(refs) }),
+        // Map over each value in the tree reciving and modifying value
+        map: fn => tree(fn(value), map(map(fn))(children)),
 
         // Get the value of the (sub)tree as an object / array
-        extract: () => refs ? map(x => x.extract())(refs) : ref,
+        extract: () => children ? map(x => x.extract())(children) : value,
 
         // Create a new tree by maping over the full tree
-        // f takes in the full tree value. Whatever f returns gets
+        // fn takes in the full tree value. Whatever fn returns gets
         // stored within the value of the node. Recuses down the tree
-        extend: (f) => tree({
-            ref: f(tree({ ref, refs })),
-            refs: map(x => x.extend(f))(refs)
-        }),
+        extend: (fn) => tree(
+            fn(tree(value, children)),
+            map(x => x.extend(fn))(children)
+        ),
 
         // Boil down the tree into one value, node by node
-        // fn recives the ref value for each node
+        // fn recives the value value for each node
         reduce: (fn, acc) => {
-            return values(refs).reduce((memo, node) => {
+            return values(children).reduce((memo, node) => {
                 return node.reduce(fn, memo);
-            }, fn(acc, ref));
+            }, fn(acc, value));
         }
     };
 }
