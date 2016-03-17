@@ -78,7 +78,7 @@ describe('Fieldlist', () => {
                             <label> Pet Name: <Input name="name" type="text"
                                 validators={[required(`name${i} is required`)]} /> </label>
                         </div>
-                    })};
+                    })}
                 </Fieldlist>
             </Form>
         );
