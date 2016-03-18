@@ -1,6 +1,6 @@
 {
   "name": "react-formable",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "formable",
   "main": "dist/react-formable.min.js",
   "homepage": "https://github.com/kaw2k/react-formable",
