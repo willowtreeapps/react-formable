@@ -6,7 +6,7 @@ Each validator takes the following three parameters:
 
 - `value`: The current value of the object. For inputs, it will be the value of the inputs. For `Form`s, `Fieldset`s, and `Fieldlist`s it will be an object or array of all the fields underneath it.
 - `fieldValues`: All the `fieldValues` for the form.
-- `fieldErrors`: All the `fieldErrors` for the form.
+- `fieldErrors?`: All the `fieldErrors` for the form. This will only be present if `addValidationErrors` is set to `true` on the parent `Form`.
 
 **NB:** `fieldValues` and `fieldErrors` in our validators params are the same values we receive in `onSubmit` and `onSuccess`.
 

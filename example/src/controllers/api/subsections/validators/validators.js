@@ -32,6 +32,15 @@ A validator is supplied via the property \`validators\` which expects an array o
        ]} />
 \`\`\`
 
+These functions have the following call signatures. Note, \`fieldErrors\` will only be present if \`addValidationErrors\` is true on the \`Form\` component. \`fieldErrors\` and \`fieldValues\` are the values you recive when serialize the form.
+
+| Component | Params | Description |
+| :----- | :----- | :---------- |
+| Inputs | value: Number String Boolean, fieldValues: Object, fieldErrors? : Object | Here the value is the input's value |
+| Fieldset | value: Object, fieldValues: Object, fieldErrors?: Object | A fieldset recives a value of all its children in object form |
+| Fieldlist | value: Array, fieldValues: Object, fieldErrors?: Object | A fieldlist recives a value of a list of its children |
+| Form | value: Object, fieldValues: Object, fieldErrors?: Object | Value here is all the values within the form |
+
 Returning a message from a validator indicates a fail. Returning nothing indicates a pass.
 
 \`react-formable\` supplies some common use-case stock validators which you can import and use list below.

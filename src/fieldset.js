@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
 import values from './helpers/values';
 import warning from 'warning';
+import tree from './helpers/tree';
 
 export default React.createClass({
     displayName: 'Fieldset',
@@ -19,8 +20,9 @@ export default React.createClass({
             refs: values(this.refs || {})
                     .filter(ref => (ref.getInputs || ref.getValue))
                     .map(ref => ref.getInputs ? ref.getInputs() : { ref })
+                    .map(x => tree(x.ref, x.refs))
                     .reduce((memo, node) => {
-                        memo[node.ref.props.name] = node;
+                        memo[node.value.props.name] = node;
                         return memo;
                     }, {})
         };
