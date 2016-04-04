@@ -387,7 +387,7 @@ exports['default'] = _react2['default'].createClass({
 
         // Build our list of children
         var refs = (0, _helpersValues2['default'])(this.refs || {}).filter(function (ref) {
-            return ref.getInputs || ref.getValue;
+            return ref && (ref.getInputs || ref.getValue);
         }).map(function (ref) {
             return ref.getInputs ? ref.getInputs() : { ref: ref };
         }).map(function (x) {
