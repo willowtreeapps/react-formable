@@ -64,7 +64,7 @@ export default React.createClass({
     serialize() {
         // Build our list of children
         const refs = values(this.refs || {})
-                .filter(ref => (ref.getInputs || ref.getValue))
+                .filter(ref => ref && (ref.getInputs || ref.getValue))
                 .map(ref => ref.getInputs ? ref.getInputs() : { ref })
                 .map(x => tree(x.ref, x.refs))
                 .reduce((memo, node) => {
