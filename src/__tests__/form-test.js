@@ -213,4 +213,19 @@ describe('Form', () => {
             errors: ['kaboom']
         });
     });
+
+    it('it checks for the existance of ref before using it in serialize', () => {
+        const Icon = props => <i {...props} />;
+
+        const form = TestUtils.renderIntoDocument(
+            <Form>
+                <Input name="firstname" type="text" />
+                <Icon name="icon" />
+            </Form>
+        );
+
+        expect(form.serialize().fieldValues).toEqual({
+            firstname: ''
+        });
+    });
 });
