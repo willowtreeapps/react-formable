@@ -116,16 +116,17 @@ describe('cloneChildren', () => {
         const fieldErrors = {
             color: ['form error']
         }
+
         const rule = require('../cloneChildren').createFormableRule([], fieldErrors);
 
         const children = [
             <Input name="color" type="text"
-                fieldErrors={['other error']}/>
+                fieldErrors={['other error']} />
         ];
 
         const clonedInput = cloneChildren([rule], children);
 
-        expect(clonedInput.props.fieldErrors).toEqual(['form error', 'other error']);
+        expect(clonedInput.props.fieldErrors).toEqual(['other error', 'form error']);
     });
 
     it('returns a single child (not an array of one) when cloning a single child', () => {
