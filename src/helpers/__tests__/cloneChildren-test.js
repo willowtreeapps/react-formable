@@ -113,16 +113,17 @@ describe('cloneChildren', () => {
     });
 
     it('user specified fieldErrors do not get swallowed during clone of a form with errors', () => {
-        const rule = require('../cloneChildren').createFormableRule();
+        const fieldErrors = ['form error']
+        const rule = require('../cloneChildren').createFormableRule([], fieldErrors);
 
         const children = [
             <Input name="color" type="text"
-                fieldErrors={['soo bad']}/>
+                fieldErrors={['other error']}/>
         ];
 
         const clonedInput = cloneChildren([rule], children);
 
-        expect(clonedInput.props.fieldErrors).toEqual(['soo bad']);
+        expect(clonedInput.props.fieldErrors).toEqual(['form error', 'other error']);
     });
 
     it('returns a single child (not an array of one) when cloning a single child', () => {
