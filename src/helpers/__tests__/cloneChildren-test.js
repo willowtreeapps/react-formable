@@ -112,7 +112,7 @@ describe('cloneChildren', () => {
         expect(warning).toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
     });
 
-    it('user specified fieldErrors do not get swallowed during clone of a form with errors', () => {
+    it('combines the forms field errors with user specified field errors', () => {
         const fieldErrors = {
             color: ['form error']
         }
