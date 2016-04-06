@@ -113,7 +113,9 @@ describe('cloneChildren', () => {
     });
 
     it('user specified fieldErrors do not get swallowed during clone of a form with errors', () => {
-        const fieldErrors = ['form error']
+        const fieldErrors = {
+            color: ['form error']
+        }
         const rule = require('../cloneChildren').createFormableRule([], fieldErrors);
 
         const children = [
