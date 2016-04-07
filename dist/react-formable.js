@@ -596,7 +596,7 @@ exports['default'] = _react2['default'].createClass({
     },
 
     onKeyDown: function onKeyDown(event) {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && event.target.type !== 'textarea') {
             this.onSubmit(event);
         }
     },
