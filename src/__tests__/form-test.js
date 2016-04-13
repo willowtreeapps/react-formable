@@ -1,7 +1,9 @@
 jest.dontMock('../form');
 jest.dontMock('../errors');
 jest.dontMock('../fieldset');
+jest.dontMock('../fieldlist');
 jest.dontMock('../inputs/input');
+jest.dontMock('./customInput');
 
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
@@ -10,6 +12,8 @@ const Form = require('../form').default;
 const Errors = require('../errors').default;
 const Input = require('../inputs/input').default;
 const Fieldset = require('../fieldset').default;
+const Fieldlist = require('../fieldlist').default;
+const CustomInput = require('./customInput').default;
 
 describe('Form', () => {
     it('submits if the user hits enter', () => {
@@ -226,6 +230,43 @@ describe('Form', () => {
 
         expect(form.serialize().fieldValues).toEqual({
             firstname: ''
+        });
+    });
+
+    it('it passes down callbacks in fieldset and fieldlists', () => {
+        const onChange = jest.genMockFn();
+        const onSubmit = jest.genMockFn();
+        const form = TestUtils.renderIntoDocument(
+            <Form onChange={onChange} onSubmit={onSubmit} className="form">
+                <Fieldset name="one">
+                    <CustomInput name="two" className="two" />
+                </Fieldset>
+                <Fieldlist name="three">
+                    <CustomInput name="four" className="four" />
+                </Fieldlist>
+            </Form>
+        );
+
+        // Make sure the form serializes properly first
+        expect(form.serialize().fieldValues).toEqual({
+            one: { two: false },
+            three: [
+                { four: false }
+            ]
+        });
+
+        // Click on both inputs to toggle them to true
+        const two = TestUtils.findRenderedDOMComponentWithClass(form, 'two');
+        const four = TestUtils.findRenderedDOMComponentWithClass(form, 'four');
+        TestUtils.Simulate.click(two);
+        TestUtils.Simulate.click(four);
+
+        expect(onChange).toBeCalled();
+        expect(onChange.mock.calls[1][0].fieldValues).toEqual({
+            one: { two: true },
+            three: [
+                { four: true }
+            ]
         });
     });
 });
