@@ -11,7 +11,9 @@ export default React.createClass({
         errors: PropTypes.arrayOf(PropTypes.string),
         fieldErrors: PropTypes.object,
         name: PropTypes.string.isRequired,
-        children: PropTypes.node
+        children: PropTypes.node,
+        onChange: PropTypes.func,
+        onSubmit: PropTypes.func
     },
 
     getInputs() {

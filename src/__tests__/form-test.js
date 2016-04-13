@@ -237,7 +237,9 @@ describe('Form', () => {
         const onChange = jest.genMockFn();
         const onSubmit = jest.genMockFn();
         const form = TestUtils.renderIntoDocument(
-            <Form onChange={onChange} onSubmit={onSubmit} className="form">
+            <Form onChange={onChange}
+                  onSubmit={onSubmit}
+                  className="form">
                 <Fieldset name="one">
                     <CustomInput name="two" className="two" />
                 </Fieldset>
@@ -258,6 +260,7 @@ describe('Form', () => {
         // Click on both inputs to toggle them to true
         const two = TestUtils.findRenderedDOMComponentWithClass(form, 'two');
         const four = TestUtils.findRenderedDOMComponentWithClass(form, 'four');
+        
         TestUtils.Simulate.click(two);
         TestUtils.Simulate.click(four);
 
