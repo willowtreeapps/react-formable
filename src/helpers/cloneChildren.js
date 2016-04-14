@@ -52,6 +52,17 @@ export function createErrorsRule(errors = [], fieldErrors = {}) {
     }
 }
 
+function combineListsIfLists(...lists) {
+    const combined = [];
+
+    lists.forEach(list => {
+        if (list && list.length) {
+            combined.push(...list);
+        }
+    });
+    return combined;
+}
+
 /*
  * Get extra properties for something we are going to weave our formable magic into.
  */
@@ -66,7 +77,7 @@ function getFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)
             onChange: compose(onChange, child.props.onChange || identity),
             onSubmit: compose(onSubmit, child.props.onSubmit || identity),
             errors: errors,
-            fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name]
+            fieldErrors: combineListsIfLists(child.props.fieldErrors, fieldErrors[child.props.name])
         };
     }
 }

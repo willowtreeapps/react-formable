@@ -112,6 +112,23 @@ describe('cloneChildren', () => {
         expect(warning).toBeCalledWith(false, 'Duplicate name "color" found. Duplicate fields will be ignored');
     });
 
+    it('combines the forms field errors with user specified field errors', () => {
+        const fieldErrors = {
+            color: ['form error']
+        }
+
+        const rule = require('../cloneChildren').createFormableRule([], fieldErrors);
+
+        const children = [
+            <Input name="color" type="text"
+                fieldErrors={['other error']} />
+        ];
+
+        const clonedInput = cloneChildren([rule], children);
+
+        expect(clonedInput.props.fieldErrors).toEqual(['other error', 'form error']);
+    });
+
     it('returns a single child (not an array of one) when cloning a single child', () => {
         const createFormableRule = require('../cloneChildren').createFormableRule;
         const rule = createFormableRule({})
