@@ -260,7 +260,9 @@ exports['default'] = _react2['default'].createClass({
         errors: _react.PropTypes.arrayOf(_react.PropTypes.string),
         fieldErrors: _react.PropTypes.object,
         name: _react.PropTypes.string.isRequired,
-        children: _react.PropTypes.node
+        children: _react.PropTypes.node,
+        onChange: _react.PropTypes.func,
+        onSubmit: _react.PropTypes.func
     },
 
     getInputs: function getInputs() {
@@ -282,7 +284,7 @@ exports['default'] = _react2['default'].createClass({
     render: function render() {
         (0, _warning2['default'])(this.props.name, 'Fieldset found without a name prop. The children of this component will behave eratically');
         var errorsRule = (0, _helpersCloneChildren.createErrorsRule)(this.props.errors, this.props.fieldErrors);
-        var formableRule = (0, _helpersCloneChildren.createFormableRule)(this.props.errors, this.props.fieldErrors);
+        var formableRule = (0, _helpersCloneChildren.createFormableRule)(this.props.errors, this.props.fieldErrors, this.props.onSubmit, this.props.onChange);
 
         return _react2['default'].createElement(
             'div',
@@ -673,6 +675,21 @@ function createErrorsRule() {
     };
 }
 
+function combineListsIfLists() {
+    var combined = [];
+
+    for (var _len = arguments.length, lists = Array(_len), _key = 0; _key < _len; _key++) {
+        lists[_key] = arguments[_key];
+    }
+
+    lists.forEach(function (list) {
+        if (list && list.length) {
+            combined.push.apply(combined, _toConsumableArray(list));
+        }
+    });
+    return combined;
+}
+
 /*
  * Get extra properties for something we are going to weave our formable magic into.
  */
@@ -687,7 +704,7 @@ function getFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)
             onChange: (0, _compose2['default'])(onChange, child.props.onChange || _identity2['default']),
             onSubmit: (0, _compose2['default'])(onSubmit, child.props.onSubmit || _identity2['default']),
             errors: errors,
-            fieldErrors: child.props.fieldErrors || fieldErrors[child.props.name]
+            fieldErrors: combineListsIfLists(child.props.fieldErrors, fieldErrors[child.props.name])
         };
     };
 }

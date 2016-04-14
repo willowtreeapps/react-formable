@@ -1,6 +1,6 @@
 {
   "name": "react-formable",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A simple form library for react",
   "main": "lib/formable.js",
   "author": "Willowtree",
