@@ -3,6 +3,8 @@ import React from 'react';
 import identity from './identity';
 import compose from './compose';
 import warning from 'warning';
+// IE compatibility
+require('array.prototype.find').shim();
 
 /**
  * Rule for cloning something at leaf level like some text
