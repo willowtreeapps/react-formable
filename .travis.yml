@@ -5,8 +5,8 @@ before_install:
 - npm install
 script:
     - npm run test
-    - npm run lint
-    - npm run lintRaw
+    # - npm run lint
+    # - npm run lintRaw
 notifications:
   email:
     on_success: never
