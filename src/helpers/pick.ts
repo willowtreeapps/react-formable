@@ -1,6 +1,7 @@
-/*eslint func-style:0*/
-export default function pick(names, obj) {
-    let result = {};
+import GenericObject from '../types/genericObject';
+
+export default function pick<T>(names: string[], obj: GenericObject<T>): GenericObject<T> {
+    let result: GenericObject<T> = {};
     let idx = 0;
 
     while (idx < names.length) {
@@ -9,6 +10,6 @@ export default function pick(names, obj) {
         }
         idx += 1;
     }
-    
+
     return result;
 }
