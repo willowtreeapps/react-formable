@@ -38,8 +38,6 @@ node_modules
 # TSD typings
 typings
 
-# Ignore the ./dist dir
-dist
-
-# Ignore the sapling mounted project dir
-.sapling-mounted-project
+# DO NOT IGNORE THE ./dist DIR,
+# KEEP THIS COMMENTED OUT FOR .npmignore
+# dist

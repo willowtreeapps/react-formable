@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "jsx": "react",
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "outDir": "./.trash"
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+        ".sapling-mounted-project/node_modules",
+        ".sapling-mounted-project/typings"
+    ]
+}

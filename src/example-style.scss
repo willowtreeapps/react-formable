@@ -1,0 +1,10 @@
+$color-blue: #AFD2EC;
+$color-purple: #7B00A6;
+
+.some-class-name {
+  background-color: $color-blue;
+  color: $color-purple;
+  font-weight: 600;
+  padding: 10px;
+  border: 4px dashed black;
+}
