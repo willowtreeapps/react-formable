@@ -34,13 +34,17 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "babel-core": "^6.9.1",
+    "babel-preset-jest": "^12.1.0",
+    "jest-cli": "*",
+    "react-addons-test-utils": "*",
     "react-sapling": "^0.3.3"
   },
   "scripts": {
     "gh:publish": "npm run build && cp -r dist/docs _docs && cd _docs && git init && git commit --allow-empty -m ':fire: update gh-pages' && git checkout -b gh-pages && git add . && git commit -am ':fire: update gh-pages' && git push https://github.com/willowtreeapps/react-formable.git gh-pages --force && cd .. && rm -rf _docs",
     "lint": "tslint ./src; true",
     "start": "sapling dev",
-    "test": "typings install && sapling test",
+    "test": "typings install && jest",
     "coverage": "sapling coverage",
     "clean": "rm -rf ./dist && mkdir ./dist",
     "build:lib-prod": "typings install && sapling build-lib-prod",
@@ -54,5 +58,21 @@
   },
   "typescript": {
     "definition": "./dist/typings/root.d.ts"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/src/preprocessor.js",
+    "testFileExtensions": [
+      "ts",
+      "tsx"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx"
+    ],
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react/",
+      "<rootDir>/node_modules/react-dom/",
+      "<rootDir>/node_modules/react-addons-test-utils/"
+    ]
   }
 }
