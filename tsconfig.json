@@ -4,6 +4,7 @@
         "jsx": "react",
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
+        "allowJs": true,
         "outDir": "./.trash"
     },
     "exclude": [
