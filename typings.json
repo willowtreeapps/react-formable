@@ -3,13 +3,11 @@
     "globalDependencies": {
         "assertion-error": "github:DefinitelyTyped/DefinitelyTyped/assertion-error/assertion-error.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
         "bluebird": "github:DefinitelyTyped/DefinitelyTyped/bluebird/bluebird.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
-        "chai": "github:DefinitelyTyped/DefinitelyTyped/chai/chai.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
         "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
         "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
         "express-serve-static-core": "github:DefinitelyTyped/DefinitelyTyped/express-serve-static-core/express-serve-static-core.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
         "inquirer": "github:DefinitelyTyped/DefinitelyTyped/inquirer/inquirer.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4",
         "jest": "registry:dt/jest#0.9.0+20160425141105",
-        "karma": "github:DefinitelyTyped/DefinitelyTyped/karma/karma.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
         "log4js": "github:DefinitelyTyped/DefinitelyTyped/log4js/log4js.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
         "marked": "github:DefinitelyTyped/DefinitelyTyped/marked/marked.d.ts#544a35a10866b32afda9c7f029c0764558563f4f",
         "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
@@ -17,12 +15,13 @@
         "mkdirp": "github:DefinitelyTyped/DefinitelyTyped/mkdirp/mkdirp.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4",
         "mustache": "github:DefinitelyTyped/DefinitelyTyped/mustache/mustache.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4",
         "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
-        "react": "github:DefinitelyTyped/DefinitelyTyped/react/react.d.ts#e937b3e64af586d19f2ea29fdf771e9dc4feecc8",
+        "react": "registry:dt/react#0.14.0+20160602151522",
         "react-addons-test-utils": "registry:dt/react-addons-test-utils#0.14.0+20160427035638",
-        "react-dom": "github:DefinitelyTyped/DefinitelyTyped/react/react-dom.d.ts#e937b3e64af586d19f2ea29fdf771e9dc4feecc8",
+        "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
         "rimraf": "github:DefinitelyTyped/DefinitelyTyped/rimraf/rimraf.d.ts#d969b903d1fce89a5e43828ec68458b4f852db4d",
         "rx-lite": "github:DefinitelyTyped/DefinitelyTyped/rx/rx-lite.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4",
         "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
         "through": "github:DefinitelyTyped/DefinitelyTyped/through/through.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4"
-    }
+    },
+    "dependencies": {}
 }
