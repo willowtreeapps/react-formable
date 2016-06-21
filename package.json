@@ -35,7 +35,7 @@
     "license": "MIT",
     "devDependencies": {
         "react-addons-test-utils": "*",
-        "react-sapling": "^0.4.3"
+        "react-sapling": "^0.4.4"
     },
     "scripts": {
         "gh:publish": "npm run build && cp -r dist/docs _docs && cd _docs && git init && git commit --allow-empty -m ':fire: update gh-pages' && git checkout -b gh-pages && git add . && git commit -am ':fire: update gh-pages' && git push https://github.com/willowtreeapps/react-formable.git gh-pages --force && cd .. && rm -rf _docs",
