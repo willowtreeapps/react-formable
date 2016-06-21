@@ -28,8 +28,6 @@ export default class Input extends React.Component<IInputProps, {}> {
         input: HTMLInputElement;
     };
 
-<<<<<<< Updated upstream
-=======
     constructor(props: IInputProps) {
         super(props);
         this.getValue = this.getValue.bind(this);
@@ -37,7 +35,6 @@ export default class Input extends React.Component<IInputProps, {}> {
         this.onBlur = this.onBlur.bind(this);
     }
 
->>>>>>> Stashed changes
     public getValue(): AnyType {
         return this.refs.input.value;
     }
