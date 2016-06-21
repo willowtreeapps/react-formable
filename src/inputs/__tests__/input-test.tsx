@@ -1,14 +1,16 @@
-jest.dontMock('../input');
+jest.unmock('../input');
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
+/* tslint:disable: no-any */
+
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as TestUtils from 'react-addons-test-utils';
 
 const Input = require('../input').default;
 
 describe('Input', () => {
     it('has a class of "error" when fieldErrors are present', () => {
-        const input = TestUtils.renderIntoDocument(
+        const input: any = TestUtils.renderIntoDocument(
             <Input fieldErrors={['error']} />
         );
 
@@ -19,8 +21,8 @@ describe('Input', () => {
     });
 
     it('does not fire onChange when validateOnBlur is true', () => {
-        const onChangeCallback = jest.genMockFunction();
-        const input = TestUtils.renderIntoDocument(
+        const onChangeCallback = jest.fn();
+        const input: any = TestUtils.renderIntoDocument(
             <Input validateOnBlur onChange={onChangeCallback} />
         );
 
@@ -38,8 +40,8 @@ describe('Input', () => {
     });
 
     it('fires onChange when validateOnBlur is false', () => {
-        const onChangeCallback = jest.genMockFunction();
-        const input = TestUtils.renderIntoDocument(
+        const onChangeCallback = jest.fn();
+        const input: any = TestUtils.renderIntoDocument(
             <Input onChange={onChangeCallback} />
         );
 
@@ -57,10 +59,10 @@ describe('Input', () => {
     });
 
     it('returns the appropriate value from getValue', () => {
-        const input = TestUtils.renderIntoDocument(
+        const input: any = TestUtils.renderIntoDocument(
             <Input />
         );
-        const inputNode = ReactDOM.findDOMNode(input);
+        const inputNode: any = ReactDOM.findDOMNode(input);
 
         inputNode.value = 'a';
 
