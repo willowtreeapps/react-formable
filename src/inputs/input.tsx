@@ -1,14 +1,18 @@
 import * as React from 'react';
 
 interface IInputDefaultProps {
-    onChange: () => void;
-    onSubmit: () => void;
-    className: string;
+    onChange?: () => void;
+    onSubmit?: () => void;
+    className?: string;
 }
 
 export interface IInputProps extends IInputDefaultProps {
-    fieldErrors: string[];
-    validateOnBlur: boolean;
+    name: string;
+    fieldErrors?: string[];
+    validateOnBlur?: boolean;
+    value?: any;
+    defaultValue?: any;
+    validators?: any;
 }
 
 // TODO: Clean up the use of any here
