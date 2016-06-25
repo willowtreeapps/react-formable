@@ -1,8 +1,9 @@
-/*eslint func-style:0*/
-import React from 'react';
+/* tslint:disable */
+
+import * as React from 'react';
 import identity from './identity';
 import compose from './compose';
-import warning from 'warning';
+const warning = require('warning');
 
 /**
  * Rule for cloning something at leaf level like some text

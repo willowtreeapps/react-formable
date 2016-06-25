@@ -1,6 +1,10 @@
+/* tslint:disable */
+
 jest.autoMockOff();
 jest.mock('warning');
-const React = require('react');
+
+import * as React from 'react';
+
 const Errors = require('../../errors').default;
 const Input = require('../../inputs/input').default;
 const Fieldset = require('../../fieldset').default;
