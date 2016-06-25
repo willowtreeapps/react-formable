@@ -1,11 +1,20 @@
-import React, { PropTypes } from 'react';
+/* tslint:disable */
+
+import * as React from 'react';
 import uniq from './helpers/uniq';
 import values from './helpers/values';
 import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
 import tree from './helpers/tree';
 import identity from './helpers/identity';
 
-export const getBlankForm =function getBlankForm() {
+interface IForm {
+    valid: boolean;
+    fieldValues: any;
+    fieldErrors: any;
+    errors: any[];
+}
+
+export const getBlankForm = function getBlankForm(): IForm {
     return {
         valid: true,
         fieldValues: {},
@@ -23,45 +32,52 @@ const getValidators = function getValidators(ref) {
     const refValidators = ref && ref.validators || [];
 
     return [].concat(propValidators, refValidators);
+};
+
+interface IFormableProps {
+    addValidationFieldErrors?: boolean;
+
+    // Handlers for your form callbacks. These will be called with the
+    // current serialization of the form
+    onSubmit?: (form: IForm) => void;
+    onChange?: (form: IForm) => void;
+
+    showErrorsOnSubmit?: boolean;
+    showErrorsOnChange?: boolean;
+
+    validators?: any[];
 }
 
-export default React.createClass({
-    displayName: 'Form',
+interface IFormableState {
+    fieldErrors: any;
+    errors: any;
+}
 
-    propTypes: {
-        addValidationFieldErrors: PropTypes.bool,
+export default class Formable extends React.Component<IFormableProps, IFormableState> {
+    public static defaultProps: IFormableProps = {
+        onChange: function () {},
+        onSubmit: function () {},
+        showErrorsOnSubmit: true,
+        showErrorsOnChange: false
+    };
 
-        // Handlers for your form callbacks. These will be called with the
-        // current serialization of the form
-        onSubmit: PropTypes.func,
-        onChange: PropTypes.func,
+    constructor(props: IFormableProps) {
+        super(props);
 
-        showErrorsOnSubmit: PropTypes.bool,
-        showErrorsOnChange: PropTypes.bool,
+        this.serialize = this.serialize.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
+        this.showFieldErrors = this.showFieldErrors.bind(this);
+        this.clearFieldErrors = this.clearFieldErrors.bind(this);
 
-        validators: PropTypes.arrayOf(PropTypes.func),
-
-        // Default React children prop
-        children: PropTypes.node
-    },
-
-    getDefaultProps() {
-        return {
-            onChange: function () {},
-            onSubmit: function () {},
-            showErrorsOnSubmit: true,
-            showErrorsOnChange: false
-        };
-    },
-
-    getInitialState() {
-        return {
+        this.state = {
             fieldErrors: {},
             errors: []
         };
-    },
+    }
 
-    serialize() {
+    public serialize(): IForm {
         // Build our list of children
         const refs = values(this.refs || {})
                 .filter(ref => ref && (ref.getInputs || ref.getValue))
@@ -107,7 +123,7 @@ export default React.createClass({
                             .filter(identity);
                 });
 
-            form.fieldErrors = formTreeErrors.extract()
+            form.fieldErrors = formTreeErrors.extract();
             form.errors = formTreeErrors
                             .reduce((acc, val) => {
                                 return acc.concat(val);
@@ -130,53 +146,54 @@ export default React.createClass({
         form.valid = !form.errors.length;
 
         return form;
-    },
+    }
 
-    onChange() {
+    private onChange(): void {
         this.props.onChange(this.serialize());
         if (this.props.showErrorsOnChange) {
             this.showFieldErrors();
         }
-    },
+    }
 
-    onSubmit(event) {
-        event && event.preventDefault && event.preventDefault()
+    private onSubmit(event: React.KeyboardEvent): void {
+        event && event.preventDefault && event.preventDefault();
         if (this.props.showErrorsOnSubmit) {
             this.showFieldErrors();
         }
         this.props.onSubmit(this.serialize());
-    },
+    }
 
-    onKeyDown(event) {
+    private onKeyDown(event: React.KeyboardEvent): void {
         if (event.key === 'Enter') {
             this.onSubmit(event);
         }
-    },
+    }
 
-    showFieldErrors() {
+    public showFieldErrors(): any[] {
         const { fieldErrors, errors } = this.serialize();
 
         this.setState({ errors, fieldErrors });
         return errors;
-    },
+    }
 
-    clearFieldErrors() {
+    public clearFieldErrors(): void {
         this.setState({
             fieldErrors: {},
             errors: []
         });
-    },
+    }
 
-    render() {
+    public render(): React.ReactElement<{}> {
         const errorsRule = createErrorsRule(this.state.errors, this.state.fieldErrors);
         const formableRule = createFormableRule(this.state.errors, this.state.fieldErrors, this.onSubmit, this.onChange);
+        const children: any = this.props.children;
 
         return <form {...this.props}
                     ref="form"
                     onSubmit={this.onSubmit}
                     onChange={function () {}}
                     onKeyDown={this.onKeyDown}>
-            {cloneChildren([errorsRule, formableRule], this.props.children)}
+            {cloneChildren([errorsRule, formableRule], children)}
         </form>;
     }
-});
+}

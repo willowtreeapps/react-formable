@@ -1,12 +1,14 @@
-jest.dontMock('../form');
-jest.dontMock('../errors');
-jest.dontMock('../fieldset');
-jest.dontMock('../fieldlist');
-jest.dontMock('../inputs/input');
-jest.dontMock('./customInput');
+/* tslint:disable: no-any */
 
-import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+jest.unmock('../form');
+jest.unmock('../errors');
+jest.unmock('../fieldset');
+jest.unmock('../fieldlist');
+jest.unmock('../inputs/input');
+jest.unmock('./customInput');
+
+import * as React from 'react';
+import * as TestUtils from 'react-addons-test-utils';
 
 const Form = require('../form').default;
 const Errors = require('../errors').default;
@@ -17,15 +19,15 @@ const CustomInput = require('./customInput').default;
 
 describe('Form', () => {
     it('submits if the user hits enter', () => {
-        const onSubmit = jest.genMockFn();
-        let form = TestUtils.renderIntoDocument(
+        const onSubmit = jest.fn();
+        let form: any = TestUtils.renderIntoDocument(
             <Form onSubmit={onSubmit}>
                 <label> Pet Name: <Input name="petname" type="text" /> </label>
             </Form>
         );
-        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+        const inputNode: any = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
-        inputNode.value = 'george'
+        inputNode.value = 'george';
         TestUtils.Simulate.change(inputNode);
         TestUtils.Simulate.keyDown(inputNode, { key: 'Enter',
             keyCode: 13, which: 13 });
@@ -37,13 +39,13 @@ describe('Form', () => {
     });
 
     it('triggers change if the form changes', () => {
-        const onChange = jest.genMockFn();
-        let form = TestUtils.renderIntoDocument(
+        const onChange = jest.fn();
+        let form: any = TestUtils.renderIntoDocument(
             <Form onChange={onChange}>
                 <label> Favorite color: <Input name="color" type="text" /> </label>
             </Form>
         );
-        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+        const inputNode: any = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
         inputNode.value = 'red';
         TestUtils.Simulate.change(inputNode);
@@ -55,26 +57,26 @@ describe('Form', () => {
     });
 
     it('can be validated and pass', () => {
-        const validator = jest.genMockFn();
-        let form = TestUtils.renderIntoDocument(
+        const validator = jest.fn();
+        let form: any = TestUtils.renderIntoDocument(
             <Form validators={[validator]}>
                 <label>Age: <Input name="age" type="text" /> </label>
             </Form>
         );
-        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+        const inputNode: any = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
         inputNode.value = '30';
         expect(form.serialize().valid).toBe(true);
     });
 
     it('can be validated and fail', () => {
-        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
-        let form = TestUtils.renderIntoDocument(
+        const validator = jest.fn().mockImplementation(() => 'kaboom');
+        let form: any = TestUtils.renderIntoDocument(
             <Form validators={[validator]}>
                 <label>Age: <Input name="age" type="text" /> </label>
             </Form>
         );
-        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+        const inputNode: any = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
         inputNode.value = '30';
         expect(form.serialize().valid).toBe(false);
@@ -83,14 +85,14 @@ describe('Form', () => {
 
     it('can show errors on change', () => {
         let errorsComponent;
-        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
-        let form = TestUtils.renderIntoDocument(
+        const validator = jest.fn(() => 'kaboom');
+        let form: any = TestUtils.renderIntoDocument(
             <Form validators={[validator]} showErrorsOnChange={true}>
                 <Errors ref={(ref) => errorsComponent = ref} />
                 <label>Age: <Input name="age" type="text" /> </label>
             </Form>
         );
-        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+        const inputNode: any = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
         inputNode.value = '30';
         TestUtils.Simulate.change(inputNode);
@@ -99,14 +101,14 @@ describe('Form', () => {
 
     it('does not show errors on change by default', () => {
         let errorsComponent;
-        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
-        let form = TestUtils.renderIntoDocument(
+        const validator = jest.fn(() => 'kaboom');
+        let form: any = TestUtils.renderIntoDocument(
             <Form validators={[validator]}>
                 <Errors ref={(ref) => errorsComponent = ref} />
                 <label>Age: <Input name="age" type="text" /> </label>
             </Form>
         );
-        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+        const inputNode: any = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
         inputNode.value = '30';
         TestUtils.Simulate.change(inputNode);
@@ -115,14 +117,14 @@ describe('Form', () => {
 
     it('can prevent showing errors on submit', () => {
         let errorsComponent;
-        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
-        let form = TestUtils.renderIntoDocument(
+        const validator = jest.fn().mockImplementation(() => 'kaboom');
+        let form: any = TestUtils.renderIntoDocument(
             <Form validators={[validator]} showErrorsOnSubmit={false}>
                 <Errors ref={(ref) => errorsComponent = ref} />
                 <label>Age: <Input name="age" type="text" /> </label>
             </Form>
         );
-        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+        const inputNode: any = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
         TestUtils.Simulate.keyDown(inputNode, { key: 'Enter',
             keyCode: 13, which: 13 });
@@ -132,14 +134,14 @@ describe('Form', () => {
 
     it('does show errors on submit by default', () => {
         let errorsComponent;
-        const validator = jest.genMockFunction().mockImplementation(() => 'kaboom');
-        let form = TestUtils.renderIntoDocument(
+        const validator = jest.fn().mockImplementation(() => 'kaboom');
+        let form: any = TestUtils.renderIntoDocument(
             <Form validators={[validator]}>
                 <Errors ref={(ref) => errorsComponent = ref} />
                 <label>Age: <Input name="age" type="text" /> </label>
             </Form>
         );
-        const inputNode = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
+        const inputNode: any = TestUtils.findRenderedDOMComponentWithTag(form, 'input');
 
         TestUtils.Simulate.keyDown(inputNode, { key: 'Enter',
             keyCode: 13, which: 13 });
@@ -148,7 +150,7 @@ describe('Form', () => {
     });
 
     it('can serialize the form', () => {
-        const form = TestUtils.renderIntoDocument(
+        const form: any = TestUtils.renderIntoDocument(
             <Form>
                 <label>First name: <Input name="firstname" type="text" /> </label>
                 <label>Last name: <Input name="lastname" type="text" /> </label>
@@ -182,8 +184,8 @@ describe('Form', () => {
     });
 
     it('can serialize the form with validators', () => {
-        const failVal = jest.genMockFunction().mockImplementation(() => 'kaboom');
-        const form = TestUtils.renderIntoDocument(
+        const failVal = jest.fn(() => 'kaboom');
+        const form: any = TestUtils.renderIntoDocument(
             <Form>
                 <label>First name: <Input name="firstname" type="text" /> </label>
                 <label>Last name: <Input name="lastname" type="text" /> </label>
@@ -221,7 +223,7 @@ describe('Form', () => {
     it('it checks for the existance of ref before using it in serialize', () => {
         const Icon = props => <i {...props} />;
 
-        const form = TestUtils.renderIntoDocument(
+        const form: any = TestUtils.renderIntoDocument(
             <Form>
                 <Input name="firstname" type="text" />
                 <Icon name="icon" />
@@ -234,9 +236,9 @@ describe('Form', () => {
     });
 
     it('it passes down callbacks in fieldset and fieldlists', () => {
-        const onChange = jest.genMockFn();
-        const onSubmit = jest.genMockFn();
-        const form = TestUtils.renderIntoDocument(
+        const onChange = jest.fn();
+        const onSubmit = jest.fn();
+        const form: any = TestUtils.renderIntoDocument(
             <Form onChange={onChange}
                   onSubmit={onSubmit}
                   className="form">
@@ -260,7 +262,7 @@ describe('Form', () => {
         // Click on both inputs to toggle them to true
         const two = TestUtils.findRenderedDOMComponentWithClass(form, 'two');
         const four = TestUtils.findRenderedDOMComponentWithClass(form, 'four');
-        
+
         TestUtils.Simulate.click(two);
         TestUtils.Simulate.click(four);
 
