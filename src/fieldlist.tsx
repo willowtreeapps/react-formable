@@ -1,27 +1,37 @@
-import React, { PropTypes } from 'react';
+/* tslint:disable */
+
+import * as React from 'react';
 import values from './helpers/values';
 import Fieldset from './fieldset';
-import warning from 'warning';
+import AnyObject from './types/anyObject';
+const warning = require('warning');
 
-export default React.createClass({
-    displayName: 'Fieldlist',
+interface IFieldlistProps {
+    errors?: string[];
+    fieldErrors?: AnyObject[];
+    name: string;
+}
 
-    propTypes: {
-        errors: PropTypes.arrayOf(PropTypes.string),
-        fieldErrors: PropTypes.arrayOf(PropTypes.object),
-        name: PropTypes.string.isRequired,
-        children: PropTypes.node
-    },
+export default class Fieldlist extends React.Component<IFieldlistProps, {}> {
+    public refs: {
+        [key: string]: React.ReactInstance;
+        fieldset: Fieldset;
+    };
 
-    getInputs() {
+    public constructor(props: IFieldlistProps) {
+        super(props);
+        this.getInputs = this.getInputs.bind(this);
+    }
+
+    public getInputs() {
         return {
             ref: this,
             refs: values(this.refs.fieldset.getInputs().refs)
-                    .filter(node => node.children && values(node.children).length)
+                    .filter((node: any) => node.children && !!values(node.children).length)
         };
-    },
+    }
 
-    render() {
+    public render(): React.ReactElement<{}> {
         warning(this.props.name, `Fieldlist found without a name prop. The children of this component will behave eratically`);
 
         const errors = this.props.errors || [];
@@ -42,4 +52,4 @@ export default React.createClass({
             )}
         </Fieldset>;
     }
-});
+}

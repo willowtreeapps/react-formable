@@ -1,12 +1,13 @@
-jest.dontMock('../form');
-jest.dontMock('../fieldlist');
-jest.dontMock('../fieldset');
-jest.dontMock('../inputs/input');
-jest.dontMock('../inputs/input')
-jest.dontMock('../validators/required')
+/* tslint:disable: no-any */
 
-import React from 'react';
-import TestUtils from 'react-addons-test-utils';
+jest.unmock('../form');
+jest.unmock('../fieldlist');
+jest.unmock('../fieldset');
+jest.unmock('../inputs/input');
+jest.unmock('../validators/required');
+
+import * as React from 'react';
+import * as TestUtils from 'react-addons-test-utils';
 
 const Form = require('../form').default;
 const Fieldlist = require('../fieldlist').default;
@@ -16,18 +17,18 @@ const required = require('../validators/required').default;
 describe('Fieldlist', () => {
     it('serializes each list item appropriately', () => {
         const items = [1, 2, 3];
-        let form = TestUtils.renderIntoDocument(
+        let form: any = TestUtils.renderIntoDocument(
             <Form>
                 <Fieldlist name="pets">
-                    {items.map((i) => {
-                        return <div key={i}>
+                    {items.map((i) =>
+                         <div key={i}>
                             <label> Pet Name: <Input name="name" type="text" /> </label>
                         </div>
-                    })};
+                    )};
                 </Fieldlist>
             </Form>
         );
-        const inputs = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input');
+        const inputs: any[] = TestUtils.scryRenderedDOMComponentsWithTag(form, 'input');
 
         inputs.forEach((input, i) => {
             input.value = `george${i}`;
@@ -44,15 +45,15 @@ describe('Fieldlist', () => {
 
     it('handles field errors appropriately', () => {
         const items = [1, 2, 3];
-        let form = TestUtils.renderIntoDocument(
+        let form: any = TestUtils.renderIntoDocument(
             <Form>
                 <Fieldlist name="pets">
-                    {items.map((i) => {
-                        return <div key={i}>
+                    {items.map((i) =>
+                        <div key={i}>
                             <label> Pet Name: <Input name="name" type="text"
                                 validators={[required(`name${i} is required`)]} /> </label>
                         </div>
-                    })};
+                    )};
                 </Fieldlist>
             </Form>
         );
@@ -70,15 +71,15 @@ describe('Fieldlist', () => {
 
     it('handles errors appropriately', () => {
         const items = [1, 2, 3];
-        let form = TestUtils.renderIntoDocument(
+        let form: any = TestUtils.renderIntoDocument(
             <Form>
                 <Fieldlist name="pets">
-                    {items.map((i) => {
-                        return <div key={i}>
+                    {items.map((i) =>
+                        <div key={i}>
                             <label> Pet Name: <Input name="name" type="text"
                                 validators={[required(`name${i} is required`)]} /> </label>
                         </div>
-                    })}
+                    )}
                 </Fieldlist>
             </Form>
         );
