@@ -41,7 +41,7 @@
         "gh:publish": "npm run build && cp -r dist/docs _docs && cd _docs && git init && git commit --allow-empty -m ':fire: update gh-pages' && git checkout -b gh-pages && git add . && git commit -am ':fire: update gh-pages' && git push https://github.com/willowtreeapps/react-formable.git gh-pages --force && cd .. && rm -rf _docs",
         "lint": "tslint ./src; true",
         "start": "sapling dev",
-        "test": "sapling test",
+        "test": "jest",
         "coverage": "sapling coverage",
         "clean": "rm -rf ./dist && mkdir ./dist",
         "build:lib-prod": "sapling build-lib-prod",
@@ -57,10 +57,11 @@
         "definition": "./dist/typings/root.d.ts"
     },
     "jest": {
-        "scriptPreprocessor": "<rootDir>/jest-preprocessor.js",
+        "scriptPreprocessor": "<rootDir>/preprocessor.js",
         "testPathIgnorePatterns": [
             "/node_modules/",
             ".trash",
+            ".sapling-mounted-project",
             ".js"
         ],
         "testFileExtensions": [
@@ -76,7 +77,9 @@
         "unmockedModulePathPatterns": [
             "<rootDir>/node_modules/react/",
             "<rootDir>/node_modules/react-dom/",
-            "<rootDir>/node_modules/react-addons-test-utils/"
+            "<rootDir>/node_modules/react-addons-test-utils/",
+            "<rootDir>/node_modules/fbjs",
+            "<rootDir>/src/helpers"
         ]
     }
 }
