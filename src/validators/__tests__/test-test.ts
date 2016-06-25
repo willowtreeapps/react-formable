@@ -1,8 +1,8 @@
 jest.dontMock('../test');
 
-const test = require('../test').default(/(\w+)\s(\w+)/, 'test failed');
-
 describe('required', () => {
+    const test = require('../test').default(/(\w+)\s(\w+)/, 'test failed');
+
     it('returns nothing when test passes', () => {
         expect(test('john smith')).toBe(undefined);
     });

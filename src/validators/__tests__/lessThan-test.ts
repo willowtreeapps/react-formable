@@ -1,8 +1,8 @@
-jest.dontMock('../lessThan');
-
-const lessThan = require('../lessThan').default(3, 'too long');
+jest.unmock('../lessThan');
 
 describe('lessThan', () => {
+    const lessThan = require('../lessThan').default(3, 'too long');
+
     it('returns nothing when value is small enough', () => {
         expect(lessThan('1')).toBe(undefined);
         expect(lessThan(1)).toBe(undefined);

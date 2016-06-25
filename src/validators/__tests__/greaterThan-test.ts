@@ -1,8 +1,8 @@
-jest.dontMock('../greaterThan');
-
-const greaterThan = require('../greaterThan').default(3, 'too short');
+jest.unmock('../greaterThan');
 
 describe('greaterThan', () => {
+    const greaterThan = require('../greaterThan').default(3, 'too short');
+
     it('returns nothing when value is large enough', () => {
         expect(greaterThan(3.1)).toBe(undefined);
         expect(greaterThan('3.1')).toBe(undefined);

@@ -1,8 +1,8 @@
-jest.dontMock('../required');
-
-const required = require('../required').default('missing value');
+jest.unmock('../required');
 
 describe('required', () => {
+    const required = require('../required').default('missing value');
+
     it('returns error message when values are missing', () => {
         expect(required(null)).toBe('missing value');
         expect(required(undefined)).toBe('missing value');

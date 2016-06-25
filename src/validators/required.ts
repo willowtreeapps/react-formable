@@ -1,16 +1,16 @@
+/* tslint:disable: no-any */
 import isNil from '../helpers/isNil';
 
-function emptyString(value) {
+function emptyString(value: string): boolean {
     return !value.trim().length;
 }
 
-function emptyObject(value) {
+function emptyObject(value: any): boolean {
     return !Object.keys(value).length;
 }
 
-/*eslint func-style:0*/
-export default function required(errorMessage) {
-    return function (value) {
+export default function required(errorMessage: string): (value: any) => string {
+    return function (value: any): string {
         if (isNil(value)) {
             return errorMessage;
         }

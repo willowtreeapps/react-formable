@@ -1,8 +1,8 @@
-jest.dontMock('../equalsField');
-
-const equalsField = require('../equalsField').default;
+jest.unmock('../equalsField');
 
 describe('required', () => {
+    const equalsField = require('../equalsField').default;
+
     it('returns nothing when other form field is equal', () => {
         let validator = equalsField('password2', 'must be equal');
 

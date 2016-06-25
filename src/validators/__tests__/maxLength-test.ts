@@ -1,8 +1,8 @@
-jest.dontMock('../maxLength');
-
-const maxLength = require('../maxLength').default(3, 'too long');
+jest.unmock('../maxLength');
 
 describe('maxLength', () => {
+    const maxLength = require('../maxLength').default(3, 'too long');
+
     it('returns nothing when value is long enough', () => {
         expect(maxLength('1')).toBe(undefined);
         expect(maxLength('12')).toBe(undefined);
