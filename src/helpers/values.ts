@@ -1,6 +1,8 @@
-import GenericObject from '../types/genericObject';
+/* tslint:disable */
 
-export default function values<T>(obj: GenericObject<T>): T[] {
+import AnyObject from '../types/anyObject';
+
+export default function values<T>(obj: AnyObject): any[] {
     let ret: T[] = [];
 
     for (let key in obj) {

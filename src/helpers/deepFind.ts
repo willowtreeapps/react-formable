@@ -1,5 +1,6 @@
-/*eslint func-style:0*/
-export default function deepFind(obj, path) {
+/* tslint:disable */
+
+export default function deepFind(obj: any, path: string): any {
     const paths = path.split('.');
     let current = obj, i;
 

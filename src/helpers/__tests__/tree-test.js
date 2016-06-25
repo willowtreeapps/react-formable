@@ -1,4 +1,4 @@
-jest.dontMock('../tree');
+jest.dontMock('../xtree');
 
 describe('Tree', () => {
     const TLeaf = require('../tree').TLeaf;
