@@ -10,7 +10,7 @@
     "exclude": [
         "node_modules",
         "dist",
-        ".sapling-mounted-project/node_modules",
-        ".sapling-mounted-project/typings"
+        ".sapling-mounted-project",
+        ".trash"
     ]
 }
