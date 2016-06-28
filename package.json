@@ -1,73 +1,73 @@
 {
-    "name": "react-formable",
-    "version": "0.7.1",
-    "description": "A simple form library for react",
-    "main": "dist/root.js",
-    "author": "Willowtree",
-    "contributors": [
-        {
-            "name": "Matt O'Connell"
-        },
-        {
-            "name": "Kevin Welcher"
-        },
-        {
-            "name": "Christine Bryant-Ryback"
-        }
-    ],
-    "homepage": "https://github.com/willowtreeapps/react-formable",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/willowtreeapps/react-formable.git"
+  "name": "react-formable",
+  "version": "0.7.1",
+  "description": "A simple form library for react",
+  "main": "dist/root.js",
+  "author": "Willowtree",
+  "contributors": [
+    {
+      "name": "Matt O'Connell"
     },
-    "bugs": {
-        "url": "https://github.com/willowtreeapps/react-formable/issues"
+    {
+      "name": "Kevin Welcher"
     },
-    "dependencies": {
-        "warning": "^2.1.0"
-    },
-    "keywords": [
-        "react",
-        "react-component",
-        "sapling",
-        "sapling-component"
-    ],
-    "license": "MIT",
-    "devDependencies": {
-        "react-addons-test-utils": "*",
-        "react-sapling": "0.5.2"
-    },
-    "scripts": {
-        "gh:publish": "npm run build && cp -r dist/docs _docs && cd _docs && git init && git commit --allow-empty -m ':fire: update gh-pages' && git checkout -b gh-pages && git add . && git commit -am ':fire: update gh-pages' && git push https://github.com/willowtreeapps/react-formable.git gh-pages --force && cd .. && rm -rf _docs",
-        "lint": "tslint ./src; true",
-        "start": "sapling dev",
-        "test": "sapling test",
-        "coverage": "sapling coverage",
-        "clean": "rm -rf ./dist && mkdir ./dist",
-        "build:lib-prod": "sapling build-lib-prod",
-        "build:lib-docs": "sapling build-lib-docs",
-        "build:bundle-docs": "sapling build-bundle-docs",
-        "build": "npm run clean && npm run build:lib-prod && npm run build:lib-docs && npm run build:bundle-docs"
-    },
-    "peerDependencies": {
-        "react": "^0.14 || ^15.0.0-rc || ^15.0",
-        "react-dom": "^0.14 || ^15.0.0-rc || ^15.0"
-    },
-    "typescript": {
-        "definition": "./dist/typings/root.d.ts"
-    },
-    "jest": {
-        "testPathIgnorePatterns": [
-            "/node_modules/",
-            ".trash",
-            ".js"
-        ],
-        "unmockedModulePathPatterns": [
-            "<rootDir>/node_modules/react/",
-            "<rootDir>/node_modules/react-dom/",
-            "<rootDir>/node_modPules/react-addons-test-utils/",
-            "<rootDir>/node_modules/fbjs",
-            "<rootDir>/src-copy/helpers"
-        ]
+    {
+      "name": "Christine Bryant-Ryback"
     }
+  ],
+  "homepage": "https://github.com/willowtreeapps/react-formable",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/willowtreeapps/react-formable.git"
+  },
+  "bugs": {
+    "url": "https://github.com/willowtreeapps/react-formable/issues"
+  },
+  "dependencies": {
+    "warning": "^2.1.0"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "sapling",
+    "sapling-component"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "react-addons-test-utils": "*",
+    "react-sapling": "0.5.2"
+  },
+  "scripts": {
+    "gh:publish": "npm run build && cp -r dist/docs _docs && cd _docs && git init && git commit --allow-empty -m ':fire: update gh-pages' && git checkout -b gh-pages && git add . && git commit -am ':fire: update gh-pages' && git push https://github.com/willowtreeapps/react-formable.git gh-pages --force && cd .. && rm -rf _docs",
+    "lint": "tslint ./src; true",
+    "start": "sapling dev",
+    "test": "sapling test",
+    "coverage": "sapling coverage",
+    "clean": "rm -rf ./dist && mkdir ./dist",
+    "build:lib-prod": "sapling build-lib-prod",
+    "build:lib-docs": "sapling build-lib-docs",
+    "build:bundle-docs": "sapling build-bundle-docs",
+    "build": "npm run clean && npm run build:lib-prod && npm run build:lib-docs && npm run build:bundle-docs"
+  },
+  "peerDependencies": {
+    "react": "^0.14 || ^15.0.0-rc || ^15.0",
+    "react-dom": "^0.14 || ^15.0.0-rc || ^15.0"
+  },
+  "typescript": {
+    "definition": "./dist/typings/root.d.ts"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".trash",
+      ".js"
+    ],
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react/",
+      "<rootDir>/node_modules/react-dom/",
+      "<rootDir>/node_modules/react-addons-test-utils/",
+      "<rootDir>/node_modules/fbjs",
+      "<rootDir>/src-copy/helpers"
+    ]
+  }
 }
