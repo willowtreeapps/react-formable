@@ -1,27 +1,25 @@
 {
     "name": "react-sapling-component",
     "globalDependencies": {
-        "assertion-error": "github:DefinitelyTyped/DefinitelyTyped/assertion-error/assertion-error.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
-        "bluebird": "github:DefinitelyTyped/DefinitelyTyped/bluebird/bluebird.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
         "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
-        "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
-        "express-serve-static-core": "github:DefinitelyTyped/DefinitelyTyped/express-serve-static-core/express-serve-static-core.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
-        "inquirer": "github:DefinitelyTyped/DefinitelyTyped/inquirer/inquirer.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4",
+        "express": "registry:dt/express#4.0.0+20160317120654",
+        "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160625155614",
         "jest": "registry:dt/jest#0.9.0+20160425141105",
-        "log4js": "github:DefinitelyTyped/DefinitelyTyped/log4js/log4js.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
-        "marked": "github:DefinitelyTyped/DefinitelyTyped/marked/marked.d.ts#544a35a10866b32afda9c7f029c0764558563f4f",
-        "mime": "github:DefinitelyTyped/DefinitelyTyped/mime/mime.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
-        "minimist": "github:DefinitelyTyped/DefinitelyTyped/minimist/minimist.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4",
-        "mkdirp": "github:DefinitelyTyped/DefinitelyTyped/mkdirp/mkdirp.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4",
-        "mustache": "github:DefinitelyTyped/DefinitelyTyped/mustache/mustache.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4",
-        "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
-        "react": "registry:dt/react#0.14.0+20160602151522",
-        "react-addons-test-utils": "registry:dt/react-addons-test-utils#0.14.0+20160427035638",
-        "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
-        "rimraf": "github:DefinitelyTyped/DefinitelyTyped/rimraf/rimraf.d.ts#d969b903d1fce89a5e43828ec68458b4f852db4d",
-        "rx-lite": "github:DefinitelyTyped/DefinitelyTyped/rx/rx-lite.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4",
-        "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#e05e1f6f83c6ac84e9d7ff8284e8089d53a788a6",
-        "through": "github:DefinitelyTyped/DefinitelyTyped/through/through.d.ts#299b5caa22876ef27dc8e9a5b7fd7bf93457b6f4"
+        "log4js": "registry:dt/log4js#0.0.0+20160608042355",
+        "marked": "registry:dt/marked#0.0.0+20160325085301",
+        "mustache": "registry:dt/mustache#0.8.2+20160316155526",
+        "node": "registry:dt/node#6.0.0+20160621231320",
+        "rx-lite": "registry:dt/rx-lite#0.0.0+20160623134935",
+        "serve-static": "registry:dt/serve-static#0.0.0+20160606155157",
+        "through": "registry:dt/through#0.0.0+20160317120654"
     },
-    "dependencies": {}
+    "dependencies": {
+        "assertion-error": "registry:npm/assertion-error#1.0.0+20160422045008",
+        "inquirer": "registry:npm/inquirer#1.0.0+20160427045422",
+        "mime": "registry:npm/mime#1.3.0+20160423043021",
+        "minimist": "registry:npm/minimist#1.0.0+20160229232932",
+        "mkdirp": "registry:npm/mkdirp#0.5.0+20160222053049",
+        "react": "registry:npm/react#15.0.1+20160601175240",
+        "rimraf": "registry:npm/rimraf#2.5.0+20160211003958"
+    }
 }
