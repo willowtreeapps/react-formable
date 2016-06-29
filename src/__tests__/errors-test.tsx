@@ -1,8 +1,8 @@
 jest.unmock('../errors');
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as TestUtils from 'react-addons-test-utils';
+const ReactDOM = require('react-dom');
+const TestUtils = require('react-addons-test-utils');
 
 const Errors = require('../errors').default;
 

@@ -4,8 +4,8 @@ jest.unmock('../fieldset');
 jest.unmock('../inputs/input');
 
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as TestUtils from 'react-addons-test-utils';
+const ReactDOM = require('react-dom');
+const TestUtils = require('react-addons-test-utils');
 
 const Fieldset = require('../fieldset').default;
 const Input = require('../inputs/input').default;

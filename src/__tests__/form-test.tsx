@@ -8,7 +8,7 @@ jest.unmock('../inputs/input');
 jest.unmock('./customInput');
 
 import * as React from 'react';
-import * as TestUtils from 'react-addons-test-utils';
+const TestUtils = require('react-addons-test-utils');
 
 const Form = require('../form').default;
 const Errors = require('../errors').default;
