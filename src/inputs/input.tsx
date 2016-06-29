@@ -6,6 +6,7 @@ interface IInputDefaultProps {
     className?: string;
 }
 
+/* tslint:disable: no-any */
 export interface IInputProps extends IInputDefaultProps {
     name: string;
     fieldErrors?: string[];
@@ -14,6 +15,7 @@ export interface IInputProps extends IInputDefaultProps {
     defaultValue?: any;
     validators?: any;
 }
+/* tslint:enable: no-any */
 
 // TODO: Clean up the use of any here
 /* tslint:disable: no-any */
