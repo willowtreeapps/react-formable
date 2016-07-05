@@ -1,9 +1,9 @@
-jest.unmock('../newTree');
+jest.unmock('../tree');
 
 describe('Tree', () => {
-    const TLeaf = require('../newTree').TLeaf;
-    const TArray = require('../newTree').TArray;
-    const TObject = require('../newTree').TObject;
+    const TLeaf = require('../tree').TLeaf;
+    const TArray = require('../tree').TArray;
+    const TObject = require('../tree').TObject;
 
     describe('TLeaf', () => {
         describe('constructor', () => {
