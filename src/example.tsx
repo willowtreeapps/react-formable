@@ -12,7 +12,8 @@ export default class ComponentExample extends React.Component<{}, IState>  {
 
     public render(): React.ReactElement<{}> {
         return <Form onChange={form => this.setState({ name: form.fieldValues.name })}
-                     onSubmit={form => console.log(form)}>
+                     onSubmit={form => console.log(form)}
+                     showErrorsOnChange>
             <Input name="name"
                    value={this.state.name}
                    validators={[
