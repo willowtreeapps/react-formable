@@ -36,8 +36,8 @@ describe('Fieldset', () => {
 
         const inputs = fieldset.getInputs();
 
-        expect(inputs.ref).toEqual(fieldset);
-        expect(inputs.refs.name.value.getValue()).toBe('george');
-        expect(inputs.refs.type.value.getValue()).toBe('dog');
+        expect(inputs.value).toEqual(fieldset);
+        expect(inputs.children.name.value.getValue()).toBe('george');
+        expect(inputs.children.type.value.getValue()).toBe('dog');
     });
 });

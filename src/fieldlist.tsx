@@ -4,6 +4,7 @@ import * as React from 'react';
 import values from './helpers/values';
 import Fieldset from './fieldset';
 import AnyObject from './types/anyObject';
+import { TArray } from './helpers/tree';
 const warning = require('warning');
 
 interface IFieldlistProps {
@@ -23,12 +24,11 @@ export default class Fieldlist extends React.Component<IFieldlistProps, {}> {
         this.getInputs = this.getInputs.bind(this);
     }
 
-    public getInputs() {
-        return {
-            ref: this,
-            refs: values(this.refs.fieldset.getInputs().refs)
-                    .filter((node: any) => node.children && !!values(node.children).length)
-        };
+    public getInputs(): TArray<any> {
+        const children = values(this.refs.fieldset.getInputs().children)
+            .filter(node => node.children && !!values(node.children).length);
+
+        return TArray.of(this, children);
     }
 
     public render(): React.ReactElement<{}> {
