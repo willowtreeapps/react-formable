@@ -3,13 +3,13 @@
 import * as React from 'react';
 import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
 import values from './helpers/values';
-import tree from './helpers/tree';
+import { TObject, TLeaf } from './helpers/tree';
 import AnyObject from './types/anyObject';
 const warning = require('warning');
 
 type FormableRef = any;
 
-function isFormableRef(ref: any): ref is number {
+function isFormableRef(ref: any) {
     return ref && (ref.getInputs || ref.getValue);
 }
 
@@ -27,18 +27,16 @@ export default class Fieldset extends React.Component<IFieldsetProps, {}> {
         this.getInputs = this.getInputs.bind(this);
     }
 
-    public getInputs() {
-        return {
-            ref: this,
-            refs: values(this.refs || {})
-                    .filter(isFormableRef)
-                    .map((ref: FormableRef) => ref.getInputs ? ref.getInputs() : { ref })
-                    .map(x => tree(x.ref, x.refs))
-                    .reduce((memo, node) => {
-                        memo[node.value.props.name] = node;
-                        return memo;
-                    }, {})
-        };
+    public getInputs(): TObject<any> {
+        const children = values(this.refs || {})
+                            .filter(isFormableRef)
+                            .reduce((memo, ref) => {
+                                const refVal = ref.getInputs ? ref.getInputs() : TLeaf.of(ref);
+                                memo[ref.props.name] = refVal;
+                                return memo;
+                            }, {});
+
+        return TObject.of(this, children);
     }
 
     public render(): React.ReactElement<{}> {

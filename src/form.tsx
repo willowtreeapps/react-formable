@@ -4,7 +4,7 @@ import * as React from 'react';
 import uniq from './helpers/uniq';
 import values from './helpers/values';
 import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
-import tree from './helpers/tree';
+import tree, { TObject, TLeaf } from './helpers/tree';
 import identity from './helpers/identity';
 
 interface IForm {
@@ -33,6 +33,10 @@ const getValidators = function getValidators(ref) {
 
     return [].concat(propValidators, refValidators);
 };
+
+function isFormableRef(ref: any) {
+    return ref && (ref.getInputs || ref.getValue);
+}
 
 interface IFormableProps {
     addValidationFieldErrors?: boolean;
@@ -77,19 +81,20 @@ export default class Formable extends React.Component<IFormableProps, IFormableS
         };
     }
 
-    public serialize(): IForm {
-        // Build our list of children
-        const refs = values(this.refs || {})
-                .filter(ref => ref && (ref.getInputs || ref.getValue))
-                .map(ref => ref.getInputs ? ref.getInputs() : { ref })
-                .map(x => tree(x.ref, x.refs))
-                .reduce((memo, node) => {
-                    memo[node.value.props.name] = node;
-                    return memo;
-                }, {});
+    private getInputs(): TObject<any> {
+        const children = values(this.refs || {})
+                            .filter(isFormableRef)
+                            .reduce((memo, ref) => {
+                                const refVal = ref.getInputs ? ref.getInputs() : TLeaf.of(ref);
+                                memo[ref.props.name] = refVal;
+                                return memo;
+                            }, {});
 
-        // Make our tree which we will use for serialization and validation
-        const formTree = tree(this, refs);
+        return TObject.of(this, children);
+    }
+
+    public serialize(): IForm {
+        const formTree = this.getInputs();
 
         // Calculate how many times we should serialize in the case of
         // cycles when addValidationFieldErrors is true. We do this by
