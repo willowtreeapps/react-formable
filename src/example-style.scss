@@ -1,3 +1,13 @@
+input {
+    outline: none;
+}
+
 .error {
     border: 1px solid red;
+}
+
+.half {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
 }
