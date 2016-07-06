@@ -274,4 +274,18 @@ describe('Form', () => {
             ]
         });
     });
+
+    describe('validates asynchronously', () => {
+        it('validates a single asynchronous input', () => {
+            const validator = () => Promise.reject('bad');
+
+            let form = TestUtils.renderIntoDocument(
+                <Form>
+                    <Input name="age" type="text" validators={[validator]} />
+                </Form>
+            );
+
+            expect(form.serialize().valid).toBe(true);
+        });
+    });
 });
