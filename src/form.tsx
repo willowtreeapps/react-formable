@@ -1,53 +1,66 @@
-/* tslint:disable */
-
 import * as React from 'react';
 import uniq from './helpers/uniq';
 import values from './helpers/values';
 import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
-import tree, { TObject, TLeaf } from './helpers/tree';
+import { TObject, TLeaf } from './helpers/tree';
+import promiseEvery from './helpers/promiseEvery';
 import identity from './helpers/identity';
 
-interface IForm {
-    valid: boolean;
-    fieldValues: any;
+export interface IValidation {
     fieldErrors: any;
     errors: any[];
+    valid: boolean;
 }
 
-export const getBlankForm = function getBlankForm(): IForm {
+export interface IFormPromisless<T> {
+    fieldValues: T;
+    validation: IValidation;
+}
+
+export interface IForm<T> {
+    fieldValues: T;
+    validation: Promise<IValidation>;
+}
+
+export function getBlankForm(): IForm<any> {
     return {
-        valid: true,
         fieldValues: {},
-        fieldErrors: {},
-        errors: []
+        validation: Promise.resolve({ fieldErrors: {}, errors: [], valid: true })
     };
 };
 
-const treeValue = function treeValue(tree) {
+function treeValue(tree) {
     return tree.map(value => value.getValue && value.getValue()).extract();
 };
 
-const getValidators = function getValidators(ref) {
+function getValidators(ref) {
     const propValidators = ref && ref.props && ref.props.validators || [];
     const refValidators = ref && ref.validators || [];
 
     return [].concat(propValidators, refValidators);
 };
 
-function isFormableRef(ref: any) {
+function isFormableRef(ref) {
     return ref && (ref.getInputs || ref.getValue);
 }
 
-interface IFormableProps {
+interface IFormableProps<T> {
     addValidationFieldErrors?: boolean;
 
     // Handlers for your form callbacks. These will be called with the
     // current serialization of the form
-    onSubmit?: (form: IForm) => void;
-    onChange?: (form: IForm) => void;
+    onChange?: (form: IForm<T>) => void;
+    onSubmit?: {
+        (form: IForm<T>): void;
+        (form: IFormPromisless<T>): void;
+    };
 
     showErrorsOnSubmit?: boolean;
     showErrorsOnChange?: boolean;
+
+    // If you don't want to deal with promises, you can set this to true
+    // and validation will be passed instead of promises
+    delayOnSubmit?: boolean;
 
     validators?: any[];
 }
@@ -57,15 +70,15 @@ interface IFormableState {
     errors: any;
 }
 
-export default class Formable extends React.Component<IFormableProps, IFormableState> {
-    public static defaultProps: IFormableProps = {
+export default class Formable<T> extends React.Component<IFormableProps<T>, IFormableState> {
+    public static defaultProps: IFormableProps<any> = {
         onChange: function () {},
         onSubmit: function () {},
         showErrorsOnSubmit: true,
         showErrorsOnChange: false
     };
 
-    constructor(props: IFormableProps) {
+    constructor(props: IFormableProps<T>) {
         super(props);
 
         this.serialize = this.serialize.bind(this);
@@ -74,6 +87,7 @@ export default class Formable extends React.Component<IFormableProps, IFormableS
         this.onKeyDown = this.onKeyDown.bind(this);
         this.showFieldErrors = this.showFieldErrors.bind(this);
         this.clearFieldErrors = this.clearFieldErrors.bind(this);
+        this.validateTree = this.validateTree.bind(this);
 
         this.state = {
             fieldErrors: {},
@@ -81,7 +95,7 @@ export default class Formable extends React.Component<IFormableProps, IFormableS
         };
     }
 
-    private getInputs(): TObject<any> {
+    private getTree(): TObject<any> {
         const children = values(this.refs || {})
                             .filter(isFormableRef)
                             .reduce((memo, ref) => {
@@ -93,79 +107,86 @@ export default class Formable extends React.Component<IFormableProps, IFormableS
         return TObject.of(this, children);
     }
 
-    public serialize(): IForm {
-        const formTree = this.getInputs();
+    private validateTree(validationTree, fieldValues, errorObject?) {
+        return validationTree
+            // Map over the validators and invoke them
+            .map(({ validators, value }) => {
+                const fieldErrors = this.props.addValidationFieldErrors ? errorObject && errorObject.fieldErrors : null;
+                return promiseEvery(validators.map(fn => fn(value, fieldValues, fieldErrors)));
+            })
+            // Convert the tree to a promise
+            .sequence()
+            // Wait for the results
+            .then(treeErrors => {
+                const filteredErrors = treeErrors.map(errs => errs.filter(identity));
+                const allErrors = filteredErrors.reduce((acc, val) => acc.concat(val), []);
+                const errors = uniq(allErrors);
+                //TODO: Does this still incorporate form level errors here?
 
-        // Calculate how many times we should serialize in the case of
-        // cycles when addValidationFieldErrors is true. We do this by
-        // counting how many nodes are in our tree
-        const refLength = formTree.map(() => 1).reduce((a,b) => a+b, 0);
-        let iteration = 0;
+                return {
+                    errors,
+                    fieldErrors: filteredErrors.extract(),
+                    valid: !errors.length
+                };
+            })
+            .then(_errorObject => {
+                if (!this.props.addValidationFieldErrors) {
+                    return _errorObject;
+                }
 
-        let form = getBlankForm();
-        let oldForm = getBlankForm();
+                if (JSON.stringify(_errorObject) === JSON.stringify(errorObject)) {
+                    return _errorObject;
+                }
 
-        do {
-            // Keep a copy of the previous iteration of the form so we can
-            // detect if the form is stable to exit early
-            oldForm = Object.assign({}, form);
+                return this.validateTree(validationTree, fieldValues, _errorObject);
+            });
+    }
 
-            // Gather our fieldValues from our tree
-            form.fieldValues = treeValue(formTree);
+    public serialize(): IForm<T> {
+        const formTree = this.getTree();
+        const fieldValues = treeValue(formTree);
 
-            // Make a new temporary error tree. We will use this tree to
-            // generate a nested object (fieldErrors) and again to reduce it
-            // into an array (errors)
-            const formTreeErrors = formTree
-                .extend(tree => {
-                    const validators = getValidators(tree.value);
-                    const value = tree.value.getValue ? tree.value.getValue() : treeValue(tree);
-                    const fieldValues = form.fieldValues;
-                    const fieldErrors = this.props.addValidationFieldErrors ? oldForm.fieldErrors : null;
+        // Make a tree we can re-use which doesn't hit
+        // the DOM for use in validation
+        const validationTree = formTree.extend(tree => {
+            // Get the current validators for the current tree node
+            const validators = getValidators(tree.value);
+            // Get the value of the node / sub tree
+            const value = tree.value.getValue ? tree.value.getValue() : treeValue(tree);
 
-                    return validators
-                            .map(fn => fn(value, fieldValues, fieldErrors))
-                            .filter(identity);
-                });
+            return { validators, value };
+        });
 
-            form.fieldErrors = formTreeErrors.extract();
-            form.errors = formTreeErrors
-                            .reduce((acc, val) => {
-                                return acc.concat(val);
-                            }, []);
+        const validation = this.validateTree(validationTree, fieldValues);
 
-            iteration++;
-
-        // If we don't need fieldErrors in our validators, we only need to
-        // execute this do..while once. We need to loop because we don't have
-        // explicit dependencies. We fake dependencies by making
-        // an eventually stable tree.
-        } while(
-            this.props.addValidationFieldErrors &&
-            iteration < refLength &&
-            JSON.stringify(form) !== JSON.stringify(oldForm)
-        );
-
-        // Update valid here so our formValidators can make use of it
-        form.errors = uniq(form.errors.filter(identity));
-        form.valid = !form.errors.length;
-
-        return form;
+        return {
+            fieldValues,
+            validation
+        };
     }
 
     private onChange(): void {
-        this.props.onChange(this.serialize());
+        const form = this.serialize();
+        this.props.onChange(form);
         if (this.props.showErrorsOnChange) {
-            this.showFieldErrors();
+            this.showFieldErrors(form);
         }
     }
 
     private onSubmit(event: React.KeyboardEvent): void {
         event && event.preventDefault && event.preventDefault();
+        const form = this.serialize();
+
         if (this.props.showErrorsOnSubmit) {
-            this.showFieldErrors();
+            this.showFieldErrors(form);
         }
-        this.props.onSubmit(this.serialize());
+
+        if (this.props.delayOnSubmit) {
+            const { fieldValues, validation } = form;
+            validation.then(errorObject => this.props.onSubmit({ fieldValues, validation: errorObject }));
+        } else {
+            this.props.onSubmit(form);
+        }
     }
 
     private onKeyDown(event: React.KeyboardEvent): void {
@@ -174,11 +195,12 @@ export default class Formable extends React.Component<IFormableProps, IFormableS
         }
     }
 
-    public showFieldErrors(): any[] {
-        const { fieldErrors, errors } = this.serialize();
-
-        this.setState({ errors, fieldErrors });
-        return errors;
+    public showFieldErrors(form: IForm<T>): Promise<IValidation> {
+        return form.validation.then(errorObject => {
+            const { fieldErrors, errors } = errorObject;
+            this.setState({ errors, fieldErrors });
+            return errorObject;
+        });
     }
 
     public clearFieldErrors(): void {
@@ -190,7 +212,12 @@ export default class Formable extends React.Component<IFormableProps, IFormableS
 
     public render(): React.ReactElement<{}> {
         const errorsRule = createErrorsRule(this.state.errors, this.state.fieldErrors);
-        const formableRule = createFormableRule(this.state.errors, this.state.fieldErrors, this.onSubmit, this.onChange);
+        const formableRule = createFormableRule(
+            this.state.errors,
+            this.state.fieldErrors,
+            this.onSubmit,
+            this.onChange
+        );
         const children: any = this.props.children;
 
         return <form {...this.props}

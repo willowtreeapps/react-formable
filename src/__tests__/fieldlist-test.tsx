@@ -61,11 +61,14 @@ describe('Fieldlist', () => {
 
         TestUtils.Simulate.change(inputs[0]);
 
-        expect(form.serialize().fieldErrors).toEqual({
-            pets: [{ name: ['name1 is required'] },
-                { name: ['name2 is required'] },
-                { name: ['name3 is required'] }
-            ]
+        return form.serialize().validation.then(({ fieldErrors }) => {
+            expect(fieldErrors).toEqual({
+                pets: [{ name: ['name1 is required'] },
+                    { name: ['name2 is required'] },
+                    { name: ['name3 is required'] }
+                ]
+            });
+
         });
     });
 
@@ -87,7 +90,8 @@ describe('Fieldlist', () => {
 
         TestUtils.Simulate.change(inputs[0]);
 
-        expect(form.serialize().errors).toEqual(['name1 is required',
-            'name2 is required', 'name3 is required']);
+        return form.serialize().validation.then(({ errors }) => {
+            expect(errors).toEqual(['name1 is required', 'name2 is required', 'name3 is required']);
+        });
     });
 });

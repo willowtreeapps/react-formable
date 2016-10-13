@@ -1,6 +1,7 @@
 import keys from '../helpers/keys';
 import values from '../helpers/values';
 import mapObj from '../helpers/mapObj';
+import promiseEvery from '../helpers/promiseEvery';
 import GenericObject from '../types/genericObject';
 
 export type Tree<T> = TLeaf<T> | TArray<T> | TObject<T>;
@@ -40,9 +41,10 @@ export class TLeaf<T> {
         return fn(acc, this.value);
     }
 
-    public sequence(): Promise<TLeaf<T>> {
+    public sequence(): any {
         return Promise.resolve(this.value)
-            .then(val => TLeaf.of(val));
+            .then(val => TLeaf.of(val))
+            .catch(err => TLeaf.of(err));
     }
 }
 
@@ -93,11 +95,11 @@ export class TArray<T> {
         }, fn(acc, this.value));
     }
 
-    public sequence(): Promise<TArray<T>> {
-        const promises = this.children.map(child => child.sequence());
-        const stuff: Promise<Tree<T> | T>[] = [Promise.resolve(this.value), ...promises];
+    public sequence(): any {
+        const childrenPromises = this.children.map(child => child.sequence());
+        const promises: Promise<Tree<T> | T>[] = [Promise.resolve(this.value), ...childrenPromises];
 
-        return Promise.all(stuff)
+        return promiseEvery(promises)
             .then(args => {
                 const value = args[0];
                 /* tslint:disable: no-any */
@@ -152,11 +154,11 @@ export class TObject<T> {
         }, fn(acc, this.value));
     }
 
-    public sequence(): Promise<TObject<T>> {
+    public sequence(): any {
         const _keys = keys(this.children);
         const _values = values(this.children).map(child => child.sequence());
 
-        return Promise.all([Promise.resolve(this.value), ..._values])
+        return promiseEvery([Promise.resolve(this.value), ..._values])
             .then(args => {
                 const value = args[0];
                 const values = args.slice(1);
