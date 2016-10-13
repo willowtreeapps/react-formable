@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Form, Input, Errors} from './root';
+import { Form, Input, Errors, IForm } from './root';
+
+type TForm = IForm<{ name: string }>;
 
 interface IState {
-    form: any;
+    form: TForm;
 }
 
 export default class ComponentExample extends React.Component<{}, IState>  {
@@ -11,13 +13,20 @@ export default class ComponentExample extends React.Component<{}, IState>  {
     };
 
     public render(): React.ReactElement<{}> {
-        return <Form showErrorsOnChange
-                     onChange={form => this.setState({ form })}>
+        return <Form onChange={form => this.setState({ form })}>
             <div className="half">
                 <Input name="name"
                        autoComplete="off"
                        validators={[
-                           value => !value.length && 'bad'
+                           value => new Promise(resolve => {
+                               setTimeout(() => {
+                                   if (!value.length) {
+                                       return resolve('bad');
+                                   }
+
+                                   resolve();
+                               }, 1000);
+                           })
                        ]}/>
 
                 <Errors />
