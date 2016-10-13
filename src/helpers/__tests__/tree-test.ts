@@ -71,12 +71,12 @@ describe('Tree', () => {
             it('it throws for bad promises', () => {
                 return TLeaf.of(Promise.reject(1))
                 .sequence()
-                .then(leaf => expect(1).toEqual(2))
-                .catch(err => expect(err).toEqual(1));
+                .then(leaf => expect(leaf).toEqual(TLeaf.of(1)))
+                .catch(err => expect(1).toEqual(2));
             });
         });
     });
-
+    //
     describe('TArray', () => {
         describe('sequence', () => {
             it('it inverts an array of a promises', () => {
@@ -106,22 +106,22 @@ describe('Tree', () => {
             it('it throws for bad promises', () => {
                 return TArray.of(Promise.reject(1), [ TLeaf.of(Promise.resolve(2)) ])
                 .sequence()
-                .then(arr =>  expect(1).toEqual(2))
-                .catch(err => expect(err).toEqual(1));
+                .then(TArray.of(1, [TLeaf.of(2)]))
+                .catch(arr =>  expect(1).toEqual(2));
             });
 
             it('it throws for bad promises 2', () => {
                 return TArray.of(Promise.resolve(1), [ TLeaf.of(Promise.reject(2)) ])
                 .sequence()
-                .then(arr =>  expect(1).toEqual(2))
-                .catch(err => expect(err).toEqual(2));
+                .then(arr => expect(TArray.of(1, [TLeaf.of(2)])))
+                .catch(arr =>  expect(1).toEqual(2));
             });
 
             it('it throws for bad promises 3', () => {
                 return TArray.of(1, [ TArray.of(1, [ TLeaf.of(Promise.reject(3))]) ])
                 .sequence()
-                .then(arr =>  expect(1).toEqual(2))
-                .catch(err => expect(err).toEqual(3));
+                .then(arr => TArray.of(1, [TArray.of(1, [TLeaf.of(3)])]))
+                .catch(arr =>  expect(1).toEqual(2));
             });
         });
     });
@@ -155,25 +155,26 @@ describe('Tree', () => {
             it('it throws for bad promises', () => {
                 return TObject.of(Promise.reject(1), { one: TLeaf.of(Promise.resolve(1)) })
                 .sequence()
-                .then(obj => expect(1).toEqual(2))
-                .catch(err => expect(err).toEqual(1));
+                .then(obj => expect(obj).toEqual(TObject.of(1, { one: TLeaf.of(1) })))
+                .catch(obj => expect(1).toEqual(2));
             });
 
             it('it throws for bad promises', () => {
                 return TObject.of(Promise.resolve(1), { one: TLeaf.of(Promise.reject(2)) })
                 .sequence()
-                .then(obj => expect(1).toEqual(2))
-                .catch(err => expect(err).toEqual(2));
+                .then(obj => expect(obj).toEqual(TObject.of(1, { one: TLeaf.of(2) })))
+                .catch(obj => expect(1).toEqual(2));
             });
 
             it('it throws for bad promises', () => {
                 return TObject.of(Promise.resolve(1), { one: TObject.of(2, { two: TLeaf.of(Promise.reject(3)) }) })
                 .sequence()
-                .then(obj => expect(1).toEqual(2))
-                .catch(err => expect(err).toEqual(3));
+                .then(obj => expect(obj).toEqual(TObject.of(1, { one: TObject.of(2, { two: TLeaf.of(3) }) })))
+                .catch(obj => expect(1).toEqual(2));
             });
         });
-    })
+    });
+
     describe('Tree', () => {
         describe('sequence', () => {
             it('sequences deeply nested non promise nodes', () => {
@@ -201,6 +202,32 @@ describe('Tree', () => {
                     })]),
                     three: TObject.of(Promise.resolve(6), {
                         one: TLeaf.of(Promise.resolve(7)),
+                        two: TLeaf.of(8)
+                    })
+                });
+
+                return tree.sequence().then(_tree => expect(TObject.of(1, {
+                    one: TLeaf.of(2),
+                    two: TArray.of(3, [TLeaf.of(4), TObject.of(5, {
+                        one: TLeaf.of(999),
+                        two: TArray.of(1, [TArray.of(8, [])])
+                    })]),
+                    three: TObject.of(6, {
+                        one: TLeaf.of(7),
+                        two: TLeaf.of(8)
+                    })
+                })).toEqual(_tree));
+            });
+
+            it('sequences deeply nested rejected promise nodes', () => {
+                const tree = TObject.of(1, {
+                    one: TLeaf.of(2),
+                    two: TArray.of(Promise.resolve(3), [TLeaf.of(4), TObject.of(5, {
+                        one: TLeaf.of(999),
+                        two: TArray.of(1, [TArray.of(8, [])])
+                    })]),
+                    three: TObject.of(Promise.resolve(6), {
+                        one: TLeaf.of(Promise.reject(7)),
                         two: TLeaf.of(8)
                     })
                 });
