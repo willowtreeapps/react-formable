@@ -19,7 +19,7 @@ interface IErrorsProps extends IErrorsDefaultProps {
 
 export default class Fieldlist extends React.Component<IErrorsProps, {}> {
     static displayName = 'Errors';
-    
+
     public static defaultProps: IErrorsDefaultProps = {
         errors: [],
         additionalErrors: [],
@@ -38,9 +38,11 @@ export default class Fieldlist extends React.Component<IErrorsProps, {}> {
         const allErrors = [].concat(scoped ? fieldErrors : errors)
                             .concat(additionalErrors);
 
+        if (!allErrors.length) { return <span />; }
+
         const className = `${this.props.className} errors`;
 
-        return <ul {...this.props} className={className}>
+        return <ul className={className}>
             {allErrors.map((error, i) =>
                 <li key={i}> {this.props.renderError(error)} </li>)}
         </ul>;
