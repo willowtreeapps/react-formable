@@ -1,6 +1,6 @@
 {
   "name": "react-formable",
-  "version": "1.0.0-alpha-1",
+  "version": "1.0.0-alpha-2",
   "description": "A simple form library for react",
   "main": "dist/root.js",
   "author": "Willowtree",
