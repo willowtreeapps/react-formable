@@ -37,9 +37,14 @@ export default class Fieldlist extends React.Component<IFieldlistProps, {}> {
         const errors = this.props.errors || [];
         const fieldErrors = this.props.fieldErrors || [];
 
+        let props = this.props;
+        delete props.errors;
+        delete props.fieldErrors;
+        delete props.name;
+
         // Overwrite errors and fieldErrors passed in here as fieldset expects
         // different errors than fieldlist. There is no need to pass them down
-        return <Fieldset {...this.props}
+        return <Fieldset {...props}
                          ref="fieldset"
                          errors={[]}
                          fieldErrors={{}}>

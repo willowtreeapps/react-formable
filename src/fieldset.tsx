@@ -51,7 +51,12 @@ export default class Fieldset extends React.Component<IFieldsetProps, {}> {
 
         const child: any = this.props.children;
 
-        return <div {...this.props}>
+        let props = this.props;
+        delete props.errors;
+        delete props.fieldErrors;
+        delete props.name;
+
+        return <div {...props}>
             {cloneChildren([errorsRule, formableRule], child)}
         </div>;
     }

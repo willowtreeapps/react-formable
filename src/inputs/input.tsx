@@ -61,7 +61,13 @@ export default class Input extends React.Component<IInputProps, {}> {
         const hasError = this.props.fieldErrors && this.props.fieldErrors.length;
         const className = `${this.props.className} ${hasError ? 'error' : ''}`;
 
-        return <input {...this.props}
+        let props = this.props;
+        delete props.name;
+        delete props.fieldErrors;
+        delete props.validateOnBlur;
+        delete props.validators;
+
+        return <input {...props}
                       className={className}
                       onChange={this.onChange}
                       onBlur={this.onBlur}
