@@ -1,3 +1,5 @@
+/* tslint:disable */
+
 import * as React from 'react';
 import uniq from './helpers/uniq';
 import values from './helpers/values';

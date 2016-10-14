@@ -83,7 +83,7 @@ export class TArray<T> {
 
     public extend<U>(fn: (tree: Tree<T>) => U): Tree<U> {
         const nextChildren = this.children.map(child => {
-            return child.extend(fn);
+            return child[`extend`](fn);
         });
 
         return TArray.of(fn(this), nextChildren);
@@ -143,7 +143,7 @@ export class TObject<T> {
     }
 
     public extend<U>(fn: (tree: Tree<T>) => U): Tree<U> {
-        const nextChildren = mapObj(child => child.extend(fn), this.children);
+        const nextChildren = mapObj(child => child[`extend`](fn), this.children);
 
         return TObject.of(fn(this), nextChildren);
     }

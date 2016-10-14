@@ -1,25 +1,25 @@
 {
-    "name": "react-sapling-component",
-    "globalDependencies": {
-        "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
-        "express": "registry:dt/express#4.0.0+20160317120654",
-        "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160625155614",
-        "jest": "registry:dt/jest#0.9.0+20160425141105",
-        "log4js": "registry:dt/log4js#0.0.0+20160608042355",
-        "marked": "registry:dt/marked#0.0.0+20160325085301",
-        "mustache": "registry:dt/mustache#0.8.2+20160316155526",
-        "node": "registry:dt/node#6.0.0+20160621231320",
-        "rx-lite": "registry:dt/rx-lite#0.0.0+20160623134935",
-        "serve-static": "registry:dt/serve-static#0.0.0+20160606155157",
-        "through": "registry:dt/through#0.0.0+20160317120654"
-    },
-    "dependencies": {
-        "assertion-error": "registry:npm/assertion-error#1.0.0+20160422045008",
-        "inquirer": "registry:npm/inquirer#1.0.0+20160427045422",
-        "mime": "registry:npm/mime#1.3.0+20160423043021",
-        "minimist": "registry:npm/minimist#1.0.0+20160229232932",
-        "mkdirp": "registry:npm/mkdirp#0.5.0+20160222053049",
-        "react": "registry:npm/react#15.0.1+20160601175240",
-        "rimraf": "registry:npm/rimraf#2.5.0+20160211003958"
-    }
+  "name": "react-sapling",
+  "globalDependencies": {
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
+    "express": "registry:dt/express#4.0.0+20160708185218",
+    "express-serve-static-core": "registry:dt/express-serve-static-core#4.0.0+20160928124223",
+    "jest": "registry:dt/jest#15.1.1+20160919141445",
+    "log4js": "registry:dt/log4js#0.0.0+20160608042355",
+    "marked": "registry:dt/marked#0.0.0+20160325085301",
+    "mustache": "registry:dt/mustache#0.8.2+20160316155526",
+    "node": "registry:dt/node#6.0.0+20161006230116",
+    "rx-lite": "registry:dt/rx-lite#0.0.0+20160628114230",
+    "serve-static": "registry:dt/serve-static#0.0.0+20160606155157",
+    "through": "registry:dt/through#0.0.0+20160317120654"
+  },
+  "dependencies": {
+    "assertion-error": "registry:npm/assertion-error#1.0.0+20160723033700",
+    "inquirer": "registry:npm/inquirer#1.0.0+20160723033700",
+    "mime": "registry:npm/mime#1.3.0+20160723033700",
+    "minimist": "registry:npm/minimist#1.0.0+20160723033700",
+    "mkdirp": "registry:npm/mkdirp#0.5.0+20160723033700",
+    "react": "registry:npm/react#15.0.1+20160601175240",
+    "rimraf": "registry:npm/rimraf#2.5.0+20160723033700"
+  }
 }

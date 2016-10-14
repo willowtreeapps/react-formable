@@ -5,7 +5,10 @@
         "experimentalDecorators": true,
         "allowSyntheticDefaultImports": true,
         "allowJs": true,
-        "outDir": "./.trash"
+        "outDir": "./.trash",
+        "strictNullChecks": false,
+        "suppressImplicitAnyIndexErrors": true,
+        "noImplicitAny": false
     },
     "exclude": [
         "node_modules",

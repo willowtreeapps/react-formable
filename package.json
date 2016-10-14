@@ -1,6 +1,6 @@
 {
   "name": "react-formable",
-  "version": "0.7.1",
+  "version": "1.0.0-alpha-1",
   "description": "A simple form library for react",
   "main": "dist/root.js",
   "author": "Willowtree",
@@ -35,7 +35,7 @@
   "license": "MIT",
   "devDependencies": {
     "react-addons-test-utils": "*",
-    "react-sapling": "0.5.2"
+    "react-sapling": "0.6.1"
   },
   "scripts": {
     "gh:publish": "npm run build && cp -r dist/docs _docs && cd _docs && git init && git commit --allow-empty -m ':fire: update gh-pages' && git checkout -b gh-pages && git add . && git commit -am ':fire: update gh-pages' && git push https://github.com/willowtreeapps/react-formable.git gh-pages --force && cd .. && rm -rf _docs",
@@ -50,8 +50,8 @@
     "build": "npm run clean && npm run build:lib-prod && npm run build:lib-docs && npm run build:bundle-docs"
   },
   "peerDependencies": {
-    "react": "^0.14 || ^15.0.0-rc || ^15.0",
-    "react-dom": "^0.14 || ^15.0.0-rc || ^15.0"
+    "react": ">=0.14 <16",
+    "react-dom": ">=0.14 <16"
   },
   "typescript": {
     "definition": "./dist/typings/root.d.ts"
