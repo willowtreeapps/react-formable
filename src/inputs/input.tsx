@@ -42,7 +42,13 @@ export default class Input extends React.Component<IInputProps, {}> {
     }
 
     public getValue(): AnyType {
-        return this.refs.input.value;
+        switch(this.refs.input.type) {
+            case 'checkbox':
+            case 'radio':
+                return this.refs.input.checked;
+            default:
+                return this.refs.input.value;
+        }
     }
 
     private onChange(e: AnyType): void {
