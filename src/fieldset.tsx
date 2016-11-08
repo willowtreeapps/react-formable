@@ -4,6 +4,7 @@ import * as React from 'react';
 import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
 import values from './helpers/values';
 import { TObject, TLeaf } from './helpers/tree';
+import omit from './helpers/omit';
 import AnyObject from './types/anyObject';
 const warning = require('warning');
 
@@ -51,10 +52,11 @@ export default class Fieldset extends React.Component<IFieldsetProps, {}> {
 
         const child: any = this.props.children;
 
-        let props = this.props;
-        delete props.errors;
-        delete props.fieldErrors;
-        delete props.name;
+        const props = omit([
+            'errors',
+            'fieldErrors',
+            'name'
+        ], this.props);
 
         return <div {...props}>
             {cloneChildren([errorsRule, formableRule], child)}

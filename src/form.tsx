@@ -7,6 +7,7 @@ import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/c
 import { TObject, TLeaf } from './helpers/tree';
 import promiseEvery from './helpers/promiseEvery';
 import identity from './helpers/identity';
+import omit from './helpers/omit';
 
 export interface IValidation {
     fieldErrors: any;
@@ -222,13 +223,14 @@ export default class Formable<T> extends React.Component<IFormableProps<T>, IFor
         );
         const children: any = this.props.children;
 
-        let props = this.props;
-        delete props.addValidationFieldErrors;
-        delete props.onChange;
-        delete props.showErrorsOnSubmit;
-        delete props.showErrorsOnChange;
-        delete props.delayOnSubmit;
-        delete props.validators;
+        const props = omit([
+            'addValidationFieldErrors',
+            'onChange',
+            'showErrorsOnSubmit',
+            'showErrorsOnChange',
+            'delayOnSubmit',
+            'validators'
+        ], this.props);
 
         return <form {...props}
                     ref="form"
