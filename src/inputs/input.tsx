@@ -63,7 +63,6 @@ export default class Input extends React.Component<IInputProps, {}> {
         const className = `${this.props.className} ${hasError ? 'error' : ''}`;
 
         const props = omit([
-            'name',
             'errors',
             'fieldErrors',
             'validateOnBlur',
