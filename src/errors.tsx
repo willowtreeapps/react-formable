@@ -10,7 +10,7 @@ interface IErrorsDefaultProps {
     additionalErrors?: any[];
     fieldErrors?: any;
     scoped?: boolean;
-    renderError?: (error: any) => void;
+    renderError?: (error: any) => React.ReactElement<{}>;
     className?: string;
 }
 
