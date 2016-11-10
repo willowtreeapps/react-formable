@@ -89,7 +89,16 @@ function getFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)
 export function createFormableRule(errors = [], fieldErrors = {},
     onSubmit = identity, onChange = identity) {
     return {
-        predicate: child => child.props && child.props.name,
+        predicate: child => {
+            const hasName = child.props && child.props.name;
+            const hasType = child.type && child.type.prototype;
+            const hasGetValue = hasType && child.type.prototype.getValue;
+            const hasGetInputs = hasType && child.type.prototype.getInputs;
+
+            warning(!(hasName && hasType && !(hasGetValue || hasGetInputs)), `You have an improperly named component: "${child.props.name}". Please see https://github.com/willowtreeapps/react-formable/issues/92`);
+
+            return hasName && (hasGetValue || hasGetInputs);
+        },
         clone: (child, childNames) => {
             return React.cloneElement(
                 child,
