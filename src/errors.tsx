@@ -38,9 +38,7 @@ export default class Fieldlist extends React.Component<IErrorsProps, {}> {
         const allErrors = [].concat(scoped ? fieldErrors : errors)
                             .concat(additionalErrors);
 
-        if (!allErrors.length) { return <span />; }
-
-        const className = `${this.props.className} errors`;
+        const className = `${this.props.className} ${allErrors.length ? 'has-errors' : ''} errors`;
 
         return <ul className={className}>
             {allErrors.map((error, i) =>
