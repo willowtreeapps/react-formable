@@ -6,8 +6,8 @@ import flatten from './helpers/flatten';
 import values from './helpers/values';
 
 interface IErrorsDefaultProps {
-    errors?: string[];
-    additionalErrors?: string[];
+    errors?: any[];
+    additionalErrors?: any[];
     fieldErrors?: any;
     scoped?: boolean;
     renderError?: (error: any) => void;
