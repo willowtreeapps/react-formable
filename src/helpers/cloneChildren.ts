@@ -86,8 +86,12 @@ function getFormableComponentProperties(errors, fieldErrors, onSubmit, onChange)
 /*
  * Standard cloning rule for something react-formable
  */
-export function createFormableRule(errors = [], fieldErrors = {},
-    onSubmit = identity, onChange = identity) {
+export function createFormableRule(
+    errors = [],
+    fieldErrors = {},
+    onSubmit = identity,
+    onChange = identity
+) {
     return {
         predicate: child => {
             const hasName = child.props && child.props.name;
