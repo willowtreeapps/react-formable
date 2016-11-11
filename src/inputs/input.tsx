@@ -1,8 +1,13 @@
 import * as React from 'react';
 import omit from '../helpers/omit';
 
+// TODO: Clean up the use of any here
+/* tslint:disable: no-any */
+type AnyType = any;
+/* tslint:enable: no-any */
+
 interface IInputDefaultProps {
-    onChange?: () => void;
+    onChange?: (e: AnyType) => void;
     onSubmit?: () => void;
     className?: string;
 }
@@ -18,14 +23,9 @@ export interface IInputProps extends IInputDefaultProps {
 }
 /* tslint:enable: no-any */
 
-// TODO: Clean up the use of any here
-/* tslint:disable: no-any */
-type AnyType = any;
-/* tslint:enable: no-any */
-
 export default class Input extends React.Component<IInputProps, {}> {
     public static defaultProps: IInputDefaultProps = {
-        onChange: (): void => void 0,
+        onChange: (e: AnyType): void => void 0,
         onSubmit: (): void => void 0,
         className: ''
     };
@@ -54,13 +54,13 @@ export default class Input extends React.Component<IInputProps, {}> {
 
     private onChange(e: AnyType): void {
         if(!this.props.validateOnBlur) {
-            this.props.onChange();
+            this.props.onChange(e);
         }
     }
 
-    private onBlur(): void {
+    private onBlur(e: AnyType): void {
         if (this.props.validateOnBlur) {
-            this.props.onChange();
+            this.props.onChange(e);
         }
     }
 
