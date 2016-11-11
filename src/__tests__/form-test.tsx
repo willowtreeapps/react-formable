@@ -248,7 +248,7 @@ describe('Form', () => {
     });
 
     it('it checks for the existance of ref before using it in serialize', () => {
-        const Icon = props => <i {...props} />;
+        const Icon = props => <i />;
 
         const form: any = TestUtils.renderIntoDocument(
             <Form>

@@ -6,11 +6,11 @@ import flatten from './helpers/flatten';
 import values from './helpers/values';
 
 interface IErrorsDefaultProps {
-    errors?: string[];
-    additionalErrors?: string[];
+    errors?: any[];
+    additionalErrors?: any[];
     fieldErrors?: any;
     scoped?: boolean;
-    renderError?: (error: any) => void;
+    renderError?: (error: any) => React.ReactElement<{}>;
     className?: string;
 }
 
@@ -38,9 +38,7 @@ export default class Fieldlist extends React.Component<IErrorsProps, {}> {
         const allErrors = [].concat(scoped ? fieldErrors : errors)
                             .concat(additionalErrors);
 
-        if (!allErrors.length) { return <span />; }
-
-        const className = `${this.props.className} errors`;
+        const className = `${this.props.className} ${allErrors.length ? 'has-errors' : ''} errors`;
 
         return <ul className={className}>
             {allErrors.map((error, i) =>

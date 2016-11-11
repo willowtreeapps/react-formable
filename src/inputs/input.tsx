@@ -1,4 +1,5 @@
 import * as React from 'react';
+import omit from '../helpers/omit';
 
 interface IInputDefaultProps {
     onChange?: () => void;
@@ -67,11 +68,12 @@ export default class Input extends React.Component<IInputProps, {}> {
         const hasError = this.props.fieldErrors && this.props.fieldErrors.length;
         const className = `${this.props.className} ${hasError ? 'error' : ''}`;
 
-        let props = this.props;
-        delete props.name;
-        delete props.fieldErrors;
-        delete props.validateOnBlur;
-        delete props.validators;
+        const props = omit([
+            'errors',
+            'fieldErrors',
+            'validateOnBlur',
+            'validators'
+        ], this.props);
 
         return <input {...props}
                       className={className}
