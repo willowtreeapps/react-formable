@@ -2,8 +2,16 @@
   "name": "react-formable",
   "version": "0.7.1",
   "description": "A simple form library for react",
-  "main": "lib/formable.js",
+  "private": true,
   "author": "Willowtree",
+  "homepage": "https://github.com/willowtreeapps/react-formable",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/willowtreeapps/react-formable.git"
+  },
+  "bugs": {
+    "url": "https://github.com/willowtreeapps/react-formable/issues"
+  },
   "contributors": [
     {
       "name": "Matt O'Connell"
@@ -15,90 +23,27 @@
       "name": "Christine Bryant-Ryback"
     }
   ],
-  "homepage": "https://github.com/willowtreeapps/react-formable",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/willowtreeapps/react-formable.git"
-  },
-  "bugs": {
-    "url": "https://github.com/willowtreeapps/react-formable/issues"
-  },
-  "dependencies": {
-    "react-waypoint": "^1.2.0",
-    "warning": "^2.1.0"
-  },
   "devDependencies": {
-    "babel-core": "^6.3.17",
-    "babel-eslint": "^4.1.6",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-react": "^6.3.13",
-    "eslint": "^1.10.3",
-    "eslint-plugin-react": "^3.11.3",
-    "gulp": "^3.9.0",
-    "history": "^1.13.1",
-    "jest-cli": "^0.8.1",
-    "marked": "^0.3.5",
-    "react": "^0.14.0",
-    "react-addons-test-utils": "^0.14.3",
-    "react-component-gulp-tasks": "github:kaw2k/react-component-gulp-tasks",
-    "react-dom": "^0.14.0",
-    "react-router": "^1.0.2"
+    "flow-bin": "^0.36.0",
+    "material-ui": "^0.16.5",
+    "react-flip-move": "^2.7.2",
+    "react-scripts": "0.8.3",
+    "react-tap-event-plugin": "^2.0.1",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1"
   },
   "peerDependencies": {
-    "react": "^0.14.0"
+    "react": "15.x",
+    "react-dom": "15.x"
   },
-  "browserify-shim": {
-    "react": "global:React",
-    "react-dom": "global:ReactDOM",
-    "history": "global:History",
-    "marked": "global:marked",
-    "react-router": "global:ReactRouter",
-    "hljs": "global:hljs",
-    "smoothscroll": "global:smoothScroll"
+  "dependencies": {
+    "lodash.debounce": "^4.0.8"
   },
   "scripts": {
-    "build": "gulp clean && NODE_ENV=production gulp build",
-    "bump": "gulp bump",
-    "bump:major": "gulp bump:major",
-    "bump:minor": "gulp bump:minor",
-    "examples": "gulp dev:server",
-    "lint": "eslint ./; true",
-    "lintRaw": "eslint ./ --max-warnings 0",
-    "publish:site": "NODE_ENV=production gulp publish:examples",
-    "release": "NODE_ENV=production gulp release",
-    "start": "gulp dev",
-    "test": "jest",
-    "test:debug": "node-debug -p 12345 --nodejs --harmony ./node_modules/jest-cli/bin/jest.js --runInBand",
-    "watch": "gulp watch:lib"
-  },
-  "jest": {
-    "scriptPreprocessor": "<rootDir>preprocessor",
-    "testFileExtensions": [
-      "es6",
-      "js"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "es6"
-    ],
-    "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/react",
-      "<rootDir>/node_modules/react-dom",
-      "<rootDir>/node_modules/react-addons-test-utils",
-      "<rootDir>/node_modules/fbjs",
-      "<rootDir>/src/helpers"
-    ]
-  },
-  "keywords": [
-    "react",
-    "react-component",
-    "react-forms",
-    "react-form",
-    "forms",
-    "form",
-    "inputs",
-    "react-inputs"
-  ],
-  "license": "MIT"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "flow": "flow"
+  }
 }

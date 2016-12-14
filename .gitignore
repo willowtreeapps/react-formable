@@ -1,31 +1,15 @@
-# Logs
-logs
-*.log
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# Runtime data
-pids
-*.pid
-*.seed
-
-# Coverage tools
-lib-cov
-coverage
-coverage.html
-.cover*
-
-# Dependency directory
+# dependencies
 node_modules
 
-# Example build directory
-example/dist
-.publish
+# testing
+coverage
 
-# Editor and other tmp files
-*.swp
-*.un~
-*.iml
-*.ipr
-*.iws
-*.sublime-*
-.idea/
-*.DS_Store
+# production
+build
+
+# misc
+.DS_Store
+.env
+npm-debug.log

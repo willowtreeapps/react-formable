@@ -1,0 +1,38 @@
+.error {
+  border-bottom: 1px solid red;
+}
+
+input {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid lightslategrey;
+  display: inline-block;
+  padding: 10px 20px;
+}
+
+
+.button {
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 3px;
+  border: 1px solid blueviolet;
+  color: blueviolet;
+}
+
+.remove-family,
+.remove-child {
+  border-color: indianred;
+  color: indianred;
+  margin-right: 20px;
+}
+
+
+.family {
+  margin-top: 80px;
+  margin-left: 20px;
+}
+
+.child {
+  margin: 20px;
+}

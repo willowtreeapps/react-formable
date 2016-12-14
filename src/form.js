@@ -1,182 +1,181 @@
-import React, { PropTypes } from 'react';
-import uniq from './helpers/uniq';
-import values from './helpers/values';
-import cloneChildren, { createErrorsRule, createFormableRule } from './helpers/cloneChildren';
-import tree from './helpers/tree';
-import identity from './helpers/identity';
+// @flow
 
-export const getBlankForm =function getBlankForm() {
-    return {
-        valid: true,
-        fieldValues: {},
-        fieldErrors: {},
-        errors: []
-    };
-};
+import React, { Component } from 'react'
+import inflateTree from './inflateTree'
+import clone from './clone'
+import debounce from 'lodash.debounce'
 
-const treeValue = function treeValue(tree) {
-    return tree.map(value => value.getValue && value.getValue()).extract();
-};
+/*
+===============================
+=            TODO             =
+===============================
+- Get dynamic keys to persist error states
+- Add prop to validate single vs form (only for onChange)
+- Add optimizations for validation / serialization
+- Add dynamic props passed down to components (so we can emulate redux-forms and make things controlled)
+- Figure out how to pass down loading states
+- Add validation to all named elements
+- Make config take an array of options, that way the form can track multiple types of inputs. Perhaps also add in a an optional clone rule for each type.
+- Controlled components... Figure out the appropriate order for getting values. onChange needs to have the event value, otherwise it will never get updated.
+- Tests clone in isolation
+- Readme with all documentation in place
+- Add in propTypes
+- have a mode for on change of individual input show validation
 
-const getValidators = function getValidators(ref) {
-    const propValidators = ref && ref.props && ref.props.validators || [];
-    const refValidators = ref && ref.validators || [];
+- Pass name to find, concat keys together
+- Examples
+    - Custom validation (eg: hints onChange and errors onSubmit, coupled with animated error states)
+    - Custom inputs, maybe a datepicker, checkboxes, radio, pin input
+*/
 
-    return [].concat(propValidators, refValidators);
-}
+const promiseEvery = (arr) =>
+    Promise.all(arr.map(val => Promise.resolve(val).catch(x => x)));
 
-export default React.createClass({
-    displayName: 'Form',
+const getValueFromNode = ({ getValue, value, defaultValue }) =>
+    getValue() !== undefined
+        ? getValue()
+        : value !== undefined
+            ? value
+            : defaultValue
 
-    propTypes: {
-        addValidationFieldErrors: PropTypes.bool,
+export default class Form extends Component {
+    // propName: string
+    // eventName: string
+    // getValueFromEvent: (e: any) => any
+    // fieldErrorsToProps: (fieldErrors, props) => ({
+    //     className: `${fieldErrors.length ? 'error' : ''} ${props.className}`
+    // }),
+    // (fieldErrors: any[], props: any) => {}
+    // showErrorsOnChange: boolean
+    // showErrorsOnSubmit: boolean
+    // onChange: (form: IForm) => void
+    // onSubmit: (form: IForm, valid: boolean) => void
+    // onValidating
+    // debounceValidation: number
 
-        // Handlers for your form callbacks. These will be called with the
-        // current serialization of the form
-        onSubmit: PropTypes.func,
-        onChange: PropTypes.func,
+    static defaultProps = {
+        propName: 'name',
+        eventName: 'onChange',
+        getValueFromEvent: e => e.target.value,
+        fieldErrorsToProps: (fieldErrors, props) => ({
+            className: `${fieldErrors.length ? 'error' : ''} ${props.className}`
+        }),
+        showErrorsOnChange: false,
+        showErrorsOnSubmit: true,
+        debounceValidation: 0
+    }
 
-        showErrorsOnSubmit: PropTypes.bool,
-        showErrorsOnChange: PropTypes.bool,
+    tree = []
+    state = { errors: [] }
 
-        validators: PropTypes.arrayOf(PropTypes.func),
+    clearFieldErrors = () => {
+        this.tree = this.tree.map(node => ({ ...node, fieldErrors: [] }))
+        this.setState({ errors: [] })
+    }
 
-        // Default React children prop
-        children: PropTypes.node
-    },
+    showFieldErrors = () => {
+        this.serialize().validation.then(({ validatedTree, errors }) => {
+            this.tree = validatedTree
+            this.setState({ errors })
+        })
+    }
 
-    getDefaultProps() {
-        return {
-            onChange: function () {},
-            onSubmit: function () {},
-            showErrorsOnSubmit: true,
-            showErrorsOnChange: false
-        };
-    },
+    serialize = () => {
+        const tempTree = this.tree.map(node => ({
+            ...node,
+            flattenedValue: getValueFromNode(node) || ''
+        }))
 
-    getInitialState() {
-        return {
-            fieldErrors: {},
-            errors: []
-        };
-    },
+        const fieldValues = inflateTree('flattenedValue', tempTree)
+        const validation = this.validate(fieldValues, tempTree, 'serialize')
 
-    serialize() {
-        // Build our list of children
-        const refs = values(this.refs || {})
-                .filter(ref => ref && (ref.getInputs || ref.getValue))
-                .map(ref => ref.getInputs ? ref.getInputs() : { ref })
-                .map(x => tree(x.ref, x.refs))
-                .reduce((memo, node) => {
-                    memo[node.value.props.name] = node;
-                    return memo;
-                }, {});
+        return { fieldValues, validation }
+    }
 
-        // Make our tree which we will use for serialization and validation
-        const formTree = tree(this, refs);
+    validate = (form: any, tree: any, eventType : string ='') => {
+        const treePromises = tree.map(node =>
+            promiseEvery(node.validators.map(fn => fn(node.flattenedValue, form, eventType)))
+                .then(errors => ({ ...node, fieldErrors: errors.filter(x => x) }))
+        )
 
-        // Calculate how many times we should serialize in the case of
-        // cycles when addValidationFieldErrors is true. We do this by
-        // counting how many nodes are in our tree
-        const refLength = formTree.map(() => 1).reduce((a,b) => a+b, 0);
-        let iteration = 0;
+        return promiseEvery(treePromises).then(validatedTree => {
+            const errors = validatedTree
+                .reduce((memo, node) => memo.concat(node.fieldErrors), [])
+                .filter((val, i, self) => self.indexOf(val) === i)
 
-        let form = getBlankForm();
-        let oldForm = getBlankForm();
+            return {
+                validatedTree,
+                errors,
+                valid: errors.length,
+                fieldErrors: inflateTree('fieldErrors', tree),
+            }
+        })
+    }
 
-        do {
-            // Keep a copy of the previous iteration of the form so we can
-            // detect if the form is stable to exit early
-            oldForm = Object.assign({}, form);
+    validateDebounced = debounce(function (...args) {
+        this.validate(...args).then(({ validatedTree, errors }) => {
+            this.tree = validatedTree
+            this.setState({ errors })
+        })
+    }, this.props.debounceValidation)
 
-            // Gather our fieldValues from our tree
-            form.fieldValues = treeValue(formTree);
+    update = (e: SyntheticEvent, cb: any, showErrors: any, eventType: any) => {
+        e && e.preventDefault()
 
-            // Make a new temporary error tree. We will use this tree to
-            // generate a nested object (fieldErrors) and again to reduce it
-            // into an array (errors)
-            const formTreeErrors = formTree
-                .extend(tree => {
-                    const validators = getValidators(tree.value);
-                    const value = tree.value.getValue ? tree.value.getValue() : treeValue(tree);
-                    const fieldValues = form.fieldValues;
-                    const fieldErrors = this.props.addValidationFieldErrors ? oldForm.fieldErrors : null;
+        // Flatten down the existing values (since before they were callbacks)
+        this.tree = this.tree.map(node => ({
+            ...node,
+            flattenedValue: getValueFromNode(node) || ''
+        }))
 
-                    return validators
-                            .map(fn => fn(value, fieldValues, fieldErrors))
-                            .filter(identity);
-                });
+        let form
+        if (cb || showErrors) {
+            form = inflateTree('flattenedValue', this.tree)
 
-            form.fieldErrors = formTreeErrors.extract()
-            form.errors = formTreeErrors
-                            .reduce((acc, val) => {
-                                return acc.concat(val);
-                            }, []);
-
-            iteration++;
-
-        // If we don't need fieldErrors in our validators, we only need to
-        // execute this do..while once. We need to loop because we don't have
-        // explicit dependencies. We fake dependencies by making
-        // an eventually stable tree.
-        } while(
-            this.props.addValidationFieldErrors &&
-            iteration < refLength &&
-            JSON.stringify(form) !== JSON.stringify(oldForm)
-        );
-
-        // Update valid here so our formValidators can make use of it
-        form.errors = uniq(form.errors.filter(identity));
-        form.valid = !form.errors.length;
-
-        return form;
-    },
-
-    onChange() {
-        this.props.onChange(this.serialize());
-        if (this.props.showErrorsOnChange) {
-            this.showFieldErrors();
+            cb && cb(form)
+            showErrors && this.validateDebounced(form, this.tree, eventType)
         }
-    },
+    }
 
-    onSubmit(event) {
-        event && event.preventDefault && event.preventDefault()
-        if (this.props.showErrorsOnSubmit) {
-            this.showFieldErrors();
-        }
-        this.props.onSubmit(this.serialize());
-    },
-
-    onKeyDown(event) {
-        if (event.key === 'Enter') {
-            this.onSubmit(event);
-        }
-    },
-
-    showFieldErrors() {
-        const { fieldErrors, errors } = this.serialize();
-
-        this.setState({ errors, fieldErrors });
-        return errors;
-    },
-
-    clearFieldErrors() {
-        this.setState({
-            fieldErrors: {},
-            errors: []
-        });
-    },
+    onChange = (e: SyntheticEvent) => this.update(e, this.props.onChange, this.props.showErrorsOnChange, 'onChange')
+    onSubmit = (e: SyntheticEvent) => this.update(e, this.props.onSubmit, this.props.showErrorsOnSubmit, 'onSubmit')
+    onKeyDown = (e: SyntheticKeyboardEvent) => e.key === 'Enter' && this.onSubmit(e)
 
     render() {
-        const errorsRule = createErrorsRule(this.state.errors, this.state.fieldErrors);
-        const formableRule = createFormableRule(this.state.errors, this.state.fieldErrors, this.onSubmit, this.onChange);
+        const { propName, eventName, getValueFromEvent, fieldErrorsToProps, ...props} = this.props;
+        const { children, tree } = clone({
+            children: this.props.children,
+            path: '',
+            tree: [],
+            nodeIndexCount: {},
+            propName,
+            eventName,
+            getValueFromEvent,
+            onChange: this.onChange,
+            fieldErrorsToProps,
+            previousRenderTree: this.tree || [],
+            errors: this.state.errors
+        })
 
-        return <form {...this.props}
-                    ref="form"
-                    onSubmit={this.onSubmit}
-                    onChange={function () {}}
-                    onKeyDown={this.onKeyDown}>
-            {cloneChildren([errorsRule, formableRule], this.props.children)}
-        </form>;
+        delete props.onChange
+        delete props.onSubmit
+        delete props.showErrorsOnChange
+        delete props.showErrorsOnSubmit
+        delete props.debounceValidation
+
+        this.tree = tree
+
+        return <form className={this.props.className}
+                     onSubmit={this.onSubmit}
+                     onChange={function () {}}
+                     onReset={() => {
+                         this.tree = []
+                         this.setState({ errors: [] })
+                         this.props.onChange && this.props.onChange({})
+                     }}
+                     onKeyDown={this.onKeyDown}
+                     {...props}>
+            {children}
+        </form>
     }
-});
+}

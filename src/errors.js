@@ -1,48 +1,23 @@
-import React, { PropTypes } from 'react';
-import identity from './helpers/identity';
-import flatten from './helpers/flatten';
-import values from './helpers/values';
+// @flow
 
-export default React.createClass({
-    displayName: 'Errors',
+import React from 'react'
 
-    propTypes: {
-        errors: PropTypes.arrayOf(PropTypes.string),
-        fieldErrors: PropTypes.oneOfType([
-            PropTypes.array,
-            PropTypes.object
-        ]),
-        additionalErrors: PropTypes.arrayOf(PropTypes.string),
-        scoped: PropTypes.bool,
-        renderError: PropTypes.func,
-        className: PropTypes.string
-    },
+type ErrorsProps = {
+    renderError: (error: any) => any,
+    errors: any[],
+    _errors: any[],
+    className: string
+}
 
-    getDefaultProps() {
-        return {
-            errors: [],
-            additionalErrors: [],
-            fieldErrors: [],
-            scoped: false,
-            renderError: identity,
-            className: ''
-        };
-    },
+const Errors = ({ renderError=(x => x), errors=[], _errors=[], className='' }: ErrorsProps) => {
+    const allErrors = errors.concat(_errors)
 
-    render() {
-        const { errors, additionalErrors, scoped } = this.props;
+    const errorLis = allErrors.reduce((memo, error, i) => {
+        const el = renderError(error)
+        return el ? memo.concat(<li key={error.toString() + i}>{el}</li>) : memo;
+    }, [])
 
-        const fieldErrors = flatten(values(this.props.fieldErrors))
-                                .filter(s => typeof s === 'string');
+    return !!allErrors.length && <ul className={`${className} errors`}>{errorLis}</ul>
+}
 
-        const allErrors = [].concat(scoped ? fieldErrors : errors)
-                            .concat(additionalErrors);
-
-        const className = `${this.props.className} errors`;
-
-        return <ul {...this.props} className={className}>
-            {allErrors.map((error, i) =>
-                <li key={i}> {this.props.renderError(error)} </li>)}
-        </ul>;
-    }
-});
+export default Errors
