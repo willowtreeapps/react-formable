@@ -1,49 +1,53 @@
 {
   "name": "react-formable",
-  "version": "2.0.0-alpha-1",
-  "description": "A simple form library for react",
-  "private": true,
-  "author": "Willowtree",
-  "homepage": "https://github.com/willowtreeapps/react-formable",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/willowtreeapps/react-formable.git"
-  },
-  "bugs": {
-    "url": "https://github.com/willowtreeapps/react-formable/issues"
-  },
-  "contributors": [
-    {
-      "name": "Matt O'Connell"
-    },
-    {
-      "name": "Kevin Welcher"
-    },
-    {
-      "name": "Christine Bryant-Ryback"
-    }
-  ],
-  "devDependencies": {
-    "flow-bin": "^0.36.0",
-    "material-ui": "^0.16.5",
-    "react-flip-move": "^2.7.2",
-    "react-scripts": "0.8.3",
-    "react-tap-event-plugin": "^2.0.1",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1"
-  },
-  "peerDependencies": {
-    "react": "15.x",
-    "react-dom": "15.x"
-  },
-  "dependencies": {
-    "lodash.debounce": "^4.0.8"
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "dist/index"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "flow": "flow"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf dist && tsc",
+    "start": "node examples/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.13.2",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-dev-expression": "^0.2.1",
+    "babel-plugin-istanbul": "^1.0.3",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-1": "^6.13.0",
+    "babel-register": "^6.11.6",
+    "chokidar": "^1.6.1",
+    "express": "^4.14.0",
+    "express-urlrewrite": "^1.2.0",
+    "inline-source-map": "^0.6.2",
+    "material-ui": "^0.16.6",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-tap-event-plugin": "^2.0.1",
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^1.3.2",
+    "typescript": "^2.1.4",
+    "typings": "^2.0.0",
+    "webpack": "^1.14.0",
+    "webpack-dev-middleware": "^1.9.0"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.45",
+    "@types/react": "^0.14.55",
+    "lodash": "^4.17.4",
+    "lodash.debounce": "^4"
+  },
+  "peerDependencies": {
+    "react": "^15"
   }
 }

@@ -1,0 +1,18 @@
+Make Fieldset and Fieldlist
+Find a way to get ref changes to triger their respective events
+Add optional prop to cause blur to fire event
+Make Input, Radio, Checkbox, etc
+Make lists of elements more readily mapped back to their origional element
+Validate all named nodes, not just inputs. Keep an array of validators with a path they reference (if it isn't a node). At the end, select only that portion of the tree and pass it to that validator. Perhaps this same thing could be used with mapping values.
+
+Ops stuff
+    Get more examples in
+    Get builds working for exporting the NPM package
+    Properly type the form input
+    Make sure types work on importing the package
+    Document about refs / try to figure out a way to get ref strings working
+
+
+THOUGHTS
+- add onValidate(isValidating: boolean)
+- add props for fieldValues, fieldErrors, etc. They will control the form if present. Done via setting the tree state maybe (or just in clone).

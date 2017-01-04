@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "allowJs": true,
+        "module": "commonjs",
+        "target": "es6",
+        "jsx": "react",
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "declaration": false
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
