@@ -50,10 +50,10 @@ const clone = (options) => {
             return React.cloneElement(child, {}, children);
         }
         const { defaultProp, eventName, getValueFromEvent, fieldErrorsToProps, valueProp } = options.configureForm(child.type, child.props) || Form_1.defaultConfigureInput;
+        const errorsToProps = fieldErrorsToProps || options.fieldErrorsToProps;
         // SUBCASE: Normal Formable node without children
         const oldTreeNode = findInTree(path, child.key, options.previousRenderTree);
         const fieldErrors = oldTreeNode ? oldTreeNode.fieldErrors : [];
-        // console.log(oldTreeNode);
         // If we have an old node, get the value from that node,
         // otherwise derive the value from props
         const value = oldTreeNode
@@ -69,10 +69,10 @@ const clone = (options) => {
             key: child.key,
             validators: [...(child.props.validators || []), ...(child.type.validators || [])],
         });
-        let newProps = __assign({}, child.props, (fieldErrorsToProps(fieldErrors, child.props)), { ref: child.ref, [eventName]: (e) => {
-                options.onChange(path, getValueFromEvent(e));
+        let newProps = __assign({}, child.props, errorsToProps(fieldErrors, child.props), { ref: child.ref, [eventName]: (...args) => {
+                options.onChange(path, getValueFromEvent(...args));
                 if (child.props[eventName]) {
-                    child.props[eventName](e);
+                    child.props[eventName](...args);
                 }
             } });
         if (options.removeValidators)

@@ -16,3 +16,7 @@ Ops stuff
 THOUGHTS
 - add onValidate(isValidating: boolean)
 - add props for fieldValues, fieldErrors, etc. They will control the form if present. Done via setting the tree state maybe (or just in clone).
+
+Publish
+Use in a test app
+Write release notes

@@ -1,8 +1,31 @@
 {
   "name": "react-formable",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0-alpha-1",
+  "description": "A felxible form library for react",
+  "main": "dist/index.js",
+  "contributors": [
+    {
+      "name": "Matt O'Connell"
+    },
+    {
+      "name": "Kevin Welcher"
+    },
+    {
+      "name": "Christine Bryant-Ryback"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/willowtreeapps/react-formable.git"
+  },
+  "bugs": {
+    "url": "https://github.com/willowtreeapps/react-formable/issues"
+  },
+  "keywords": [
+    "react",
+    "react-component",
+    "form"
+  ],
   "directories": {
     "example": "dist/index"
   },
@@ -11,8 +34,8 @@
     "build": "rm -rf dist && tsc",
     "start": "node examples/server.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Willowtree",
+  "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "babel-core": "^6.13.2",
@@ -44,7 +67,6 @@
   "dependencies": {
     "@types/lodash": "^4.14.45",
     "@types/react": "^0.14.55",
-    "lodash": "^4.17.4",
     "lodash.debounce": "^4"
   },
   "peerDependencies": {

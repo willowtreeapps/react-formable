@@ -20,7 +20,7 @@ const React = require("react");
 const inflateTree_1 = require("./inflateTree");
 const clone_1 = require("./clone");
 const validation_1 = require("./validation");
-const lodash_debounce_1 = require("lodash.debounce");
+const debounce_1 = require("./debounce");
 exports.defaultFieldErrorsToProps = (fieldErrors, props) => ({
     className: `${fieldErrors.length ? 'error' : ''} ${props.className}`
 });
@@ -28,15 +28,13 @@ exports.defaultConfigureInput = {
     eventName: 'onChange',
     getValueFromEvent: (e) => e.target.value,
     defaultProp: 'defaultValue',
-    valueProp: 'value',
-    fieldErrorsToProps: exports.defaultFieldErrorsToProps
+    valueProp: 'value'
 };
 const defaultConfigureCheckbox = {
     eventName: 'onChange',
     getValueFromEvent: (e) => e.target.checked,
     defaultProp: 'defaultChecked',
-    valueProp: 'checked',
-    fieldErrorsToProps: exports.defaultFieldErrorsToProps
+    valueProp: 'checked'
 };
 class _Form extends React.Component {
     constructor() {
@@ -69,7 +67,7 @@ class _Form extends React.Component {
             const validation = validation_1.validate(this.tree, fieldValues, 'serialize', paths);
             return { fieldValues, validation };
         };
-        this.validate = lodash_debounce_1.default((fieldValues, eventType, cb) => {
+        this.validate = debounce_1.default((fieldValues, eventType, cb) => {
             const paths = (eventType === 'onChange' && this.props.showErrorsOnChange === 'field')
                 ? this.dirtyNodes
                 : this.tree.map(node => node.path);
@@ -109,16 +107,20 @@ class _Form extends React.Component {
             if (!this.props.onSubmit && !this.props.showErrorsOnSubmit)
                 return;
             const fieldValues = inflateTree_1.default('value', this.tree);
+            // Clear old validations
+            this.validate.cancel();
             this.validate(fieldValues, 'onSubmit', (validation) => {
                 if (this.props.showErrorsOnSubmit)
                     this.setState({ errors: validation.errors });
                 if (this.props.onSubmit)
                     this.props.onSubmit(fieldValues, validation);
             });
+            // Immediately execute submit validation
+            this.validate.flush();
         };
     }
     render() {
-        let _a = this.props, { removePropName, removeValidators, onChange, onSubmit, showErrorsOnChange, showErrorsOnSubmit, debounceValidation, propName, configureForm } = _a, props = __rest(_a, ["removePropName", "removeValidators", "onChange", "onSubmit", "showErrorsOnChange", "showErrorsOnSubmit", "debounceValidation", "propName", "configureForm"]);
+        let _a = this.props, { removePropName, removeValidators, onChange, onSubmit, showErrorsOnChange, fieldErrorsToProps, showErrorsOnSubmit, debounceValidation, propName, configureForm } = _a, props = __rest(_a, ["removePropName", "removeValidators", "onChange", "onSubmit", "showErrorsOnChange", "fieldErrorsToProps", "showErrorsOnSubmit", "debounceValidation", "propName", "configureForm"]);
         const { children, tree } = clone_1.default({
             children: this.props.children,
             path: '',
@@ -127,6 +129,7 @@ class _Form extends React.Component {
             removeValidators,
             removePropName,
             propName,
+            fieldErrorsToProps,
             configureForm,
             onChange: this.onChange,
             previousRenderTree: this.tree || [],
@@ -142,6 +145,7 @@ _Form.defaultProps = {
     showErrorsOnSubmit: true,
     debounceValidation: 0,
     removePropName: false,
+    fieldErrorsToProps: exports.defaultFieldErrorsToProps,
     removeValidators: true,
     configureForm: (type, props) => type === 'input' && (props.type === 'radio' || props.type === 'checkbox')
         ? defaultConfigureCheckbox
