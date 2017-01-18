@@ -112,7 +112,7 @@ class _Form extends React.Component {
             this.validate(fieldValues, 'onSubmit', (validation) => {
                 if (this.props.showErrorsOnSubmit)
                     this.setState({ errors: validation.errors });
-                if (this.props.onSubmit)
+                if (this.props.onSubmit && (validation.valid || this.props.noValidate))
                     this.props.onSubmit(fieldValues, validation);
             });
             // Immediately execute submit validation
@@ -147,6 +147,7 @@ _Form.defaultProps = {
     removePropName: false,
     fieldErrorsToProps: exports.defaultFieldErrorsToProps,
     removeValidators: true,
+    noValidate: false,
     configureForm: (type, props) => type === 'input' && (props.type === 'radio' || props.type === 'checkbox')
         ? defaultConfigureCheckbox
         : exports.defaultConfigureInput
