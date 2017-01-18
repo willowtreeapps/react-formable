@@ -26,7 +26,8 @@ export interface Props {
     debounceValidation: number,
     configureForm: ConfigureForm,
     removeValidators: boolean,
-    removePropName: boolean
+    removePropName: boolean,
+    callSubmitWithInvalidData: boolean
 }
 
 export interface State {
@@ -60,6 +61,7 @@ class _Form extends React.Component<Props, State> {
         removePropName: false,
         fieldErrorsToProps: defaultFieldErrorsToProps,
         removeValidators: true,
+        callSubmitWithInvalidData: true,
         configureForm: (type, props) =>
             type === 'input' && (props.type === 'radio' || props.type === 'checkbox')
                 ? defaultConfigureCheckbox
@@ -159,7 +161,11 @@ class _Form extends React.Component<Props, State> {
             if (this.props.showErrorsOnSubmit)
                 this.setState({ errors: validation.errors })
 
-            if (this.props.onSubmit)
+            const shouldCallOnSubmit =
+                this.props.callSubmitWithInvalidData ||
+                (!this.props.callSubmitWithInvalidData && validation.valid)
+
+            if (this.props.onSubmit && shouldCallOnSubmit)
                 this.props.onSubmit(fieldValues, validation)
         })
 
