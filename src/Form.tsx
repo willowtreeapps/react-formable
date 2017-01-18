@@ -22,12 +22,12 @@ export interface Props {
     showErrorsOnSubmit: boolean,
     onChange: (fieldValues: any, validation?: any) => void,
     onSubmit: (fieldValues: any, validation: any) => void,
+    onSubmitSuccess: (fieldValues: any) => void,
     fieldErrorsToProps: (fieldErrors: any[], props: any) => any,
     debounceValidation: number,
     configureForm: ConfigureForm,
     removeValidators: boolean,
-    removePropName: boolean,
-    callSubmitWithInvalidData: boolean
+    removePropName: boolean
 }
 
 export interface State {
@@ -61,7 +61,6 @@ class _Form extends React.Component<Props, State> {
         removePropName: false,
         fieldErrorsToProps: defaultFieldErrorsToProps,
         removeValidators: true,
-        callSubmitWithInvalidData: true,
         configureForm: (type, props) =>
             type === 'input' && (props.type === 'radio' || props.type === 'checkbox')
                 ? defaultConfigureCheckbox
@@ -161,12 +160,11 @@ class _Form extends React.Component<Props, State> {
             if (this.props.showErrorsOnSubmit)
                 this.setState({ errors: validation.errors })
 
-            const shouldCallOnSubmit =
-                this.props.callSubmitWithInvalidData ||
-                (!this.props.callSubmitWithInvalidData && validation.valid)
-
-            if (this.props.onSubmit && shouldCallOnSubmit)
+            if (this.props.onSubmit)
                 this.props.onSubmit(fieldValues, validation)
+
+            if (this.props.onSubmitSuccess && validation.valid)
+                this.props.onSubmitSuccess(fieldValues)
         })
 
         // Immediately execute submit validation
