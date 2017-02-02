@@ -155,7 +155,6 @@ class _Form extends React.Component<Props, State> {
         })
     }
 
-    private onKeyDown = (e: any) => e.key === 'Enter' && this.onSubmit(e)
     private onSubmit = (e: any) => {
         e.preventDefault()
 
@@ -201,7 +200,6 @@ class _Form extends React.Component<Props, State> {
         return <form onSubmit={this.onSubmit}
                      onChange={() => {}}
                      onReset={this.clear}
-                     onKeyDown={this.onKeyDown}
                      {...props}>
             {children}
         </form>
