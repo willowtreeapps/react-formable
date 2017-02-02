@@ -197,10 +197,11 @@ class _Form extends React.Component<Props, State> {
 
         this.tree = tree
 
-        return <form onSubmit={this.onSubmit}
+        return <form {...props}
+                     onSubmit={this.onSubmit}
                      onChange={() => {}}
                      onReset={this.clear}
-                     {...props}>
+                     noValidate>
             {children}
         </form>
     }
