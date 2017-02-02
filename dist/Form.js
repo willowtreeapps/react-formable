@@ -36,6 +36,12 @@ const defaultConfigureCheckbox = {
     defaultProp: 'defaultChecked',
     valueProp: 'checked'
 };
+const defaultConfigureUpload = {
+    eventName: 'onChange',
+    getValueFromEvent: (e) => e.target.files,
+    defaultProp: 'defaultValue',
+    valueProp: 'value'
+};
 class _Form extends React.Component {
     constructor() {
         super(...arguments);
@@ -100,7 +106,6 @@ class _Form extends React.Component {
                 }
             });
         };
-        this.onKeyDown = (e) => e.key === 'Enter' && this.onSubmit(e);
         this.onSubmit = (e) => {
             e.preventDefault();
             // No one is expecting work, no need to validate
@@ -136,21 +141,20 @@ class _Form extends React.Component {
             errors: this.state.errors,
         });
         this.tree = tree;
-        return React.createElement("form", __assign({ onSubmit: this.onSubmit, onChange: () => { }, onReset: this.clear, onKeyDown: this.onKeyDown }, props), children);
+        return React.createElement("form", __assign({}, props, { onSubmit: this.onSubmit, onChange: () => { }, onReset: this.clear, noValidate: true }), children);
     }
 }
 _Form.defaultProps = {
     propName: 'name',
-    showErrorsOnChange: undefined,
     showErrorsOnSubmit: true,
     debounceValidation: 0,
     removePropName: false,
     fieldErrorsToProps: exports.defaultFieldErrorsToProps,
     removeValidators: true,
     noValidate: false,
-    configureForm: (type, props) => type === 'input' && (props.type === 'radio' || props.type === 'checkbox')
-        ? defaultConfigureCheckbox
-        : exports.defaultConfigureInput
+    configureForm: (type, props) => type === 'input' && (props.type === 'radio' || props.type === 'checkbox') ? defaultConfigureCheckbox :
+        type === 'input' && props.type === 'file' ? defaultConfigureUpload :
+            exports.defaultConfigureInput
 };
 exports.Form = _Form;
 Object.defineProperty(exports, "__esModule", { value: true });
