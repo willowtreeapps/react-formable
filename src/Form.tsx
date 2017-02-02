@@ -56,6 +56,13 @@ const defaultConfigureCheckbox: ConfigureFormRes = {
     valueProp: 'checked'
 }
 
+const defaultConfigureUpload: ConfigureFormRes = {
+    eventName: 'onChange',
+    getValueFromEvent: (e: any) => e.target.files,
+    defaultProp: 'defaultValue',
+    valueProp: 'value'
+}
+
 class _Form extends React.Component<Props, State> {
     static defaultProps: Partial<Props> = {
         propName: 'name',
@@ -67,9 +74,9 @@ class _Form extends React.Component<Props, State> {
         removeValidators: true,
         noValidate: false,
         configureForm: (type, props) =>
-            type === 'input' && (props.type === 'radio' || props.type === 'checkbox')
-                ? defaultConfigureCheckbox
-                : defaultConfigureInput
+            type === 'input' && (props.type === 'radio' || props.type === 'checkbox') ? defaultConfigureCheckbox :
+            type === 'input' && props.type === 'file'                                 ? defaultConfigureUpload :
+                                                                                        defaultConfigureInput
     }
 
     public state = { errors: [] }
