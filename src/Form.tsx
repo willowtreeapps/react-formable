@@ -66,7 +66,6 @@ const defaultConfigureUpload: ConfigureFormRes = {
 class _Form extends React.Component<Props, State> {
     static defaultProps: Partial<Props> = {
         propName: 'name',
-        showErrorsOnChange: undefined,
         showErrorsOnSubmit: true,
         debounceValidation: 0,
         removePropName: false,
