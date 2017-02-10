@@ -5,7 +5,7 @@ import clone from './clone'
 import { EventType, validate } from './validation'
 import debounce from './debounce'
 
-type ConfigureFormRes = {
+export type ConfigureFormRes = {
     eventName: string,
     getValueFromEvent: (...args: any[]) => any,
     defaultProp: string,

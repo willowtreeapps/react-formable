@@ -2,12 +2,12 @@
 // This is a temporary hack with inlined typeings to get it workign
 declare var require: any
 
-interface Cancelable {
+export interface Cancelable {
     cancel(): void;
     flush(): void;
 }
 
-interface DebounceSettings {
+export interface DebounceSettings {
     leading?: boolean;
     maxWait?: number;
     trailing?: boolean;

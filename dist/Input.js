@@ -16,9 +16,9 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-const React = require("react");
-exports.Input = (_a) => {
-    var { validators } = _a, props = __rest(_a, ["validators"]);
+var React = require("react");
+exports.Input = function (_a) {
+    var validators = _a.validators, props = __rest(_a, ["validators"]);
     return React.createElement("input", __assign({}, props));
 };
 Object.defineProperty(exports, "__esModule", { value: true });

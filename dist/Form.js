@@ -1,4 +1,9 @@
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -16,134 +21,138 @@ var __rest = (this && this.__rest) || function (s, e) {
             t[p[i]] = s[p[i]];
     return t;
 };
-const React = require("react");
-const inflateTree_1 = require("./inflateTree");
-const clone_1 = require("./clone");
-const validation_1 = require("./validation");
-const debounce_1 = require("./debounce");
-exports.defaultFieldErrorsToProps = (fieldErrors, props) => ({
-    className: `${fieldErrors.length ? 'error' : ''} ${props.className}`
-});
+var React = require("react");
+var inflateTree_1 = require("./inflateTree");
+var clone_1 = require("./clone");
+var validation_1 = require("./validation");
+var debounce_1 = require("./debounce");
+exports.defaultFieldErrorsToProps = function (fieldErrors, props) { return ({
+    className: (fieldErrors.length ? 'error' : '') + " " + props.className
+}); };
 exports.defaultConfigureInput = {
     eventName: 'onChange',
-    getValueFromEvent: (e) => e.target.value,
+    getValueFromEvent: function (e) { return e.target.value; },
     defaultProp: 'defaultValue',
     valueProp: 'value'
 };
-const defaultConfigureCheckbox = {
+var defaultConfigureCheckbox = {
     eventName: 'onChange',
-    getValueFromEvent: (e) => e.target.checked,
+    getValueFromEvent: function (e) { return e.target.checked; },
     defaultProp: 'defaultChecked',
     valueProp: 'checked'
 };
-const defaultConfigureUpload = {
+var defaultConfigureUpload = {
     eventName: 'onChange',
-    getValueFromEvent: (e) => e.target.files,
+    getValueFromEvent: function (e) { return e.target.files; },
     defaultProp: 'defaultValue',
     valueProp: 'value'
 };
-class _Form extends React.Component {
-    constructor() {
-        super(...arguments);
-        this.state = { errors: [] };
-        this.dirtyNodes = [];
-        this.tree = [];
-        this.clear = () => {
-            this.tree = [];
-            this.dirtyNodes = [];
-            this.setState({ errors: [] });
-            if (this.props.onChange)
-                this.props.onChange({});
+var _Form = (function (_super) {
+    __extends(_Form, _super);
+    function _Form() {
+        var _this = _super.apply(this, arguments) || this;
+        _this.state = { errors: [] };
+        _this.dirtyNodes = [];
+        _this.tree = [];
+        _this.clear = function () {
+            _this.tree = [];
+            _this.dirtyNodes = [];
+            _this.setState({ errors: [] });
+            if (_this.props.onChange)
+                _this.props.onChange({});
         };
-        this.clearFieldErrors = () => {
-            this.dirtyNodes = [];
-            this.tree = this.tree.map(node => (__assign({}, node, { fieldErrors: [] })));
-            this.setState({ errors: [] });
+        _this.clearFieldErrors = function () {
+            _this.dirtyNodes = [];
+            _this.tree = _this.tree.map(function (node) { return (__assign({}, node, { fieldErrors: [] })); });
+            _this.setState({ errors: [] });
         };
-        this.showFieldErrors = () => {
+        _this.showFieldErrors = function () {
             // this.serialize().validation.then(({ validatedTree, errors }) => {
             //     this.tree = validatedTree
             //     this.setState({ errors })
             // })
         };
         // Only really ment for the outside world if they are doing some complex form stuff
-        this.serialize = () => {
-            const paths = this.tree.map(node => node.path);
-            const fieldValues = inflateTree_1.default('value', this.tree);
-            const validation = validation_1.validate(this.tree, fieldValues, 'serialize', paths);
-            return { fieldValues, validation };
+        _this.serialize = function () {
+            var paths = _this.tree.map(function (node) { return node.path; });
+            var fieldValues = inflateTree_1.default('value', _this.tree);
+            var validation = validation_1.validate(_this.tree, fieldValues, 'serialize', paths);
+            return { fieldValues: fieldValues, validation: validation };
         };
-        this.validate = debounce_1.default((fieldValues, eventType, cb) => {
-            const paths = (eventType === 'onChange' && this.props.showErrorsOnChange === 'field')
-                ? this.dirtyNodes
-                : this.tree.map(node => node.path);
-            this.dirtyNodes = [];
-            return validation_1.validate(this.tree, fieldValues, eventType, paths).then(({ validatedTree, errors, fieldErrors, valid }) => {
-                this.tree = validatedTree;
-                cb({ errors, fieldErrors, valid });
+        _this.validate = debounce_1.default(function (fieldValues, eventType, cb) {
+            var paths = (eventType === 'onChange' && _this.props.showErrorsOnChange === 'field')
+                ? _this.dirtyNodes
+                : _this.tree.map(function (node) { return node.path; });
+            _this.dirtyNodes = [];
+            return validation_1.validate(_this.tree, fieldValues, eventType, paths).then(function (_a) {
+                var validatedTree = _a.validatedTree, errors = _a.errors, fieldErrors = _a.fieldErrors, valid = _a.valid;
+                _this.tree = validatedTree;
+                cb({ errors: errors, fieldErrors: fieldErrors, valid: valid });
             });
-        }, this.props.debounceValidation);
-        this.onChange = (path, value) => {
-            this.dirtyNodes.push(path);
-            this.tree = this.tree.map(node => {
-                return node.path === path ? __assign({}, node, { value }) : node;
+        }, _this.props.debounceValidation);
+        _this.onChange = function (path, value) {
+            _this.dirtyNodes.push(path);
+            _this.tree = _this.tree.map(function (node) {
+                return node.path === path ? __assign({}, node, { value: value }) : node;
             });
             // No callback and we are not showing errors, no need to do any work
-            if (!this.props.onChange && !this.props.showErrorsOnChange)
+            if (!_this.props.onChange && !_this.props.showErrorsOnChange)
                 return;
             // In both cases, we need to inflate the current form object
-            const fieldValues = inflateTree_1.default('value', this.tree);
+            var fieldValues = inflateTree_1.default('value', _this.tree);
             // Trigger on change immediately as to not block any potential dependencies on this data
-            if (this.props.onChange)
-                this.props.onChange(fieldValues);
-            this.validate(fieldValues, 'onChange', (validation) => {
-                if (this.props.showErrorsOnChange)
-                    this.setState({ errors: validation.errors });
+            if (_this.props.onChange)
+                _this.props.onChange(fieldValues);
+            _this.validate(fieldValues, 'onChange', function (validation) {
+                if (_this.props.showErrorsOnChange)
+                    _this.setState({ errors: validation.errors });
                 // After we are done validating, if the onChange asked for validation, give it to them
                 // We have to call onChange twice since debounceing means we won't always have validation
-                if (this.props.onChange && this.props.onChange.length !== 1) {
-                    this.props.onChange(inflateTree_1.default('value', this.tree), validation);
+                if (_this.props.onChange && _this.props.onChange.length !== 1) {
+                    _this.props.onChange(inflateTree_1.default('value', _this.tree), validation);
                 }
             });
         };
-        this.onSubmit = (e) => {
+        _this.onSubmit = function (e) {
             e.preventDefault();
             // No one is expecting work, no need to validate
-            if (!this.props.onSubmit && !this.props.showErrorsOnSubmit)
+            if (!_this.props.onSubmit && !_this.props.showErrorsOnSubmit)
                 return;
-            const fieldValues = inflateTree_1.default('value', this.tree);
+            var fieldValues = inflateTree_1.default('value', _this.tree);
             // Clear old validations
-            this.validate.cancel();
-            this.validate(fieldValues, 'onSubmit', (validation) => {
-                if (this.props.showErrorsOnSubmit)
-                    this.setState({ errors: validation.errors });
-                if (this.props.onSubmit && (validation.valid || this.props.noValidate))
-                    this.props.onSubmit(fieldValues, validation);
+            _this.validate.cancel();
+            _this.validate(fieldValues, 'onSubmit', function (validation) {
+                if (_this.props.showErrorsOnSubmit)
+                    _this.setState({ errors: validation.errors });
+                if (_this.props.onSubmit && (validation.valid || _this.props.noValidate))
+                    _this.props.onSubmit(fieldValues, validation);
             });
             // Immediately execute submit validation
-            this.validate.flush();
+            _this.validate.flush();
         };
+        return _this;
     }
-    render() {
-        let _a = this.props, { removePropName, removeValidators, onChange, onSubmit, showErrorsOnChange, fieldErrorsToProps, showErrorsOnSubmit, debounceValidation, propName, configureForm } = _a, props = __rest(_a, ["removePropName", "removeValidators", "onChange", "onSubmit", "showErrorsOnChange", "fieldErrorsToProps", "showErrorsOnSubmit", "debounceValidation", "propName", "configureForm"]);
-        const { children, tree } = clone_1.default({
+    _Form.prototype.render = function () {
+        var _a = this.props, removePropName = _a.removePropName, removeValidators = _a.removeValidators, onChange = _a.onChange, onSubmit = _a.onSubmit, showErrorsOnChange = _a.showErrorsOnChange, fieldErrorsToProps = _a.fieldErrorsToProps, showErrorsOnSubmit = _a.showErrorsOnSubmit, debounceValidation = _a.debounceValidation, propName = _a.propName, configureForm = _a.configureForm, props = __rest(_a, ["removePropName", "removeValidators", "onChange", "onSubmit", "showErrorsOnChange", "fieldErrorsToProps", "showErrorsOnSubmit", "debounceValidation", "propName", "configureForm"]);
+        var _b = clone_1.default({
             children: this.props.children,
             path: '',
             tree: [],
             nodeIndexCount: {},
-            removeValidators,
-            removePropName,
-            propName,
-            fieldErrorsToProps,
-            configureForm,
+            removeValidators: removeValidators,
+            removePropName: removePropName,
+            propName: propName,
+            fieldErrorsToProps: fieldErrorsToProps,
+            configureForm: configureForm,
             onChange: this.onChange,
             previousRenderTree: this.tree || [],
             errors: this.state.errors,
-        });
+        }), children = _b.children, tree = _b.tree;
         this.tree = tree;
-        return React.createElement("form", __assign({}, props, { onSubmit: this.onSubmit, onChange: () => { }, onReset: this.clear, noValidate: true }), children);
-    }
-}
+        return React.createElement("form", __assign({}, props, { onSubmit: this.onSubmit, onChange: function () { }, onReset: this.clear, noValidate: true }), children);
+    };
+    return _Form;
+}(React.Component));
 _Form.defaultProps = {
     propName: 'name',
     showErrorsOnSubmit: true,
@@ -152,9 +161,11 @@ _Form.defaultProps = {
     fieldErrorsToProps: exports.defaultFieldErrorsToProps,
     removeValidators: true,
     noValidate: false,
-    configureForm: (type, props) => type === 'input' && (props.type === 'radio' || props.type === 'checkbox') ? defaultConfigureCheckbox :
-        type === 'input' && props.type === 'file' ? defaultConfigureUpload :
-            exports.defaultConfigureInput
+    configureForm: function (type, props) {
+        return type === 'input' && (props.type === 'radio' || props.type === 'checkbox') ? defaultConfigureCheckbox :
+            type === 'input' && props.type === 'file' ? defaultConfigureUpload :
+                exports.defaultConfigureInput;
+    }
 };
 exports.Form = _Form;
 Object.defineProperty(exports, "__esModule", { value: true });

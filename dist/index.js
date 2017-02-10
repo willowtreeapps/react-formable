@@ -1,5 +1,5 @@
 "use strict";
-const Form_1 = require("./Form");
+var Form_1 = require("./Form");
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Form_1.default;
 var Form_2 = require("./Form");
