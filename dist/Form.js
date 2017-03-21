@@ -74,7 +74,7 @@ var _Form = (function (_super) {
         };
         // Only really ment for the outside world if they are doing some complex form stuff
         _this.serialize = function () {
-            var paths = _this.tree.map(function (node) { return node.path; });
+            var paths = _this.tree.map(function (node) { return node.path.join('.'); });
             var fieldValues = inflateTree_1.default('value', _this.tree);
             var validation = validation_1.validate(_this.tree, fieldValues, 'serialize', paths);
             return { fieldValues: fieldValues, validation: validation };
@@ -82,7 +82,7 @@ var _Form = (function (_super) {
         _this.validate = debounce_1.default(function (fieldValues, eventType, cb) {
             var paths = (eventType === 'onChange' && _this.props.showErrorsOnChange === 'field')
                 ? _this.dirtyNodes
-                : _this.tree.map(function (node) { return node.path; });
+                : _this.tree.map(function (node) { return node.path.join('.'); });
             _this.dirtyNodes = [];
             return validation_1.validate(_this.tree, fieldValues, eventType, paths).then(function (_a) {
                 var validatedTree = _a.validatedTree, errors = _a.errors, fieldErrors = _a.fieldErrors, valid = _a.valid;
@@ -91,7 +91,7 @@ var _Form = (function (_super) {
             });
         }, _this.props.debounceValidation);
         _this.onChange = function (path, value) {
-            _this.dirtyNodes.push(path);
+            _this.dirtyNodes.push(path.join('.'));
             _this.tree = _this.tree.map(function (node) {
                 return node.path === path ? __assign({}, node, { value: value }) : node;
             });
@@ -136,7 +136,7 @@ var _Form = (function (_super) {
         var _a = this.props, removePropName = _a.removePropName, removeValidators = _a.removeValidators, onChange = _a.onChange, onSubmit = _a.onSubmit, showErrorsOnChange = _a.showErrorsOnChange, fieldErrorsToProps = _a.fieldErrorsToProps, showErrorsOnSubmit = _a.showErrorsOnSubmit, debounceValidation = _a.debounceValidation, propName = _a.propName, configureForm = _a.configureForm, props = __rest(_a, ["removePropName", "removeValidators", "onChange", "onSubmit", "showErrorsOnChange", "fieldErrorsToProps", "showErrorsOnSubmit", "debounceValidation", "propName", "configureForm"]);
         var _b = clone_1.default({
             children: this.props.children,
-            path: '',
+            path: [],
             tree: [],
             nodeIndexCount: {},
             removeValidators: removeValidators,

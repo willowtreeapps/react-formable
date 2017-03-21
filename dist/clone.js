@@ -16,7 +16,7 @@ var findInTree = function (path, key, arr) {
     for (var i = 0; i < arr.length; i++) {
         if (key && arr[i].key && arr[i].key === key)
             keyNode = keyNode || arr[i];
-        if (arr[i].path === path)
+        if (arr[i].path.join('.') === path.join('.'))
             pathNode = pathNode || arr[i];
     }
     return keyNode || pathNode;
@@ -42,7 +42,7 @@ var clone = function (options) {
         nodeIndexCount[name] = (nodeIndexCount[name] || 0) + 1;
         var nodeIndex = nodeIndexCount[name] - 1;
         // CASE: Formable Node
-        var path = [options.path, name, nodeIndex && "[" + nodeIndex + "]"].filter(function (x) { return x; }).join('.');
+        var path = options.path.concat([name, nodeIndex && "[" + nodeIndex + "]"]).filter(function (x) { return x; });
         var _a = clone(__assign({}, options, { path: path,
             tree: tree, children: child.props.children, nodeIndexCount: {} })), children = _a.children, subTree = _a.tree;
         // SUBCASE: Formable node with children (wrapper node)

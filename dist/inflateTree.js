@@ -21,6 +21,6 @@ var setPath = function (value, path, json) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = function (key, treeArray) {
-    return treeArray.reduce(function (tree, node) { return setPath(node[key], node.path.split('.'), tree); }, {});
+    return treeArray.reduce(function (tree, node) { return setPath(node[key], node.path, tree); }, {});
 };
 //# sourceMappingURL=inflateTree.js.map

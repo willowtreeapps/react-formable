@@ -25,7 +25,7 @@ exports.validate = function (tree, form, eventType, paths) {
         var _a;
     }, {});
     var promisedTree = promiseEvery(tree.map(function (node) {
-        return isPath[node.path]
+        return isPath[node.path.join('.')]
             ? validateNode(node, form, eventType)
             : node;
     }));
