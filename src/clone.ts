@@ -4,14 +4,14 @@ import {  } from './types/FormNode'
 import { ConfigureForm, defaultConfigureInput } from './Form'
 import { TreeNode } from './treenode'
 
-const findInTree = (path: string, key: string, arr: TreeNode[] = []) => {
+const findInTree = (path: string[], key: string, arr: TreeNode[] = []) => {
     let keyNode, pathNode
 
     for (let i = 0; i < arr.length; i++) {
         if(key && arr[i].key && arr[i].key === key)
             keyNode = keyNode || arr[i]
 
-        if(arr[i].path === path)
+        if(arr[i].path.join('.') === path.join('.'))
             pathNode = pathNode || arr[i]
     }
 
@@ -20,11 +20,11 @@ const findInTree = (path: string, key: string, arr: TreeNode[] = []) => {
 
 type CloneOptions = {
     children: any,
-    path: string,
+    path: string[],
     tree: TreeNode[],
     nodeIndexCount: { [key: string]: number },
     propName: string,
-    onChange: (path: string, value: any) => void,
+    onChange: (path: string[], value: any) => void,
     configureForm: ConfigureForm,
     previousRenderTree: TreeNode[],
     fieldErrorsToProps: (fieldErrors: any[], props: any) => any,
@@ -65,7 +65,7 @@ const clone = (options: CloneOptions) => {
         const nodeIndex = nodeIndexCount[name] - 1
 
         // CASE: Formable Node
-        let path = [options.path, name, nodeIndex && `[${nodeIndex}]`].filter(x => x).join('.')
+        let path = [...options.path, name, nodeIndex && `[${nodeIndex}]`].filter(x => x)
         const { children, tree: subTree } = clone({
             ...options,
             path,

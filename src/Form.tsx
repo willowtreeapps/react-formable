@@ -106,7 +106,7 @@ class _Form extends React.Component<Props, State> {
 
     // Only really ment for the outside world if they are doing some complex form stuff
     public serialize = () => {
-        const paths = this.tree.map(node => node.path)
+        const paths = this.tree.map(node => node.path.join('.'))
         const fieldValues = inflateTree('value', this.tree)
         const validation = validate(this.tree, fieldValues, 'serialize', paths)
 
@@ -116,7 +116,7 @@ class _Form extends React.Component<Props, State> {
     private validate = debounce((fieldValues: any, eventType: EventType, cb: (options: { errors: any[], fieldErrors: any, valid: boolean }) => void) => {
         const paths = (eventType === 'onChange' && this.props.showErrorsOnChange === 'field')
             ? this.dirtyNodes
-            : this.tree.map(node => node.path)
+            : this.tree.map(node => node.path.join('.'))
 
         this.dirtyNodes = []
 
@@ -126,8 +126,8 @@ class _Form extends React.Component<Props, State> {
         })
     }, this.props.debounceValidation)
 
-    private onChange = (path: string, value: any) => {
-        this.dirtyNodes.push(path)
+    private onChange = (path: string[], value: any) => {
+        this.dirtyNodes.push(path.join('.'))
 
         this.tree = this.tree.map(node => {
             return node.path === path ? { ...node, value } : node
@@ -182,7 +182,7 @@ class _Form extends React.Component<Props, State> {
         let { removePropName, removeValidators, onChange, onSubmit, showErrorsOnChange, fieldErrorsToProps, showErrorsOnSubmit, debounceValidation, propName, configureForm, ...props} = this.props
         const { children, tree } = clone({
             children: this.props.children,
-            path: '',
+            path: [],
             tree: [],
             nodeIndexCount: {},
             removeValidators,

@@ -23,7 +23,7 @@ export const validate = (tree: TreeNode[], form: any, eventType: EventType, path
 
     const promisedTree = promiseEvery(
         tree.map(node =>
-            isPath[node.path]
+            isPath[node.path.join('.')]
                 ? validateNode(node, form, eventType)
                 : node
         )

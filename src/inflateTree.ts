@@ -26,5 +26,5 @@ let setPath = (value: any, path: string[], json: any) => {
 }
 
 export default <S extends keyof TreeNode>(key: S, treeArray: TreeNode[]) => {
-    return treeArray.reduce((tree, node) => setPath(node[key], node.path.split('.'), tree), {})
+    return treeArray.reduce((tree, node) => setPath(node[key], node.path, tree), {})
 }
