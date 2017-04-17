@@ -6,6 +6,7 @@ export default React.createClass({
     propTypes: {
         fieldErrors: PropTypes.arrayOf(PropTypes.string),
         validateOnBlur: PropTypes.bool,
+        onBlur: PropTypes.func,
         onChange: PropTypes.func,
         onSubmit: PropTypes.func,
         className: PropTypes.string
@@ -13,6 +14,7 @@ export default React.createClass({
 
     getDefaultProps() {
         return {
+            onBlur: identity,
             onChange: identity,
             onSubmit: identity,
             className: ''
@@ -23,16 +25,12 @@ export default React.createClass({
         return this.refs.input.value;
     },
 
-    onChange(e) {
-        if(!this.props.validateOnBlur) {
-            this.props.onChange(e);
-        }
-    },
-
     onBlur() {
         if (this.props.validateOnBlur) {
             this.props.onChange();
         }
+
+        this.props.onBlur();
     },
 
     render() {
@@ -41,8 +39,8 @@ export default React.createClass({
 
         return <input {...this.props}
                       className={className}
-                      onChange={this.onChange}
                       onBlur={this.onBlur}
+                      onChange={this.props.onChange}
                       ref="input" />
     }
 });
