@@ -10,7 +10,7 @@ var setPath = function (value, path, json) {
     var nextPathIndex = nextPathIsArray ? nextPathIsArray[1] : '';
     // Add the value to our json recursivly
     json = json || (isArrayMatch ? [] : {});
-    if (nextPathIndex === '1') {
+    if (nextPathIndex === '1' && !Array.isArray(json[name])) {
         json[name] = [json[name]];
         json[name] = setPath(value, path.slice(1), json[name]);
     }
