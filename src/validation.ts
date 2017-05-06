@@ -8,7 +8,7 @@ const promiseEvery = <T>(arr: (Promise<T> | T)[]): Promise<T[]> =>
     Promise.all(arr.map(val => Promise.resolve(val).catch(x => x)));
 
 const validateNode = (node: TreeNode, form: any, eventType: EventType): Promise<TreeNode> => {
-    return promiseEvery(node.validators.map(fn => fn(node.value || '', form, eventType)))
+    return promiseEvery(node.validators.map(fn => fn(node.value, form, eventType)))
         .then((fieldErrors: any) => {
             return {
                 ...node,

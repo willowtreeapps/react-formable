@@ -13,7 +13,7 @@ var promiseEvery = function (arr) {
     return Promise.all(arr.map(function (val) { return Promise.resolve(val).catch(function (x) { return x; }); }));
 };
 var validateNode = function (node, form, eventType) {
-    return promiseEvery(node.validators.map(function (fn) { return fn(node.value || '', form, eventType); }))
+    return promiseEvery(node.validators.map(function (fn) { return fn(node.value, form, eventType); }))
         .then(function (fieldErrors) {
         return __assign({}, node, { fieldErrors: fieldErrors.filter(function (x) { return x; }) });
     });
