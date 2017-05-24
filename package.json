@@ -1,6 +1,6 @@
 {
   "name": "react-formable",
-  "version": "2.0.0-alpha-9",
+  "version": "2.0.0-alpha-10",
   "description": "A felxible form library for react",
   "main": "dist/index.js",
   "contributors": [
@@ -38,7 +38,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/enzyme": "^2.7.9",
-    "@types/jest": "^19.2.2",
+    "@types/jest": "^19.2.3",
     "@types/react-dom": "^15.5.0",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.13.2",
@@ -57,7 +57,7 @@
     "express": "^4.14.0",
     "express-urlrewrite": "^1.2.0",
     "inline-source-map": "^0.6.2",
-    "jest": "^19.0.2",
+    "jest": "^20.0.4",
     "material-ui": "^0.16.6",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",

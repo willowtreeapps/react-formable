@@ -8,7 +8,9 @@ export interface Props extends React.HTMLProps<HTMLUListElement> {
 }
 
 export const Errors = ({ renderError=(x => x), errors=[], _errors=[], className='' }: Props) => {
-    const allErrors = errors.concat(_errors)
+    const allErrors = errors.concat(_errors).filter((value, index, self) => {
+        return self.indexOf(value) === index;
+    })
 
     const errorLis = allErrors.reduce((memo, error, i) => {
         const el = renderError(error)
