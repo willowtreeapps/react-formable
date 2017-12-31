@@ -124,72 +124,29 @@ it('inflates crazy tree 3', () => {
   })
 })
 
-// it('inflates crazy tree 4', () => {
-//     expect(inflateTree('value', [
-//         { path: 'person.name', value: undefined, },
-//         { path: 'person.age', value: undefined, },
-//         { path: 'person.location', value: undefined, },
-//         { path: 'person.name.[1]', value: undefined, },
-//         { path: 'person.age.[1]', value: undefined, },
-//         { path: 'person.location.[1]', value: undefined, },
-//         { path: 'person.name.[2]', value: undefined, },
-//         { path: 'person.age.[2]', value: undefined, },
-//         { path: 'person.location.[2]', value: undefined, }
-//     ])).toEqual({
-//         person: [
-
-//         ]
-//     })
-// });
-
-// [
-//     { path: 'person.name', value: undefined, },
-//     { path: 'person.age', value: undefined, },
-//     { path: 'person.location', value: undefined, },
-//     { path: 'person.[1].name', value: undefined, },
-//     { path: 'person.[1].age', value: undefined, },
-//     { path: 'person.[1].location', value: undefined, },
-//     { path: 'person.[1].name', value: undefined, },
-//     { path: 'person.[1].age', value: undefined, },
-//     { path: 'person.[1].location', value: undefined, }
-// ]
-
-// WHAT IT IS
-// [
-//     {"path":"family.parent.name", value:"bad"},
-//     {"path":"family.parent.[1].name", value:"bad"},
-//     {"path":"family.parent.[2].name", value:"bad"},
-//     {"path":"family.parent.[3].name", value:"bad"}
-// ]
-// // WHAT IT SHOULD BE
-// [
-//     {"path":"family.parent.name", value:"bad"},
-//     {"path":"family.parent.[1].name", value:"bad"},
-//     {"path":"family.[1].parent.name", value:"bad"},
-//     {"path":"family.[1].parent.[1].name", value:"bad"}
-// ]
-
-// // WHAT IT IS
-// [
-//     {"path":"family.parent.name", value:"bad"},
-//     {"path":"family.parent.[1].name", value:"bad"},
-//     {"path":"family.child", value:"bad"},
-//     {"path":"family.[1].child", value:"bad"},
-//     {"path":"family.parent.[2].name", value:"bad"},
-//     {"path":"family.parent.[3].name", value:"bad"},
-//     {"path":"family.[2].child", value:"bad"},
-//     {"path":"family.[3].child", value:"bad"}
-// ]
-
-// // WHAT IT SHOULD BE
-// [
-//     {"path":"family.parent.name", value:"bad"},
-//     {"path":"family.parent.[1].name", value:"bad"},
-//     {"path":"family.child.name", value:"bad"},
-//     {"path":"family.child.[1].name", value:"bad"},
-
-//     {"path":"family.[1].parent.name", value:"bad"},
-//     {"path":"family.[1].parent.[1].name", value:"bad"},
-//     {"path":"family.[1].child.name", value:"bad"},
-//     {"path":"family.[1].child.[1].name", value:"bad"}
-// ]
+it('inflates an odd bug with nested arrays', () => {
+  expect(
+    inflateTree('fieldErrors', [
+      {
+        value: '',
+        fieldErrors: [],
+        path: ['username'],
+        name: 'username',
+      },
+      {
+        value: '',
+        fieldErrors: [],
+        path: ['username', '[1]'],
+        name: 'username',
+      },
+      {
+        value: '',
+        fieldErrors: [],
+        path: ['username', '[2]'],
+        name: 'username',
+      },
+    ])
+  ).toEqual({
+    username: [[], [], []],
+  })
+})

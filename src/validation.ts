@@ -28,7 +28,7 @@ export const validate = (
   eventType: EventType,
   paths: string[]
 ) => {
-  // Conver the paths array into a key value lookup
+  // Convert the paths array into a key value lookup
   const isPath = paths.reduce((memo, path) => ({ ...memo, [path]: true }), {})
 
   const promisedTree = promiseEvery(

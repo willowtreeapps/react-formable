@@ -11,10 +11,13 @@ let setPath = (value: any, path: string[], json: any) => {
   const nextPathIsArray = path[1] && path[1].match(/^\[(\d+)\]$/)
   const nextPathIndex = nextPathIsArray ? nextPathIsArray[1] : ''
 
-  // Add the value to our json recursivly
+  // Add the value to our json recursively
   json = json || (isArrayMatch ? [] : {})
 
-  if (nextPathIndex === '1' && !Array.isArray(json[name])) {
+  if (
+    nextPathIndex === '1' &&
+    (!Array.isArray(json[name]) || json[name].length <= 1)
+  ) {
     json[name] = [json[name]]
     json[name] = setPath(value, path.slice(1), json[name])
   } else {
