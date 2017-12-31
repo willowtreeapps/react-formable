@@ -1,31 +1,11 @@
-# Logs
-logs
-*.log
-
-# Runtime data
-pids
-*.pid
-*.seed
-
-# Coverage tools
-lib-cov
-coverage
-coverage.html
-.cover*
-
-# Dependency directory
+# dependencies
 node_modules
 
-# Example build directory
-example/dist
-.publish
+# production
+dist
+.cache
 
-# Editor and other tmp files
-*.swp
-*.un~
-*.iml
-*.ipr
-*.iws
-*.sublime-*
-.idea/
-*.DS_Store
+# misc
+.DS_Store
+.env
+npm-debug.log
