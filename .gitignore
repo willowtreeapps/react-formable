@@ -3,6 +3,7 @@ node_modules
 
 # production
 dist
+.cache
 
 # misc
 .DS_Store
