@@ -1,6 +1,6 @@
 {
   "name": "react-formable",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A flexible form library for react",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,6 +30,7 @@
     "test": "yarn && jest",
     "build": "yarn && jest && rm -rf dist && tsc",
     "start": "yarn && parcel ./examples/index.html",
+    "deploy": "yarn && yarn run build && npm publish",
     "precommit": "lint-staged",
     "prettier": "prettier --write \"./**/*.{tsx,ts,js,json}\""
   },
