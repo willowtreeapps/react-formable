@@ -5,8 +5,8 @@ import clone from './clone'
 import { EventType, validate } from './validation'
 import debounce from './debounce'
 
-export type FieldValues = { [key: string]: any }
-export type FieldErrors = { [key: string]: any }
+export type FieldValues = any
+export type FieldErrors = any
 export type Error = any
 
 export interface Validation {
