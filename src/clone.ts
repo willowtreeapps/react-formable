@@ -1,7 +1,12 @@
 import * as React from 'react'
 import Errors from './Errors'
 import {} from './types/FormNode'
-import { ConfigureForm, defaultConfigureInput } from './Form'
+import {
+  ConfigureForm,
+  defaultConfigureInput,
+  FieldErrorsToProps,
+  Error,
+} from './Form'
 import { TreeNode } from './treenode'
 
 const findInTree = (path: string[], key: string, arr: TreeNode[] = []) => {
@@ -25,8 +30,8 @@ type CloneOptions = {
   onChange: (path: string[], value: any) => void
   configureForm: ConfigureForm
   previousRenderTree: TreeNode[]
-  fieldErrorsToProps: (fieldErrors: any[], props: any) => any
-  errors: any[]
+  fieldErrorsToProps: FieldErrorsToProps
+  errors: Error[]
   key?: string
   removeValidators: boolean
   removePropName: boolean
