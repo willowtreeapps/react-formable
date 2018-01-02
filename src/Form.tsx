@@ -32,6 +32,7 @@ export type ConfigureForm = (
 
 export interface InternalProps {
   action: string
+  method: string
   id: string
   className: string
   onChange: (fieldValues: FieldValues, validation?: Validation) => void
