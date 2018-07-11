@@ -12,6 +12,7 @@ export const Errors: React.SFC<Props> = ({
   errors = [],
   _errors = [],
   className = '',
+  ...props
 }) => {
   const allErrors = errors.concat(_errors).filter((value, index, self) => {
     return self.indexOf(value) === index
@@ -23,7 +24,7 @@ export const Errors: React.SFC<Props> = ({
   }, [])
 
   return !!allErrors.length ? (
-    <ul className={`${className} errors`}>{errorLis}</ul>
+    <ul className={`${className} errors`} {...props}>{errorLis}</ul>
   ) : null
 }
 
