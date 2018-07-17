@@ -164,6 +164,7 @@ class _Form extends React.Component<InternalProps, State> {
   }
 
   public state = { errors: [] }
+  private form: HTMLFormElement | null = null
   private dirtyNodes: string[] = []
   private tree: TreeNode[] = []
 
@@ -173,6 +174,12 @@ class _Form extends React.Component<InternalProps, State> {
     this.setState({ errors: [] })
 
     if (this.props.onChange) this.props.onChange({})
+  }
+
+  public reset() {
+    if (this.form) {
+      this.form.reset()
+    }
   }
 
   public clearFieldErrors = () => {
@@ -305,6 +312,7 @@ class _Form extends React.Component<InternalProps, State> {
     return (
       <form
         {...props}
+        ref={e => this.form = e}
         onSubmit={this.onSubmit}
         onChange={() => {}}
         onReset={this.clear}
