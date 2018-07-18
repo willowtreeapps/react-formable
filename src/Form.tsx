@@ -146,7 +146,7 @@ const defaultConfigureUpload: ConfigureFormRes = {
   valueProp: 'value',
 }
 
-class _Form extends React.Component<InternalProps, State> {
+export class Form extends React.Component<Props, State> {
   static defaultProps: Props = {
     propName: 'name',
     showErrorsOnSubmit: true,
@@ -291,7 +291,8 @@ class _Form extends React.Component<InternalProps, State> {
       propName,
       configureForm,
       ...props
-    } = this.props
+    } = this.props as InternalProps
+
     const { children, tree } = clone({
       children: this.props.children,
       path: [],
@@ -323,5 +324,4 @@ class _Form extends React.Component<InternalProps, State> {
   }
 }
 
-export const Form = _Form as React.ComponentClass<Props>
-export default _Form as React.ComponentClass<Props>
+export default Form
