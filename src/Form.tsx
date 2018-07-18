@@ -114,7 +114,7 @@ export interface InternalProps {
 
 export type Props = Partial<InternalProps>
 
-interface State {
+export interface State {
   errors: Error[]
 }
 
@@ -313,7 +313,7 @@ export class Form extends React.Component<Props, State> {
     return (
       <form
         {...props}
-        ref={e => this.form = e}
+        ref={e => (this.form = e)}
         onSubmit={this.onSubmit}
         onChange={() => {}}
         onReset={this.clear}
